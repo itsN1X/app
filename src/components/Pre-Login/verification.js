@@ -39,7 +39,13 @@ export default class Verification extends React.Component {
 	componentWillMount() {
 		mnemonicArray = this.props.mnemonic.split(' ');
 		this.setState({ mnemonic: this.props.mnemonic,  mnemonicArray: mnemonicArray});
-		this.getRandomNumbers();
+		if(this.props.mode === "guardian" ) {
+			this.generateKeyPair();
+		}
+		else {
+				this.getRandomNumbers();
+		}
+
 	}
 	onUnfocus() {
 		Keyboard.dismiss();
@@ -75,7 +81,6 @@ export default class Verification extends React.Component {
 			    data: details
 		    })
 		    .then(function (response) {
-		    	console.log(response)
 		    	self.setState({wallet_id: response.data.wallet_id})
 		        self.storeWalletID(response.data.wallet_id);
 		        if(self.props.mode === "guardian") {
@@ -85,10 +90,9 @@ export default class Verification extends React.Component {
 		        	Actions.postlogin();
 		        	Actions.initiatewallets({wallet_id: response.data.wallet_id});
 		        }
-		        
+
 		    })
 		    .catch(function (error) {
-		        console.log(error);
 		    });
 		}
 		catch(error) {
@@ -109,24 +113,19 @@ export default class Verification extends React.Component {
 		   		await AsyncStorage.setItem('@Guardian', "true");
 		   	}
 		  } catch (error) {
-		    console.log(error)
 		  }
 	}
 	storeWalletID = async (data) => {
-		console.log(data)
 		try {
 		    await AsyncStorage.setItem('@WalletID', data);
 		  } catch (error) {
-		    console.log(error)
 		  }
 	}
 	getData = async () => {
 	  try {
 	    const value = await AsyncStorage.getItem('@UserData');
-	    console.log(value)
 		}
 		catch(error) {
-			alert(error)
 		}
 	}
 	onConfirm() {
@@ -151,7 +150,7 @@ export default class Verification extends React.Component {
 		rand2 = Math.floor(Math.random() * (12 - 6)) + 7;
 		this.setState({ rand1: rand1, rand2: rand2 });
 		placeholder1 = "Enter word #" + rand1;
-		placeholder2 = "Enter word #" + rand2;	
+		placeholder2 = "Enter word #" + rand2;
 	}
 	setWord(index, text) {
 		if(index===1) {
@@ -167,7 +166,7 @@ export default class Verification extends React.Component {
 	}
 	render () {
 		if(!this.state.loaded) {
-            return(<Loader activity={this.state.activity} />)     
+            return(<Loader activity={this.state.activity} />)
         }
         else {
             return (
@@ -185,11 +184,11 @@ export default class Verification extends React.Component {
 							<KeyboardAvoidingView keyboardVerticalOffset={100} behavior={"padding"} style={styles.inputContainerFlex}>
 								<View style={styles.inputHeading}>
 									<Text style={styles.inputHeadingText}>{placeholder1}</Text>
-								</View>		
+								</View>
 								<View style={styles.inputFlex}>
 									<TextInput
 										autoCapitalize='none'
-										value = {this.state.word1} 
+										value = {this.state.word1}
 										style = {styles.wordInput}
 										returnKeyType = "next"
 										maxLength = {12}
@@ -203,7 +202,7 @@ export default class Verification extends React.Component {
 								<View style={styles.inputFlex}>
 									<TextInput
 										autoCapitalize='none'
-										value = {this.state.word2} 
+										value = {this.state.word2}
 										style = {styles.wordInput}
 										returnKeyType = "done"
 										maxLength = {12}

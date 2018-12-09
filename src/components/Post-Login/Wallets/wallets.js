@@ -48,6 +48,7 @@ export default class Wallets extends React.Component {
             }
             else if(guardian === "true") {
             	Actions.guardiantabs();
+							Actions.guardianprofile();
             }
             else {
             	if(!user_data) {

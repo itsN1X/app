@@ -1,16 +1,119 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, ActivityIndicator, TouchableOpacity, ScrollView, Dimensions, Platform, BackHandler, AsyncStorage } from 'react-native';
 import { Actions } from 'react-native-router-flux';
+import Toast from 'react-native-simple-toast';
+import bip39 from 'react-native-bip39';
+import { VirgilCrypto } from 'virgil-crypto';
 import axios from 'axios';
 import StatusBar from '../common/statusbar';
 import AppStatusBar from '../common/appstatusbar';
 import theme from '../common/theme';
 import Loader from '../common/loader';
+const crypto = require('react-native-crypto');
 
 var Copy = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/copy.png";
 
 export default class WalletAddress extends React.Component {
+
+	constructor(props) {
+		super(props);
+		this.state = {
+			activity: "",
+			loaded: false,
+			mnemonic: '',
+			mnemonicArray: null,
+			wallet_id: ""
+		};
+
+		this.generateKeyPair = this.generateKeyPair.bind(this);
+	}
+
+	componentWillMount() {
+		this.setState({activity: "Creating Wallet"}, () => {
+			requestAnimationFrame(()=>this.generateGuardianMnemonic(), 0);
+		})
+		}
+
+		generateGuardianMnemonic(){
+			const promise = bip39.generateMnemonic();
+			promise.then((result)=>{
+				this.setState({mnemonic : result});
+				this.generateKeyPair();
+			});
+		}
+
+		generateKeyPair() {
+			const virgilCrypto = new VirgilCrypto();
+			let account = {};
+			account.mnemonic = this.state.mnemonic;
+			const seed = bip39.mnemonicToSeedHex(this.state.mnemonic);
+			account.seed = seed;
+			const keyPair = virgilCrypto.generateKeysFromKeyMaterial(seed);
+			const privateKeyData = virgilCrypto.exportPrivateKey(keyPair.privateKey);
+			const publicKeyData = virgilCrypto.exportPublicKey(keyPair.publicKey);
+			const privateKey = privateKeyData.toString('base64');
+			const publicKey = publicKeyData.toString('base64');
+			const privateKeyHash = this.createHash(privateKey)
+			account.publicKey = publicKey;
+			account.privateKey = privateKey;
+			account.privateKeyHash = privateKeyHash;
+			account = JSON.stringify(account);
+			let details = {};
+			details.private_key_hash = privateKeyHash;
+			details.public_key = publicKey;
+			this.storeData(account);
+			this.sendUserDetails(details);
+		}
+
+		sendUserDetails = async (details) => {
+			try {
+				var self = this;
+				axios({
+						method: 'post',
+						url: 'http://206.189.137.43:4013/create_wallet',
+						data: details
+					})
+					.then(function (response) {
+						self.setState({wallet_id: response.data.wallet_id})
+							self.storeWalletID(response.data.wallet_id);
+							self.setState({ loaded: true })
+							Actions.guardiantabs();
+							Actions.guardianprofile();
+
+					})
+					.catch(function (error) {
+					});
+			}
+			catch(error) {
+				Toast.showWithGravity("Network Error", Toast.LONG, Toast.CENTER);
+			}
+		}
+		createHash(data) {
+			const hash = crypto.createHash('sha256');
+			hash.update(data);
+			const privateKeyHash = hash.digest('hex');
+			return privateKeyHash;
+		}
+		storeData = async (data) => {
+			try {
+					await AsyncStorage.setItem('@UserData', data);
+					await AsyncStorage.setItem('@AccountStatus', "LoggedIn");
+					await AsyncStorage.setItem('@Guardian', "true");
+				} catch (error) {
+				}
+		}
+		storeWalletID = async (data) => {
+			try {
+					await AsyncStorage.setItem('@WalletID', data);
+				} catch (error) {
+				}
+		}
+
 	render() {
+		if(!this.state.loaded) {
+						return(<Loader activity={this.state.activity} />);
+				}
+		else {
 		return(
 			<View style={styles.container}>
 				<StatusBar bColor={theme.dark} />
@@ -31,6 +134,7 @@ export default class WalletAddress extends React.Component {
 				</View>
 			</View>
 		);
+	}
 	}
 }
 const styles = StyleSheet.create({

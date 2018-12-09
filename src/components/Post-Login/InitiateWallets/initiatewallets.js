@@ -48,6 +48,7 @@ export default class InitiateWallets extends React.Component {
 		this.getUserData = this.getUserData.bind(this);
 	}
 	componentWillMount = async () => {
+		this.setState({activity: "Initiating Wallets"});
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
 		this.getUserData();
 		try {
@@ -57,11 +58,9 @@ export default class InitiateWallets extends React.Component {
 			    url: 'http://206.189.137.43:4013/show_all_coins',
 		    })
 		    .then(function (response) {
-		       console.log(response);
 		       self.setState({ coinData: response.data.data, loaded: true });
 		    })
 		    .catch(function (error) {
-		        console.log(error);
 		    });
 		}
 		catch(error) {
@@ -142,10 +141,8 @@ export default class InitiateWallets extends React.Component {
 			    data: data
 		    })
 		    .then(function (response) {
-		    	console.log(response)
 		    })
 		    .catch(function (error) {
-		        console.log(error);
 		    });
 		}
 		catch(error) {
@@ -153,12 +150,10 @@ export default class InitiateWallets extends React.Component {
 		}
 	}
 	storeCoinData = async (data) => {
-		console.log("Storing Coin Data")
 		data = JSON.stringify(data);
 		try {
 		    await AsyncStorage.setItem('@BTCData', data);
 		  } catch (error) {
-		    console.log(error)
 		  }
 	}
 	getUserData = async () => {

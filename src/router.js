@@ -9,6 +9,7 @@ import ConfirmPin from './components/Pre-Login/confirmpin';
 import EnterPin from './components/Pre-Login/enterpin';
 import Dummy from './components/Pre-Login/dummy';
 import WalletAddress from './components/Guardian/walletaddress';
+import GuardianProfile from './components/Guardian/guardianprofile';
 import GetStarted from './components/Guardian/getstarted';
 import Verification from './components/Pre-Login/verification';
 import Restore from './components/Pre-Login/restore';
@@ -186,6 +187,7 @@ const RouterComponent = () => {
 			<Scene key="root">
 				<Scene key="prelogin" hideNavBar panHandlers={null}>
 					<Scene key="auth" component={Auth} hideNavBar panHandlers={null} initial/>
+					<Scene key="walletaddress" component={WalletAddress}  hideNavBar panHandlers={null} />
 					<Scene key="firstscreen" component={FirstScreen} hideNavBar panHandlers={null} />
 					<Scene key="createpin" component={CreatePin} hideNavBar panHandlers={null} />
 					<Scene key="confirmpin" component={ConfirmPin} hideNavBar panHandlers={null} />
@@ -231,7 +233,7 @@ const RouterComponent = () => {
 					</Stack>
 				</Scene>
 				<Scene key="guardiantabs" hideNavBar panHandlers={null} tabs tabBarStyle={{flexDirection: 'row', height: 60, borderTopWidth: 1, borderColor: theme.grey, width: Dimensions.get('window').width, backgroundColor: "#FFF", shadowOffset: { width: 0, height: -2 }, shadowColor: 'black', shadowOpacity: 0.1}} showLabel={false}>
-					<Scene key="walletaddress" component={WalletAddress} icon={HomeIcon} hideNavBar panHandlers={null} />
+				<Scene key="guardianprofile" component={GuardianProfile} icon={HomeIcon} hideNavBar panHandlers={null} />
 					<Scene key="pendingrequests" component={PendingRequests} icon={RequestsIcon} back={false} panHandlers={null} hideNavBar />
 					<Scene key="getstarted" component={GetStarted} icon={GetStartedIcon} panHandlers={null} hideNavBar />
 				</Scene>

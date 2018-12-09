@@ -65,7 +65,13 @@ export default class ConfirmPin extends React.Component {
       let Mode = this.props.mode;
       let pin = this.state.confirmPin;
       promise.then((result)=>{
-        Actions.walletseed({mnemonic: result, mode: Mode , pin : pin});
+				if(this.props.mode === "guardian") {
+					Actions.walletaddress();
+				}
+				else {
+					  Actions.walletseed({mnemonic: result, mode: Mode , pin : pin});
+				}
+
       })
   }
 	render () {
