@@ -51,20 +51,20 @@ export default class BackupPhrase extends React.Component {
 
 	writeToClipboard = async () => {
 	  await Clipboard.setString(mnemonicstr);
-	  Toast.showWithGravity('Copied to Clipboard!', Toast.LONG, Toast.CENTER)
+	  Toast.showWithGravity('Copie to Clipboard!', Toast.LONG, Toast.CENTER)
 	};
 	goBack() {
 		Actions.pop();
 	}
 	render() {
 		if(!this.state.loaded) {
-            return(<View style={{flex:1, backgroundColor: theme.white}}><BarIndicator color={theme.dark} size={50} count={5} /></View>)     
+            return(<View style={{flex:1, backgroundColor: theme.white}}><BarIndicator color={theme.dark} size={50} count={5} /></View>)
         }
         else {
 			return (
 				<View style={styles.container}>
 					<StatusBar bColor={theme.white} />
-					
+
 					<View style={styles.mainFlex}>
 						<View style={styles.textFlex}>
 							<View style={styles.mainTextContainer}>
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	},
 	seedContainer: {
-		position: 'relative', 
+		position: 'relative',
 		flex: 0.8,
 		width: Dimensions.get('window').width,
 		backgroundColor: theme.grey,

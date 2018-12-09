@@ -53,9 +53,10 @@ export default class Wallets extends React.Component {
             	if(!user_data) {
             		Actions.prelogin();
             		Actions.push('firstscreen');
-            	} 
+            	}
             	else {
 	            	if(value === 'LoggedIn' || this.props.loggedIn) {
+
 	            		if(!this.props.wallet_id) {
 	            			if(!wallet_id) {
 	            				Actions.prelogin();
@@ -68,12 +69,11 @@ export default class Wallets extends React.Component {
 	            		else {
 	            			wallet_id = this.props.wallet_id;
 	            		}
-	            		console.log(wallet_id);
 	            	if(this.props.new===true) {
 	            		this.decryptData( this.props.coin_data, this.props.user_data )
 	            	}
 	            	this.setState({activity: "Fetching User Assets"}, () => {
-						requestAnimationFrame(()=>this.getCoinData(wallet_id, user_data), 0);				
+						requestAnimationFrame(()=>this.getCoinData(wallet_id, user_data), 0);
 					});
 		            }
 		            else if(!this.props.loggedIn) {
@@ -81,7 +81,6 @@ export default class Wallets extends React.Component {
 		            	Actions.push('firstscreen');
 		            }
 		            else {
-		            	console.log(value)
 		            	Actions.prelogin();
 		            	Actions.push('firstscreen');
 		            }
@@ -180,7 +179,7 @@ export default class Wallets extends React.Component {
   	}
 	render () {
 		if(!this.state.loaded) {
-            return(<Loader activity={this.state.activity} />);     
+            return(<Loader activity={this.state.activity} />);
         }
         else {
 			return (
@@ -250,7 +249,7 @@ const styles = StyleSheet.create({
 		width: '100%',
 		backgroundColor: theme.dark,
 		alignItems: 'center',
-		justifyContent: 'flex-start', 
+		justifyContent: 'flex-start',
 		borderBottomRightRadius: 25,
 		borderBottomLeftRadius: 25,
 	},

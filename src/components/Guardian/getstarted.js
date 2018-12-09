@@ -11,7 +11,8 @@ export default class GetStarted extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			wallet_id: ""
+			wallet_id: "",
+			updateGuardian: ''
 		};
 		this.getWalletId = this.getWalletId.bind(this);
 		this.gotoSetupRecovery = this.gotoSetupRecovery.bind(this);
@@ -30,7 +31,7 @@ export default class GetStarted extends React.Component {
 	}
 	gotoSetupRecovery() {
 		Actions.postlogin();
-		Actions.initiatewallets({wallet_id: this.state.wallet_id});
+		Actions.initiatewallets({wallet_id: this.state.wallet_id, updateGuardian : 'yes'});
 	}
 	render() {
 		return(

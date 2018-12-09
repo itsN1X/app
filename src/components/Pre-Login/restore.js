@@ -31,7 +31,6 @@ export default class Restore extends React.Component {
 		Keyboard.dismiss();
 	}
 	componentWillMount() {
-		global.NotificationUtils.showSuccess("Component Mounted")
 		this.setState({loaded: true});
 	}
 	generateKeyPair() {
@@ -75,7 +74,7 @@ export default class Restore extends React.Component {
 		    })
 		    .then(function (response) {
 		    	console.log(response)
-		    	if(response.data.flag === 143 && response.data.result.wallet_id !== null) {	    		
+		    	if(response.data.flag === 143 && response.data.result.wallet_id !== null) {
 		    		self.storeWalletID(response.data.result.wallet_id, account);
 		    		Actions.postlogintabs();
 		    		Actions.wallets();
@@ -118,7 +117,7 @@ export default class Restore extends React.Component {
 	}
 	render () {
 		if(!this.state.loaded) {
-            return(<Loader activity={this.state.activity} />);  
+            return(<Loader activity={this.state.activity} />);
         }
         else {
 			return (
@@ -140,7 +139,7 @@ export default class Restore extends React.Component {
 							<KeyboardAvoidingView keyboardVerticalOffset={100} behavior={"padding"} style={styles.inputContainerFlex}>
 								<View style={styles.inputFlex}>
 									<TextInput
-										editable={true} 
+										editable={true}
 										//selectTextOnFocus={true}
 										//contextMenuHidden={true}
 										multiline={true}
@@ -216,7 +215,7 @@ const styles = StyleSheet.create({
 		width: '80%',
 		borderRadius: 5,
 		borderWidth: 1,
-		textAlign: 'center', 
+		textAlign: 'center',
 		borderColor: theme.black,
 		alignItems: 'center',
 		justifyContent: 'center'

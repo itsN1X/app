@@ -22,7 +22,8 @@ export default class Profile extends React.Component {
 			currency: "USD",
 			loaded: false,
 			publicKey: "",
-			privateKey: ""
+			privateKey: "",
+			mode : ''
 		}
 		this.getAccountInfo = this.getAccountInfo.bind(this);
 		this.enablePicker = this.enablePicker.bind(this);
@@ -48,10 +49,12 @@ export default class Profile extends React.Component {
 		Actions.pendingrequests();
 	}
 	gotoViewKeys() {
-		Actions.viewkeys();
+		Actions.postlogin();
+		Actions.enterpin({mode : 'viewkeys'});
 	}
 	gotoBackupPhrase() {
-		Actions.backupphrase();
+		Actions.postlogin();
+		Actions.enterpin({mode : 'backupphrase'});
 	}
 	changeCurrency(value) {
 		this.setState({ currency: value, pickerEnabled: false })
@@ -60,7 +63,7 @@ export default class Profile extends React.Component {
 		try {
 		    await AsyncStorage.clear();
 		    Actions.prelogin();
-		    Actions.firstscreen()
+				Actions.auth();
 		  } catch (error) {
 		    console.log(error)
 		  }
@@ -88,10 +91,10 @@ export default class Profile extends React.Component {
 	}
 	render() {
 		if(!this.state.loaded) {
-            return(<View style={{flex:1, backgroundColor: theme.white}}><BarIndicator color={theme.dark} size={50} count={5} /></View>)     
+            return(<View style={{flex:1, backgroundColor: theme.white}}><BarIndicator color={theme.dark} size={50} count={5} /></View>)
         }
         else {
-			return ( 
+			return (
 				<View style={styles.container}>
 					<StatusBar bColor={theme.dark}/>
 					<AppStatusBar bColor={theme.dark} center={true} centerImage={true} centerIcon={User} />
@@ -109,22 +112,6 @@ export default class Profile extends React.Component {
 									</View>
 									<View style={styles.personAddressContainer}>
 										<Text style={styles.addressText}>{this.state.publicKey}</Text>
-									</View>
-								</View>
-							</View>
-							<View style={styles.greyline} />
-							<View style={styles.addressFlex}>
-								<View style={styles.addressContainer}>
-									<View style={styles.addressHeadingContainer}>		
-										<Text style={styles.addressHeadingText}>Private Address ( Wallet )</Text>
-										<View style={styles.copyIconContainer}>
-											<TouchableOpacity onPress={() => this.copyToClipboard(this.state.privateKey)}>
-												<Image style={styles.copyIcon} source={{uri: Copy}} />
-											</TouchableOpacity>
-										</View>
-									</View>
-									<View style={styles.personAddressContainer}>
-										<Text style={styles.addressText}>{this.state.privateKey}</Text>
 									</View>
 								</View>
 							</View>
@@ -221,7 +208,7 @@ export default class Profile extends React.Component {
 					{this.state.pickerEnabled ? <CurrencyPicker status={this.state.pickerEnabled} changeCurrency={this.changeCurrency} /> : null}
 				</View>
 			);
-		}  
+		}
 	}
 }
 
@@ -283,7 +270,7 @@ const styles = StyleSheet.create({
 		width: '90%',
 		flexDirection: 'row',
 		alignItems: 'center',
-		justifyContent: 'center' 
+		justifyContent: 'center'
 	},
 	tabHeadingFlex: {
 		flex: 0.7,

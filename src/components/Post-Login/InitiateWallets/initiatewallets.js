@@ -91,9 +91,6 @@ export default class InitiateWallets extends React.Component {
 
 		var address = publicKey.toAddress(bitcoin.Networks.testnet);
 		const addressStr = address.toString();
-		console.log("Private:", privateKeyStr)
-		console.log("Public:", publicKeyStr)
-		console.log("Address:", addressStr)
 		let BTCData = {}
 		BTCData.privateKey = privateKeyStr;
 		BTCData.publicKey = publicKeyStr;
@@ -111,10 +108,22 @@ export default class InitiateWallets extends React.Component {
 		data.asset_data = encryptedData;
 		output.push(data);
 		this.sendCoinsData(data);
+		if(this.props.updateGuardian == 'yes'){
+			this.updateGuardianStatus();
+		}
 		Actions.postlogintabs();
 		Actions.wallets();
 		Actions.refresh({new: true, user_data: this.state.userDetails, loggedIn: true, wallet_id: data.wallet_id, coin_data: encryptedData});
 	}
+
+	updateGuardianStatus = async () => {
+			try {
+					await AsyncStorage.setItem('@Guardian', "false");
+				}
+			catch(error) {
+
+				}
+  }
 	encryptData(data) {
 		var userDetails = this.state.userDetails;
 		userDetails = JSON.parse(userDetails);
@@ -125,8 +134,6 @@ export default class InitiateWallets extends React.Component {
 		return encryptedData;
 	}
 	sendCoinsData(data) {
-		console.log("Sending Coin Data")
-		console.log(data);
 		try {
 			var self = this;
 			axios({
@@ -186,7 +193,7 @@ export default class InitiateWallets extends React.Component {
 		    buttonHeight = 75;
 		}
 		if(!this.state.loaded) {
-			return(<Loader activity={this.state.activity} />)		
+			return(<Loader activity={this.state.activity} />)
 		}
 		else {
 			return (
@@ -209,7 +216,7 @@ export default class InitiateWallets extends React.Component {
 							</View>
 							{this.state.coinData.map((value, i) => {
 		                         return(<WalletItem key={value.asset_id} symbol={value.asset_symbol} value={value.asset_value} light={value.asset_icon_light} dark={value.asset_icon_dark} name={value.asset_name} currency={this.state.currency} selected={true} />);
-		                    })}		
+		                    })}
 							<View style={styles.buttonContainer}>
 								<TouchableOpacity style={[styles.buttonStyle, {height: buttonHeight}]} onPress={this.activateWallets}>
 									<Text style={styles.getStartedText}>Get Started</Text>
@@ -236,9 +243,9 @@ const styles = StyleSheet.create({
 		width: '85%'
 	},
 	mainHeadingContainer: {
-		position: 'relative', 
+		position: 'relative',
 		height: 100,
-		justifyContent: 'flex-end' 
+		justifyContent: 'flex-end'
 	},
 	mainHeadingText: {
 		fontFamily: theme.font300,
@@ -271,7 +278,7 @@ const styles = StyleSheet.create({
 	},
 	subHeadingContainer: {
 		height: 80,
-		justifyContent: 'center' 
+		justifyContent: 'center'
 	},
 	subHeadingText: {
 		fontFamily: theme.font300,

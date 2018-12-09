@@ -6,7 +6,7 @@
  * @flow
  */
 import React, {Component} from 'react';
-import {View} from 'react-native';
+import {View , Image , Text} from 'react-native';
 import Router from './src/router';
 import NotificationUtils from './src/components/common/notificationutils';
 var MessageBarAlert = require('react-native-message-bar').MessageBar;
@@ -21,7 +21,7 @@ export default class App extends Component {
 	  // The MessageBar is then declared only once, in your main component.
 	  MessageBarManager.registerMessageBar(this.refs.alert);
 	}
-	 
+
 	componentWillUnmount() {
 	  // Remove the alert located on this master page from the manager
 	  MessageBarManager.unregisterMessageBar();

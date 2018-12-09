@@ -16,17 +16,22 @@ export default class CreatePin extends React.Component {
 			mnemonic: ""
 		};
 		this.generateKeyPair = this.generateKeyPair.bind(this);
+		this.getPinLength = this.getPinLength.bind(this);
 	}
-	componentWillMount() {
-		this.setState({ mnemonic: this.props.mnemonic })
+
+	getPinLength(){
+		let len = this.state.pinCode;
+		let Mode = this.props.mode;
+		if (len.length == 4) {
+			Actions.confirmpin({pinCode : len , mode : Mode});
+		}
 	}
+
+
 	generateKeyPair() {
-		const virgilCrypto = new VirgilCrypto();
 	    const promise = bip39.generateMnemonic();
 	    let Mode = this.props.mode;
 		promise.then((result)=>{
-		  console.log("Mnemonic : ",result);
-		  console.log("Mode: ", Mode);
 		  Actions.walletseed({mnemonic: result, mode: Mode});
 		})
 	}
@@ -64,7 +69,7 @@ export default class CreatePin extends React.Component {
 		    			/>
 		    		</View>
 		    		<KeyboardAvoidingView keyboardVerticalOffset={Platform.select({ios: 0, android: 500})} behavior= {(Platform.OS === 'ios')? "padding" : null} style={{position: 'absolute', bottom: 0, right: 0}}>
-			    		<TouchableOpacity style={styles.goIconContainer} onPress={this.generateKeyPair}>
+			    		<TouchableOpacity style={styles.goIconContainer} onPress={this.getPinLength}>
 			    			<Image style={styles.goIcon} source={{uri: "https://s3.ap-south-1.amazonaws.com/maxwallet-images/go.png"}} />
 			    		</TouchableOpacity>
 		    		</KeyboardAvoidingView>
@@ -75,7 +80,7 @@ export default class CreatePin extends React.Component {
 }
 const styles = StyleSheet.create({
 	container: {
-		position: 'relative', 
+		position: 'relative',
 		height: '100%',
 	    backgroundColor: theme.dark,
 	    alignItems: 'center'
@@ -118,7 +123,7 @@ const styles = StyleSheet.create({
 		width: '50%',
 		color: theme.white
 	},
-	goIconContainer: { 
+	goIconContainer: {
 		width: '100%',
 		paddingVertical: 10,
 		paddingHorizontal: 10,

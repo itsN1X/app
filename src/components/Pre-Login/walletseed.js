@@ -22,10 +22,8 @@ export default class WalletSeed extends React.Component {
 		this.setState({ mnemonic: this.props.mnemonic });
 		mnemonic = this.props.mnemonic;
 		mnemonic = mnemonic.split(" ",12);
-		console.log(mnemonic)
 	}
 	seedVerification() {
-		console.log("Mode: ", this.props.mode);
 		Actions.verification({ mnemonic: this.state.mnemonic, mode: this.props.mode });
 	}
 	writeToClipboard = async () => {
@@ -107,7 +105,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	},
 	seedContainer: {
-		position: 'relative', 
+		position: 'relative',
 		flex: 0.8,
 		width: Dimensions.get('window').width,
 		backgroundColor: theme.grey,

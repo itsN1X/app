@@ -5,6 +5,8 @@ import theme from './components/common/theme';
 import FirstScreen from './components/Pre-Login/firstscreen';
 import WalletSeed from './components/Pre-Login/walletseed';
 import CreatePin from './components/Pre-Login/createpin';
+import ConfirmPin from './components/Pre-Login/confirmpin';
+import EnterPin from './components/Pre-Login/enterpin';
 import Dummy from './components/Pre-Login/dummy';
 import WalletAddress from './components/Guardian/walletaddress';
 import GetStarted from './components/Guardian/getstarted';
@@ -13,6 +15,7 @@ import Restore from './components/Pre-Login/restore';
 import KeychainExample from './components/Pre-Login/keychain';
 import InitiateWallets from './components/Post-Login/InitiateWallets/initiatewallets';
 import Wallets from './components/Post-Login/Wallets/wallets';
+import Auth from './components/Post-Login/Wallets/auth';
 import BackupPhrase from './components/Post-Login/BackupPhrase/backupphrase';
 import Profile from './components/Post-Login/Profile/profile';
 import ViewKeys from './components/Post-Login/Profile/viewkeys';
@@ -127,7 +130,7 @@ const HomeIcon = ({ focused }) => {
 	let Opacity;
 	if (focused) {
 		Opacity = 1;
-		
+
 	}
 	else {
 		Opacity = 0.4;
@@ -145,7 +148,7 @@ const RequestsIcon = ({ focused }) => {
 	let Opacity;
 	if (focused) {
 		Opacity = 1;
-		
+
 	}
 	else {
 		Opacity = 0.4;
@@ -163,7 +166,7 @@ const GetStartedIcon = ({ focused }) => {
 	let Opacity;
 	if (focused) {
 		Opacity = 1;
-		
+
 	}
 	else {
 		Opacity = 0.4;
@@ -182,8 +185,10 @@ const RouterComponent = () => {
 		<Router>
 			<Scene key="root">
 				<Scene key="prelogin" hideNavBar panHandlers={null}>
+					<Scene key="auth" component={Auth} hideNavBar panHandlers={null} initial/>
 					<Scene key="firstscreen" component={FirstScreen} hideNavBar panHandlers={null} />
 					<Scene key="createpin" component={CreatePin} hideNavBar panHandlers={null} />
+					<Scene key="confirmpin" component={ConfirmPin} hideNavBar panHandlers={null} />
 					<Scene key="walletseed" component={WalletSeed} hideNavBar panHandlers={null} />
 					<Scene key="verification" component={Verification} hideNavBar panHandlers={null} />
 					<Scene key="restore" component={Restore} hideNavBar panHandlers={null} />
@@ -197,11 +202,12 @@ const RouterComponent = () => {
 				</Scene>
 				<Scene key="postlogin" panHandlers={null} hideNavBar>
 					<Scene key="initiatewallets" component={InitiateWallets} panHandlers={null} hideNavBar />
+					<Scene key="enterpin" component={EnterPin} hideNavBar panHandlers={null}/>
 					<Scene key="newaddress" component={NewAddress} hideNavBar panHandlers={null} />
 				</Scene>
-				<Scene key="postlogintabs" hideNavBar panHandlers={null} tabs tabBarStyle={{ flexDirection: 'row', height: 60, borderTopWidth: 1, borderColor: theme.grey, width: Dimensions.get('window').width, backgroundColor: "#FFF", shadowOffset: { width: 0, height: -2 }, shadowColor: 'black', shadowOpacity: 0.1}} showLabel={false} initial>
+				<Scene key="postlogintabs" hideNavBar panHandlers={null} tabs tabBarStyle={{ flexDirection: 'row', height: 60, borderTopWidth: 1, borderColor: theme.grey, width: Dimensions.get('window').width, backgroundColor: "#FFF", shadowOffset: { width: 0, height: -2 }, shadowColor: 'black', shadowOpacity: 0.1}} showLabel={false} >
 					<Stack key="wallets" hideNavBar icon={WalletsIcon} panHandlers={null}>
-						<Scene key="walletsmain" component={Wallets} hideNavBar panHandlers={null} initial/>
+						<Scene key="walletsmain" component={Wallets} hideNavBar panHandlers={null} />
 						<Scene key="mainscreen" component={MainScreen} hideNavBar panHandlers={null} />
 						<Scene key="fulltransactionhistory" component={FullTransactionHistory} hideNavBar panHandlers={null} />
 						<Scene key="transactioninfo" component={TransactionInfo} hideNavBar panHandlers={null} />
@@ -218,7 +224,7 @@ const RouterComponent = () => {
 						<Scene key="choosefriends" component={ChooseFriends} panHandlers={null} hideNavBar />
 					</Stack>
 					<Stack key="profile" hideNavBar icon={SettingsIcon} panHandlers={null}>
-						<Scene key="profilemain" component={Profile} panHandlers={null} hideNavBar initial/>
+						<Scene key="profilemain" component={Profile} panHandlers={null} hideNavBar/>
 						<Scene key="viewkeys" component={ViewKeys} panHandlers={null} hideNavBar />
 						<Scene key="pendingrequests" component={PendingRequests} back={true} panHandlers={null} hideNavBar />
 						<Scene key="backupphrase" component={BackupPhrase} hideNavBar panHandlers={null} />

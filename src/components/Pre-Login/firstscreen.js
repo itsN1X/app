@@ -36,14 +36,14 @@ export default class FirstScreen extends React.Component {
 		Actions.createpin({mode: "wallet"});
 	}
 	gotoRestore() {
-		Actions.restore();
+		Actions.createpin({mode : "restore"});
 	}
 	gotoGuardianView() {
 		Actions.createpin({mode: "guardian"});
 	}
 	render() {
 		if(!this.state.loaded) {
-            return(<View style={{flex:1, backgroundColor: theme.white}}><BarIndicator color={theme.dark} size={50} count={5} /></View>)     
+            return(<View style={{flex:1, backgroundColor: theme.white}}><BarIndicator color={theme.dark} size={50} count={5} /></View>)
         }
         else {
 			return (
