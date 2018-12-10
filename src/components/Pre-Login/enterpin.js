@@ -18,7 +18,8 @@ export default class EnterPin extends React.Component {
 		this.state = {
 			pinCode: "",
 			mnemonic: "",
-      pin:""
+      pin:"",
+			mode: ""
 		};
 
 		this.getPinLength = this.getPinLength.bind(this);
@@ -29,6 +30,15 @@ export default class EnterPin extends React.Component {
 		if (len.length == 4) {
 		this.decryptPinData(len);
 		}
+	}
+
+	storeData = async () => {
+			try {
+					await AsyncStorage.setItem('@ChangePin', "true");
+				}
+			catch(error) {
+
+				}
 	}
 
 	decryptPinData = async (pin) => {
@@ -46,6 +56,10 @@ export default class EnterPin extends React.Component {
 							else if(this.props.mode == 'viewkeys'){
 								Actions.profile();
 								Actions.viewkeys();
+							}
+							else if(this.props.mode == "changePin"){
+								this.storeData();
+								Actions.prelogin();
 							}
 							else{
 								Actions.postlogintabs();

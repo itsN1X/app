@@ -60,12 +60,27 @@ export default class ConfirmPin extends React.Component {
 				}
 	}
 
+	updateChangePinStatus = async () => {
+			try {
+					await AsyncStorage.setItem('@ChangePin', "false");
+				}
+			catch(error) {
+
+				}
+	}
+
   generateKeyPair() {
       const promise = bip39.generateMnemonic();
       let Mode = this.props.mode;
       let pin = this.state.confirmPin;
       promise.then((result)=>{
-				if(this.props.mode === "guardian") {
+				if(this.props.mode === "changePin") {
+					this.updateChangePinStatus();
+					Actions.postlogintabs();
+					Actions.profile();
+
+				}
+				else if(this.props.mode === "guardian") {
 					Actions.walletaddress();
 				}
 				else {

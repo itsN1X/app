@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, ActivityIndicator, ScrollView, TouchableOpacity, Dimensions, KeyboardAvoidingView, Clipboard, AsyncStorage, BackHandler } from 'react-native';
+import { StyleSheet,Alert, Text, View, Image, ActivityIndicator, ScrollView, TouchableOpacity, Dimensions, KeyboardAvoidingView, Clipboard, AsyncStorage, BackHandler } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { BarIndicator } from 'react-native-indicators';
 import Toast from 'react-native-simple-toast';
@@ -23,13 +23,16 @@ export default class Profile extends React.Component {
 			loaded: false,
 			publicKey: "",
 			privateKey: "",
-			mode : ''
+			mode : ""
 		}
 		this.getAccountInfo = this.getAccountInfo.bind(this);
+		this.logout = this.logout.bind(this);
+		this.changePin 	= this.changePin.bind(this);
 		this.enablePicker = this.enablePicker.bind(this);
 		this.disablePicker = this.disablePicker.bind(this);
 		this.changeCurrency = this.changeCurrency.bind(this);
 	}
+
 	componentWillMount() {
 		this.getAccountInfo();
 	}
@@ -45,6 +48,12 @@ export default class Profile extends React.Component {
 	goBack() {
 		Actions.pop();
 	}
+
+	changePin() {
+		Actions.postlogin();
+		Actions.enterpin({mode : "changePin"});
+	}
+
 	gotoRequests() {
 		Actions.pendingrequests();
 	}
@@ -59,8 +68,30 @@ export default class Profile extends React.Component {
 	changeCurrency(value) {
 		this.setState({ currency: value, pickerEnabled: false })
 	}
+
+	promptUserForLogout() {
+		Alert.alert(
+	  'Are your sure to logout?',
+	  '',
+		  [
+		    {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+		    {text: 'OK', onPress: async () => {
+					try {
+					    await AsyncStorage.clear();
+					    Actions.prelogin();
+							Actions.auth();
+					  } catch (error) {
+					    console.log(error)
+					  }
+			}
+		}
+		  ]
+		)
+	}
+
 	logout = async () => {
 		try {
+			alert("i am here");
 		    await AsyncStorage.clear();
 		    Actions.prelogin();
 				Actions.auth();
@@ -164,7 +195,7 @@ export default class Profile extends React.Component {
 								</View>
 							</TouchableOpacity>
 							<View style={styles.greyline} />
-							<TouchableOpacity style={styles.otherTabFlex}>
+							<TouchableOpacity style={styles.otherTabFlex} onPress={this.changePin}>
 								<View style={styles.otherTabContainer}>
 									<View style={styles.tabHeadingFlex}>
 										<Text style={styles.tabheadingText}>PIN Change</Text>
@@ -196,7 +227,7 @@ export default class Profile extends React.Component {
 								</View>
 							</TouchableOpacity>
 							<View style={styles.greyline} />
-							<TouchableOpacity style={styles.otherTabFlex} onPress={this.logout}>
+							<TouchableOpacity style={styles.otherTabFlex} onPress={this.promptUserForLogout}>
 								<View style={styles.otherTabContainer}>
 									<View style={[styles.tabHeadingFlex, {alignItems: 'center'}]}>
 										<Text style={[styles.tabheadingText, {color: theme.netflixred}]}>Logout</Text>

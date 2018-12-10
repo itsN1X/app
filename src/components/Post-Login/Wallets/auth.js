@@ -18,7 +18,8 @@ export default class Auth extends React.Component {
 		this.state = {
 			loaded: false,
 			activity: "",
-			asset_data: ""
+			asset_data: "",
+			mode: ""
 		};
 	}
 	componentWillMount() {
@@ -29,14 +30,25 @@ export default class Auth extends React.Component {
 	authenticateUser = async () => {
       try {
             const value = await AsyncStorage.getItem('@AccountStatus');
-            if(value == 'LoggedIn'){
-              Actions.postlogin();
-              Actions.enterpin();
-            }
+						const changePin = await AsyncStorage.getItem('@ChangePin');
 
-            else {
-              Actions.firstscreen();
-            }
+						if(changePin == "true") {
+							Actions.createpin({mode : "changePin"});
+						}
+
+						else {
+							if(value == 'LoggedIn'){
+
+									Actions.postlogin();
+									Actions.enterpin();
+
+							}
+
+							else {
+								Actions.firstscreen();
+							}
+						}
+
         }
       catch(error) {
 

@@ -29,7 +29,7 @@ export default class WalletAddress extends React.Component {
 	}
 
 	componentWillMount() {
-		this.setState({activity: "Creating Wallet"}, () => {
+		this.setState({activity: "Creating a trusted device"}, () => {
 			requestAnimationFrame(()=>this.generateGuardianMnemonic(), 0);
 		})
 		}

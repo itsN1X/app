@@ -14,9 +14,9 @@ export default class GuardianProfile extends React.Component {
 		return(
 			<View style={styles.container}>
 				<StatusBar bColor={theme.dark} />
-				<AppStatusBar bColor={theme.dark} center={true} text="Wallet Addresses" textColor={theme.white} />
+				<AppStatusBar bColor={theme.dark} center={true} text="Wal Addresses" textColor={theme.white} />
 				<View style={styles.headingContainer}>
-					<Text style={styles.headingText}>Wallet Address</Text>
+					<Text style={styles.headingText}>Wall Address</Text>
 				</View>
 				<View style={styles.addressHeadingFlex}>
 					<Text style={styles.addressHeadingText}>Public</Text>
