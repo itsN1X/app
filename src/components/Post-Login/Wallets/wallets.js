@@ -5,6 +5,7 @@ import { BarIndicator, WaveIndicator } from 'react-native-indicators';
 import axios from 'axios';
 import Drawer from 'react-native-drawer';
 import StatusBar from '../../common/statusbar';
+import Toast from 'react-native-simple-toast';
 import AppStatusBar from '../../common/appstatusbar';
 import theme from '../../common/theme';
 import Loader from '../../common/loader';
@@ -14,7 +15,7 @@ import WalletCoinItem from './walletcoinitem';
 import SideBar from '../Sidedrawer/drawercontent';
 const VirgilCrypto =require('virgil-crypto');
 const virgilCrypto = new VirgilCrypto.VirgilCrypto();
-
+var backCount = 0;
 export default class Wallets extends React.Component {
 	constructor(props) {
 		super(props);
@@ -35,6 +36,24 @@ export default class Wallets extends React.Component {
 			requestAnimationFrame(()=>this.authenticateUser(), 0);
 		})
 	}
+
+	componentDidMount() {
+				BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+		}
+		componentWillUnmount() {
+				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+		}
+		handleBackButton = () =>  {
+			backCount = backCount + 1;
+			if(backCount === 1) {
+				Toast.showWithGravity('Press again to EXIT', Toast.LONG, Toast.BOTTOM)
+			}
+			else {
+				backCount = 0;
+				BackHandler.exitApp();
+			}
+				return true;
+		}
 	authenticateUser = async () => {
       try {
             const value = await AsyncStorage.getItem('@AccountStatus');
@@ -43,7 +62,7 @@ export default class Wallets extends React.Component {
             var user_data = await AsyncStorage.getItem('@UserData');
             var guardian = await AsyncStorage.getItem('@Guardian');
             if(recovery === "true") {
-            	Actions.prelogin();
+            	Actions.postlogin();
             	Actions.recoveryrequests();
             }
             else if(guardian === "true") {

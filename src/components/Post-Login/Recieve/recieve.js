@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, ActivityIndicator, TextInput, TouchableOpacity, Dimensions, KeyboardAvoidingView, AsyncStorage, Clipboard } from 'react-native';
+import { StyleSheet,BackHandler, Text, View, Image, ActivityIndicator, TextInput, TouchableOpacity, Dimensions, KeyboardAvoidingView, AsyncStorage, Clipboard } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import Toast from 'react-native-simple-toast';
 import ElevatedView from 'react-native-elevated-view';
@@ -36,7 +36,16 @@ export default class Recieve extends React.Component {
 	}
 	componentDidMount() {
 		setTimeout(() => {this.setState({loaded: true})}, 1500);
-	}
+				BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+		}
+		componentWillUnmount() {
+				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+		}
+		handleBackButton = () =>  {
+		 Actions.pop();
+		 return true;
+		}
+
 	writeToClipboard = async () => {
 		await Clipboard.setString(this.state.address);
       	Toast.showWithGravity('Copied to Clipboard!', Toast.LONG, Toast.CENTER)
@@ -112,18 +121,18 @@ const styles = StyleSheet.create({
 	addressContainer: {
 		flex: 0.5,
 		width: '90%',
-		justifyContent: 'center'	
+		justifyContent: 'center'
 	},
 	addressText: {
 		fontFamily: theme.Lato,
-		fontWeight: '300', 
+		fontWeight: '300',
 		fontSize: 17,
 		color: theme.black,
 	},
 	lowerFlex: {
 		flex: 0.7,
 		width: '100%',
-		alignItems: 'center' 
+		alignItems: 'center'
 	},
 	QRCodeFlex: {
 		flex: 0.85,

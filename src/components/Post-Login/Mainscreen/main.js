@@ -44,6 +44,17 @@ export default class Main extends Component {
         this.closeDrawer = this.closeDrawer.bind(this);
         this.openDrawer = this.openDrawer.bind(this);
     }
+
+    componentDidMount() {
+          BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+      }
+      componentWillUnmount() {
+          BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+      }
+      handleBackButton = () =>  {
+       Actions.pop();
+       return true;
+      }
     onRefresh() {
         this.spinValue = new Animated.Value(0);
         Animated.timing(this.spinValue,{
@@ -83,7 +94,7 @@ export default class Main extends Component {
     sendCoins() {
         const self = this;
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
-        Actions.send({ utxo: self.state.utxo, fromAddress: self.state.address, privateKey: self.state.privateKey, balance: self.state.balance });  
+        Actions.send({ utxo: self.state.utxo, fromAddress: self.state.address, privateKey: self.state.privateKey, balance: self.state.balance });
     }
     receiveCoins() {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
@@ -154,7 +165,7 @@ export default class Main extends Component {
             statusBarHeight = 16;
         }
         if(!this.state.loaded) {
-            return(<Loader activity={this.state.activity}/>)     
+            return(<Loader activity={this.state.activity}/>)
         }
         else {
             return (
@@ -227,7 +238,7 @@ export default class Main extends Component {
                                     View More
                                 </Text>
                             </TouchableOpacity>
-                            <View style={styles.line} /> 
+                            <View style={styles.line} />
                         </View>
                 </Animated.View>
             </Drawer>
@@ -246,7 +257,7 @@ const styles = StyleSheet.create({
         backgroundColor: theme.dark
     },
     upperFlex: {
-        position: 'relative', 
+        position: 'relative',
         height: 280,
         width: '100%',
         backgroundColor: theme.dark,
@@ -309,13 +320,13 @@ const styles = StyleSheet.create({
     amountText: {
         color: 'white',
         fontSize: 42,
-        fontWeight: '300', 
+        fontWeight: '300',
         fontFamily: theme.Lato300
     },
     receivingText: {
         color: 'white',
         fontSize: 15,
-        fontWeight: '300', 
+        fontWeight: '300',
         fontFamily: theme.Lato300
     },
     valueFlex: {
@@ -326,11 +337,11 @@ const styles = StyleSheet.create({
     valueText: {
         color: 'white',
         fontSize: 18,
-        fontWeight: '300', 
+        fontWeight: '300',
         fontFamily: theme.Lato300
     },
     refreshContainer: {
-        position: 'absolute', 
+        position: 'absolute',
         bottom: 22,
         right: 24,
     },

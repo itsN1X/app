@@ -12,7 +12,6 @@ import Loader from '../common/loader';
 const crypto = require('react-native-crypto');
 
 var Copy = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/copy.png";
-
 export default class WalletAddress extends React.Component {
 
 	constructor(props) {
@@ -33,6 +32,7 @@ export default class WalletAddress extends React.Component {
 			requestAnimationFrame(()=>this.generateGuardianMnemonic(), 0);
 		})
 		}
+
 
 		generateGuardianMnemonic(){
 			const promise = bip39.generateMnemonic();

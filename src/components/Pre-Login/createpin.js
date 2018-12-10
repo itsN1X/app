@@ -20,6 +20,22 @@ export default class CreatePin extends React.Component {
 		this.getPinLength = this.getPinLength.bind(this);
 	}
 
+	componentDidMount() {
+				BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+		}
+		componentWillUnmount() {
+				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+		}
+		handleBackButton = () =>  {
+
+			if(this.props.mode == "wallet" || this.props.mode == "guardian") {
+				Actions.popTo('username');
+			}
+			else Actions.popTo('firstscreen');
+
+				return true;
+		}
+
 	getPinLength(){
 		let len = this.state.pinCode;
 		let Mode = this.props.mode;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, ActivityIndicator, TouchableOpacity, ScrollView, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Dimensions, TextInput, AsyncStorage, Platform } from 'react-native';
+import { StyleSheet,BackHandler, Text, View, Image, ActivityIndicator, TouchableOpacity, ScrollView, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Dimensions, TextInput, AsyncStorage, Platform } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import Toast from 'react-native-simple-toast';
 import theme from '../../../common/theme';
@@ -8,7 +8,7 @@ import Button from '../../../common/button';
 import Loader from '../../../common/loader';
 
 SettingRecovery = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/photo633.jpg";
-
+var backCount = 0;
 export default class InitiateRecovery extends React.Component {
 	constructor(props) {
 		super(props);
@@ -19,6 +19,23 @@ export default class InitiateRecovery extends React.Component {
 		this.checkRecoveryStatus = this.checkRecoveryStatus.bind(this);
 		this.gotoSetupRecovery = this.gotoSetupRecovery.bind(this);
 	}
+
+	componentDidMount() {
+				BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+		}
+		componentWillUnmount() {
+				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+		}
+		handleBackButton = () =>  {
+			backCount = backCount + 1;
+			if(backCount === 1) {
+				Toast.showWithGravity('Press again to EXIT', Toast.LONG, Toast.BOTTOM)
+			}
+			else {
+				BackHandler.exitApp();
+			}
+				return true;
+		}
 	componentWillMount() {
 		this.checkRecoveryStatus();
 	}
@@ -29,7 +46,7 @@ export default class InitiateRecovery extends React.Component {
 		}
 		else {
 			this.checkRecoveryStatus();
-		}	
+		}
 	}
 	checkRecoveryStatus = async () => {
 		try {
@@ -53,7 +70,7 @@ export default class InitiateRecovery extends React.Component {
 		if(self.state.Status === "0") {
 			Actions.enteremail({mode: mode});
 		}
-		else if(self.state.Status === "1"){		
+		else if(self.state.Status === "1"){
 			Actions.choosefriends({mode: mode});
 		}
 		else {
@@ -64,7 +81,7 @@ export default class InitiateRecovery extends React.Component {
 		var buttonText;
 		var infoText;
 		if(!this.state.loaded) {
-            return(<Loader activity="Checking Recovery Status" />)     
+            return(<Loader activity="Checking Recovery Status" />)
         }
         else {
 			if(this.state.Status === "0") {

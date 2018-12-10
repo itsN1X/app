@@ -13,7 +13,7 @@ var Back = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/lightback.png";
 var User = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/user.png";
 var Next = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/next.png";
 var Copy = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/copy.png";
-
+var back = 0 ;
 export default class Profile extends React.Component {
 	constructor(props) {
 		super(props);
@@ -38,14 +38,21 @@ export default class Profile extends React.Component {
 		this.getAccountInfo();
 	}
 	componentDidMount() {
-        BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
-    }
-    componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
-    }
-    handleBackButton() {
-        return true;
-    }
+				BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+		}
+		componentWillUnmount() {
+				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+		}
+		handleBackButton = () =>  {
+			back = back + 1;
+			if(back === 1) {
+				Toast.showWithGravity('Press again to EXIT', Toast.LONG, Toast.BOTTOM)
+			}
+			else {
+				BackHandler.exitApp();
+			}
+				return true;
+		}
 	goBack() {
 		Actions.pop();
 	}

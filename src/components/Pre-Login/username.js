@@ -22,6 +22,17 @@ export default class Username extends React.Component {
 		this.checkUserName = this.checkUserName.bind(this);
 	}
 
+	componentDidMount() {
+				BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+		}
+		componentWillUnmount() {
+				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+		}
+		handleBackButton = () =>  {
+			Actions.popTo('firstscreen');
+				return true;
+		}
+
 
 
 	checkUserName(){

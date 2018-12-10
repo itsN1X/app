@@ -7,7 +7,7 @@ import AppStatusBar from '../../common/appstatusbar';
 import theme from '../../common/theme';
 import Button from '../../common/button';
 import Picker from '../../common/coinpicker';
-
+var backCount = 0 ;
 var Back = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/lightback.png";
 var ExchangeIcon = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/exchangedark.png";
 
@@ -46,13 +46,20 @@ export default class Exchange extends React.Component {
 		this.disablePicker = this.disablePicker.bind(this);
 		this.changeCoin = this.changeCoin.bind(this);
 	}
-	componentDidMount() {
+  componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
     }
     componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
     }
     handleBackButton() {
+    	backCount = backCount + 1;
+    	if(backCount === 1) {
+    		Toast.showWithGravity('Press again to EXIT', Toast.LONG, Toast.BOTTOM)
+    	}
+    	else {
+    		BackHandler.exitApp();
+    	}
         return true;
     }
 	componentWillMount() {
@@ -120,7 +127,7 @@ export default class Exchange extends React.Component {
 			buttonDisabled=false;
 			buttonOpacity=1;
 		}
-		return ( 
+		return (
 			<Animated.View style={styles.container}>
 				<StatusBar bColor={theme.dark} />
 				<AppStatusBar bColor={theme.dark} center={true} text="Exchange" textColor={theme.white} />
@@ -318,7 +325,7 @@ const styles = StyleSheet.create({
 	},
 	instantRateText: {
 		fontFamily: theme.Lato300,
-		fontWeight: '300', 
+		fontWeight: '300',
 		fontSize: 16,
 		color: theme.black,
 	},
@@ -335,7 +342,7 @@ const styles = StyleSheet.create({
 	},
 	spendableHeadingText: {
 		fontFamily: theme.Lato,
-		fontWeight: '300', 
+		fontWeight: '300',
 		fontSize: 14,
 		color: theme.dark,
 	},
@@ -346,7 +353,7 @@ const styles = StyleSheet.create({
 	},
 	spendableText: {
 		fontFamily: theme.Lato300,
-		fontWeight: '300', 
+		fontWeight: '300',
 		fontSize: 28,
 		color: theme.dark,
 	},

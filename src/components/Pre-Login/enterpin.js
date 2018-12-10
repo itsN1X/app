@@ -25,6 +25,17 @@ export default class EnterPin extends React.Component {
 		this.getPinLength = this.getPinLength.bind(this);
 	}
 
+	// componentDidMount() {
+	// 			BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+	// 	}
+	// 	componentWillUnmount() {
+	// 			BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+	// 	}
+	// 	handleBackButton = () =>  {
+	// 	 Actions.pop();
+	// 	 return true;
+	// 	}
+
 	getPinLength(){
 		let len = this.state.pinCode;
 		if (len.length == 4) {

@@ -201,10 +201,10 @@ const RouterComponent = () => {
 					<Scene key="choosefriends" component={ChooseFriends} panHandlers={null} hideNavBar />
 					<Scene key="dummy" component={Dummy} hideNavBar panHandlers={null} />
 					<Scene key="keychain" component={KeychainExample} hideNavBar panHandlers={null} />
-					<Scene key="recoveryrequests" component={RecoveryRequests} hideNavBar panHandlers={null} />
 					<Scene key="showmnemonic" component={ShowMnemonic} panHandlers={null} hideNavBar />
 				</Scene>
 				<Scene key="postlogin" panHandlers={null} hideNavBar>
+				<Scene key="recoveryrequests" component={RecoveryRequests} hideNavBar panHandlers={null} />
 					<Scene key="initiatewallets" component={InitiateWallets} panHandlers={null} hideNavBar />
 					<Scene key="enterpin" component={EnterPin} hideNavBar panHandlers={null}/>
 					<Scene key="newaddress" component={NewAddress} hideNavBar panHandlers={null} />

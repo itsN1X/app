@@ -4,7 +4,7 @@ import { Actions } from 'react-native-router-flux';
 import { BarIndicator } from 'react-native-indicators';
 import Toast from 'react-native-simple-toast';
 import axios from 'axios';
-import RecoveryRequestItem from './recoveryrequestitem'; 
+import RecoveryRequestItem from './recoveryrequestitem';
 import theme from '../../../common/theme';
 import StatusBar from '../../../common/statusbar';
 import AppStatusBar from '../../../common/appstatusbar';
@@ -12,7 +12,7 @@ import Button from '../../../common/button';
 
 var Copy = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/copy.png";
 var FloatingRefresh = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/float_refresh.png";
-
+var backCount = 0;
 export default class RecoveryRequests extends React.Component {
 	constructor(props) {
 		super(props);
@@ -45,17 +45,26 @@ export default class RecoveryRequests extends React.Component {
 		}
 	}
 	componentDidMount() {
-        BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
-    }
-    componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
-    }
-    handleBackButton() {
-        return true;
-    }
+				BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+		}
+		componentWillUnmount() {
+				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+		}
+		handleBackButton = () =>  {
+			backCount = backCount + 1;
+			if(backCount === 1) {
+				Toast.showWithGravity('Press again to EXIT', Toast.LONG, Toast.BOTTOM)
+			}
+			else {
+				BackHandler.exitApp();
+			}
+				return true;
+		}
+
+
     writeToClipboard = async (address) => {
       await Clipboard.setString(address);
-      Toast.showWithGravity('Copied to Clipboard!', Toast.LONG, Toast.CENTER)
+      Toast.showWithGravity('Copi to Clipboard!', Toast.LONG, Toast.CENTER)
     };
 	getRecoveryDetails = async (publicKey) => {
 		var data = {};
@@ -71,7 +80,6 @@ export default class RecoveryRequests extends React.Component {
             .then(function (response) {
                 console.log(response)
                 if(response.data.flag === 143) {
-            		Toast.showWithGravity(response.data.log, Toast.LONG, Toast.CENTER);
             		if(response.data.result[0].trust_status == 1 && response.data.result[1].trust_status == 1 && response.data.result[2].trust_status == 1) {
 			        	self.setState({loaded: true, requestList: response.data.result, ready: true})
 			        }
@@ -99,8 +107,8 @@ export default class RecoveryRequests extends React.Component {
 	}
 	render() {
 		if(!this.state.loaded) {
-            return(<View style={{flex:1, backgroundColor: theme.white}}><BarIndicator color={theme.dark} size={50} count={5} /></View>)     
-        }   
+            return(<View style={{flex:1, backgroundColor: theme.white}}><BarIndicator color={theme.dark} size={50} count={5} /></View>)
+        }
         else {
 			return (
 				<View style={styles.container}>
@@ -114,7 +122,7 @@ export default class RecoveryRequests extends React.Component {
 						</View>
 						{this.state.ready ? <View style={{height: 100, width: '100%'}}></View> : null}
 					</ScrollView>
-					{this.state.ready ? 
+					{this.state.ready ?
 						(<View style={styles.recoverButtonContainer}>
 							<Button bColor={theme.dark} onPress={this.recoverMnemonic}>
 								<Text style={styles.nextText}>Recover Mnemonic</Text>
@@ -146,7 +154,7 @@ const styles = StyleSheet.create({
 	refresh: {
 		position: 'absolute',
 		bottom: 20,
-		right: 15, 
+		right: 15,
 	},
 	refreshIcon: {
 		width: 80,

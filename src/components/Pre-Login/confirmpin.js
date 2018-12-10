@@ -23,6 +23,17 @@ export default class ConfirmPin extends React.Component {
 		this.encryptDataOnPin = this.encryptDataOnPin.bind(this);
 	}
 
+	componentDidMount() {
+				BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+		}
+		componentWillUnmount() {
+				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+		}
+		handleBackButton = () =>  {
+		 Actions.popTo('createpin');
+		 return true;
+		}
+
 	confirmPin() {
 		let pin = this.props.pinCode;
     if(pin == this.state.confirmPin){

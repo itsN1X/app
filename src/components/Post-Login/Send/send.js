@@ -43,7 +43,7 @@ export default class Send extends React.Component {
 	componentWillReceiveProps(nextProps) {
 		requestAnimationFrame(() => {
 			this.setState({ toAddress: nextProps.address });
-			Keyboard.dismiss(); 
+			Keyboard.dismiss();
 		});
 	}
 	componentWillMount() {
@@ -51,11 +51,23 @@ export default class Send extends React.Component {
             requestAnimationFrame(()=>this.calculateFees(), 0);
         });
 	}
+
+
+	componentDidMount() {
+				BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+		}
+		componentWillUnmount() {
+				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+		}
+		handleBackButton = () =>  {
+		 Actions.pop();
+		 return true;
+		}
 	calculateFees() {
-		var utxo = this.props.utxo; 
+		var utxo = this.props.utxo;
 		var from = this.props.fromAddress;
 		var txn = new bitcoin.Transaction();
-		txn.from(utxo).to("mu76UABwqefXrV93cFbsEvH9eg11QYooau", 1000)       // Feed information about what unspent outputs one can use         
+		txn.from(utxo).to("mu76UABwqefXrV93cFbsEvH9eg11QYooau", 1000)       // Feed information about what unspent outputs one can use
 		.change(from).sign(this.props.privateKey);		 					// Add an output with the given amount of satoshis
 		var fees = txn.getFee();
 		var feesBTC = fees / 100000000;
@@ -125,7 +137,7 @@ export default class Send extends React.Component {
 		console.log("fees :",fees)
 		var transaction = new bitcoin.Transaction();
 		transaction.from(utxo).fee(fees).to(to, amount).change(from).sign(privateKey);                              // Feed information about what unspent outputs one can use
-		            // Add an output with the given amount of satoshis  
+		            // Add an output with the given amount of satoshis
 		transaction = transaction.toString()
 		console.log(transaction);
 		hash = {};
@@ -177,7 +189,7 @@ export default class Send extends React.Component {
 			spendableColor = '#FF0000';
 		}
 		if(!this.state.loaded) {
-            return(<Loader activity={this.state.activity} />)     
+            return(<Loader activity={this.state.activity} />)
         }
         else {
 			return (
@@ -249,7 +261,7 @@ const styles = StyleSheet.create({
 	    alignItems: 'center'
 	},
 	upperFlex: {
-		position: 'relative', 
+		position: 'relative',
 		height: 200,
 		width: '100%',
 		alignItems: 'center',
@@ -286,7 +298,7 @@ const styles = StyleSheet.create({
 	wordInput: {
 		width: '100%',
 		height: 55,
-		
+
 		fontFamily: theme.Lato,
 		fontWeight: '300',
 		fontSize: 15,
@@ -297,7 +309,7 @@ const styles = StyleSheet.create({
 	scanQRButton: {
 		position: 'absolute',
 		right: 5,
-		paddingVertical: 10, 
+		paddingVertical: 10,
 	},
 	scanQRIcon: {
 		height: 27,
@@ -305,7 +317,7 @@ const styles = StyleSheet.create({
 	},
 	spendableContainer: {
 		position: 'absolute',
-		bottom: -10, 
+		bottom: -10,
 		height: 80,
 		width: '100%',
 		alignItems: 'center',

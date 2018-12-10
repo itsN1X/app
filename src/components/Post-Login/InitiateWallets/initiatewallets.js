@@ -49,7 +49,6 @@ export default class InitiateWallets extends React.Component {
 	}
 	componentWillMount = async () => {
 		this.setState({activity: "Initiating Wallets"});
-		BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
 		this.getUserData();
 		try {
 			var self = this;
@@ -67,12 +66,20 @@ export default class InitiateWallets extends React.Component {
 			alert(error);
 		}
 	}
-    componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
-    }
-    handleBackButton() {
-        return true;
-    }
+	componentDidMount() {
+				BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+		}
+		componentWillUnmount() {
+				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+		}
+		handleBackButton = () =>  {
+			if(this.props.updateGuardian == 'yes'){
+				Actions.pop();
+				Actions.guardiantabs();
+				Actions.getstarted();
+			}
+		 return true;
+		}
 	activateWallets() {
 		this.setState({loaded: false, activity: "Generating Crypto Wallets"}, () => {
 			requestAnimationFrame(() => this.createBTCKeys(), 0);

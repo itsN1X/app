@@ -1,15 +1,33 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, ActivityIndicator, TouchableOpacity, ScrollView, Dimensions, Platform, BackHandler, AsyncStorage } from 'react-native';
 import { Actions } from 'react-native-router-flux';
+import Toast from 'react-native-simple-toast';
 import axios from 'axios';
 import StatusBar from '../common/statusbar';
 import AppStatusBar from '../common/appstatusbar';
 import theme from '../common/theme';
 import Loader from '../common/loader';
-
+var backCount = 0 ;
 var Copy = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/copy.png";
-
 export default class GuardianProfile extends React.Component {
+
+		componentDidMount() {
+			BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+			}
+			componentWillUnmount() {
+					BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+			}
+			handleBackButton() {
+				backCount = backCount + 1;
+				if(backCount === 1) {
+					Toast.showWithGravity('Press again to EXIT', Toast.LONG, Toast.BOTTOM)
+				}
+				else {
+					backCount = 0;
+					BackHandler.exitApp();
+				}
+					return true;
+			}
 	render() {
 		return(
 			<View style={styles.container}>

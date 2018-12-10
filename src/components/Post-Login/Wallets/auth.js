@@ -31,13 +31,21 @@ export default class Auth extends React.Component {
       try {
             const value = await AsyncStorage.getItem('@AccountStatus');
 						const changePin = await AsyncStorage.getItem('@ChangePin');
+						const recovery = await AsyncStorage.getItem('@RecoveryInitiated');
 
 						if(changePin == "true") {
 							Actions.createpin({mode : "changePin"});
 						}
 
 						else {
-							if(value == 'LoggedIn'){
+
+						if(recovery === "true") {
+							Actions.postlogin();
+							Actions.enterpin();
+
+						}
+
+						else if(value == 'LoggedIn'){
 
 									Actions.postlogin();
 									Actions.enterpin();
