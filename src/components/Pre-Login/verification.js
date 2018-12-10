@@ -65,10 +65,12 @@ export default class Verification extends React.Component {
 		account.publicKey = publicKey;
 		account.privateKey = privateKey;
 		account.privateKeyHash = privateKeyHash;
+		account.username = this.props.username;
 		account = JSON.stringify(account);
 		let details = {};
 		details.private_key_hash = privateKeyHash;
 		details.public_key = publicKey;
+		details.user_name = this.props.username;
 		this.storeData(account);
 		this.sendUserDetails(details);
 	}

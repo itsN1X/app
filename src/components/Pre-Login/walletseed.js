@@ -14,7 +14,8 @@ export default class WalletSeed extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			mnemonic: ''
+			mnemonic: '',
+			username: ""
 		};
 		this.seedVerification = this.seedVerification.bind(this);
 	}
@@ -24,7 +25,7 @@ export default class WalletSeed extends React.Component {
 		mnemonic = mnemonic.split(" ",12);
 	}
 	seedVerification() {
-		Actions.verification({ mnemonic: this.state.mnemonic, mode: this.props.mode });
+		Actions.verification({ mnemonic: this.state.mnemonic, mode: this.props.mode , username: this.props.username });
 	}
 	writeToClipboard = async () => {
 	  await Clipboard.setString(this.state.mnemonic);

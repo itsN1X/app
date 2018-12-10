@@ -13,7 +13,8 @@ export default class CreatePin extends React.Component {
 		super(props);
 		this.state = {
 			pinCode: "",
-			mnemonic: ""
+			mnemonic: "",
+			username: ""
 		};
 		this.generateKeyPair = this.generateKeyPair.bind(this);
 		this.getPinLength = this.getPinLength.bind(this);
@@ -23,7 +24,7 @@ export default class CreatePin extends React.Component {
 		let len = this.state.pinCode;
 		let Mode = this.props.mode;
 		if (len.length == 4) {
-			Actions.confirmpin({pinCode : len , mode : Mode});
+			Actions.confirmpin({pinCode : len , mode : Mode, username : this.props.username});
 		}
 	}
 

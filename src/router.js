@@ -5,6 +5,7 @@ import theme from './components/common/theme';
 import FirstScreen from './components/Pre-Login/firstscreen';
 import WalletSeed from './components/Pre-Login/walletseed';
 import CreatePin from './components/Pre-Login/createpin';
+import Username from './components/Pre-Login/username';
 import ConfirmPin from './components/Pre-Login/confirmpin';
 import EnterPin from './components/Pre-Login/enterpin';
 import Dummy from './components/Pre-Login/dummy';
@@ -189,6 +190,7 @@ const RouterComponent = () => {
 					<Scene key="auth" component={Auth} hideNavBar panHandlers={null} initial/>
 					<Scene key="walletaddress" component={WalletAddress}  hideNavBar panHandlers={null} />
 					<Scene key="firstscreen" component={FirstScreen} hideNavBar panHandlers={null} />
+					<Scene key="username" component={Username} hideNavBar panHandlers={null} />
 					<Scene key="createpin" component={CreatePin} hideNavBar panHandlers={null} />
 					<Scene key="confirmpin" component={ConfirmPin} hideNavBar panHandlers={null} />
 					<Scene key="walletseed" component={WalletSeed} hideNavBar panHandlers={null} />

@@ -23,7 +23,8 @@ export default class Profile extends React.Component {
 			loaded: false,
 			publicKey: "",
 			privateKey: "",
-			mode : ""
+			mode : "",
+			username: ""
 		}
 		this.getAccountInfo = this.getAccountInfo.bind(this);
 		this.logout = this.logout.bind(this);
@@ -103,7 +104,7 @@ export default class Profile extends React.Component {
 		try{
 			const value = await AsyncStorage.getItem('@UserData');
 			var account = JSON.parse(value);
-			this.setState({publicKey: account.publicKey, privateKey: account.privateKey, loaded: true});
+			this.setState({username:account.username,publicKey: account.publicKey, privateKey: account.privateKey, loaded: true});
 		}
 		catch(error) {
 			alert(error);
@@ -134,15 +135,15 @@ export default class Profile extends React.Component {
 							<View style={styles.addressFlex}>
 								<View style={styles.addressContainer}>
 									<View style={styles.addressHeadingContainer}>
-										<Text style={styles.addressHeadingText}>Public Address ( Wallet )</Text>
+										<Text style={styles.addressHeadingText}>Coinsafe handle</Text>
 										<View style={styles.copyIconContainer}>
-											<TouchableOpacity onPress={() => this.copyToClipboard(this.state.publicKey)}>
+											<TouchableOpacity onPress={() => this.copyToClipboard(this.state.username)}>
 												<Image style={styles.copyIcon} source={{uri: Copy}} />
 											</TouchableOpacity>
 										</View>
 									</View>
 									<View style={styles.personAddressContainer}>
-										<Text style={styles.addressText}>{this.state.publicKey}</Text>
+										<Text style={styles.addressText}>{this.state.username}</Text>
 									</View>
 								</View>
 							</View>
@@ -288,7 +289,7 @@ const styles = StyleSheet.create({
 	addressText: {
 		fontFamily: theme.Lato,
 		fontWeight: '300',
-		fontSize: 14,
+		fontSize: 15,
 		color: theme.black
 	},
 	otherTabFlex: {

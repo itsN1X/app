@@ -37,7 +37,8 @@ export default class ChooseFriends extends React.Component {
 			friends: [],
 			length: 0,
 			shares: "",
-			friendsAdded: false
+			friendsAdded: false,
+			friendsPublickey: ""
 		};
 		this.onAddPress = this.onAddPress.bind(this);
 		this.pushFriendData = this.pushFriendData.bind(this);
@@ -64,8 +65,6 @@ export default class ChooseFriends extends React.Component {
 		const publicKeyData = virgilCrypto.exportPublicKey(keyPair.publicKey);
 		const privateKey = privateKeyData.toString('base64');
 		const publicKey = publicKeyData.toString('base64');
-		console.log("publicKey : ", publicKey);
-		console.log("privateKey : ", privateKey);
 		this.setState({email: this.props.email, old_public_key: this.props.old_public_key, wallet_id: this.props.wallet_id, loaded: true, new_public_key: publicKey, new_private_key: privateKey});
 		this.savePublicKey(this.props.old_public_key, privateKey);
 	}
@@ -98,7 +97,8 @@ export default class ChooseFriends extends React.Component {
 		var friends = this.state.friends;
 		var length = friends.length;
 		var data = {};
-		data.address = this.state.address;
+		data.address = this.state.friendsPublickey;
+		data.friendsHandle = this.state.friendsHandle;
 		data.id = length + 1;
 		friends.push(data);
 		if(data.id === 3) {
@@ -130,8 +130,9 @@ export default class ChooseFriends extends React.Component {
 			self.setState({friendsAdded: true});
 		}
 		var data = {};
-		data.public_key = this.state.address;
-		try {        
+		data.user_name = this.state.address;
+		data.status = "1";
+		try {
             axios({
                 method: 'post',
                 url: 'http://206.189.137.43:4013/add_friends',
@@ -141,6 +142,7 @@ export default class ChooseFriends extends React.Component {
             	console.log(response);
             	if(response.data.flag === 143) {
             		Toast.showWithGravity(response.data.log, Toast.LONG, Toast.TOP, Toast.CENTER);
+								self.setState({friendsPublickey : response.data.result[0].public_key, friendsHandle : response.data.result[0].user_name});
             		self.pushFriendData();
             	}
             	else {
@@ -202,7 +204,7 @@ export default class ChooseFriends extends React.Component {
 		var trustData = {};
 		trustData.trust_data = trust_data;
 		const self = this;
-		try {        
+		try {
             axios({
                 method: 'post',
                 url: 'http://159.65.153.3:7001/recovery_key/user_trust_data',
@@ -252,7 +254,7 @@ export default class ChooseFriends extends React.Component {
 		userData.newPublicKey = this.state.new_public_key;
 		userData.trust_data = trustData;
 		console.log(userData);
-		try {        
+		try {
             axios({
                 method: 'post',
                 url: 'http://159.65.153.3:7001/recovery_key/user_recovery_trust_data',
@@ -307,7 +309,7 @@ export default class ChooseFriends extends React.Component {
 			sectionHeight = 400;
 		}
 		if(!this.state.loaded) {
-            return(<Loader activity={this.state.activity}/>)     
+            return(<Loader activity={this.state.activity}/>)
         }
         else {
 			return (
@@ -327,7 +329,7 @@ export default class ChooseFriends extends React.Component {
 								</View>
 								<View style={styles.emailContainer}>
 									<View style={styles.enterEmailHeading}>
-										<Text style={styles.enterEmailText}>Enter Friend's Public Address</Text>
+										<Text style={styles.enterEmailText}>Enter Friends Public Address</Text>
 									</View>
 									<View style={styles.emailInput}>
 										<TextInput
@@ -353,7 +355,7 @@ export default class ChooseFriends extends React.Component {
 										<Text style={styles.friendsAddedHeadingText}>Friends Added for Recovery</Text>
 									</View>
 									{this.state.friends.map((value, i) => {
-				                         return(<FriendItem key={value.id} address={value.address} id={value.id} onCopy={this.writeToClipboard} />);
+				                         return(<FriendItem key={value.id} address={value.friendsHandle} id={value.id} onCopy={this.writeToClipboard} />);
 									})}
 									<View style={styles.saveNoteContainer}>
 										<Text style={styles.saveNoteText}>Please save all Public keys, you will need them while recovering</Text>
@@ -382,7 +384,7 @@ const styles = StyleSheet.create({
 		height: 80,
 		width: '90%',
 		justifyContent: 'flex-end',
-		flexDirection: 'row' 
+		flexDirection: 'row'
 	},
 	friendHeadingContainer: {
 		flex: 0.5,

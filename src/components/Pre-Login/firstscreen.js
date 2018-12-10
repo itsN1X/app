@@ -33,13 +33,13 @@ export default class FirstScreen extends React.Component {
         return true;
     }
 	gotoCreatePin() {
-		Actions.createpin({mode: "wallet"});
+		Actions.username({mode: "wallet"});
 	}
 	gotoRestore() {
 		Actions.createpin({mode : "restore"});
 	}
 	gotoGuardianView() {
-		Actions.createpin({mode: "guardian"});
+		Actions.username({mode: "guardian"});
 	}
 	render() {
 		if(!this.state.loaded) {
