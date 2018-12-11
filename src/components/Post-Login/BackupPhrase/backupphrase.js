@@ -64,7 +64,7 @@ export default class BackupPhrase extends React.Component {
 			return (
 				<View style={styles.container}>
 					<StatusBar bColor={theme.white} />
-
+					<AppStatusBar left={true} Back={Back} leftFunction={this.goBack} bColor={theme.dark} />
 					<View style={styles.mainFlex}>
 						<View style={styles.textFlex}>
 							<View style={styles.mainTextContainer}>
@@ -78,9 +78,6 @@ export default class BackupPhrase extends React.Component {
 				                         return(<SeedItem key={i} index={i + 1} item={value}/>);
 				                     })}
 								</View>
-								<TouchableOpacity style={styles.copyButton} onPress={this.writeToClipboard}>
-									<Image style={styles.copyIcon} source={{uri: Copy}} />
-								</TouchableOpacity>
 							</View>
 						</View>
 						<View style={styles.lowerTextFlex}>
@@ -89,8 +86,8 @@ export default class BackupPhrase extends React.Component {
 							</View>
 						</View>
 						<View style={styles.buttonFlex}>
-							<Button bColor = {theme.dark} onPress={this.goBack}>
-								<Text>Done</Text>
+							<Button bColor = {theme.dark} onPress={this.writeToClipboard}>
+								<Text>Copy Mnemonic</Text>
 							</Button>
 						</View>
 					</View>

@@ -42,6 +42,7 @@ import FullTransactionHistory from './components/Post-Login/Mainscreen/fulltrans
 const wallets = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/wallet_tab.png";
 const settings = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/settings_tab.png";
 const recovery = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/recovery_tab.png";
+const recoveryInit = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/Recovery-new.png";
 const exchange = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/exchange_tab.png";
 const walletsSelected = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/wallet-selected_tab.png";
 const settingsSelected = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/setting-selected_tab.png";
@@ -59,7 +60,7 @@ const WalletsIcon = ({ focused }) => {
 		Icon = walletsSelected;
 	}
 	else {
-		Opacity = 0.4;
+		Opacity = 1;
 		Icon = wallets;
 	}
 	return (
@@ -78,7 +79,7 @@ const ExchangeIcon = ({ focused }) => {
 		Icon = exchangeSelected;
 	}
 	else {
-		Opacity = 0.4;
+		Opacity = 1;
 		Icon = exchange;
 	}
 	return (
@@ -97,8 +98,8 @@ const RecoveryIcon = ({ focused }) => {
 		Icon = recoverySelected;
 	}
 	else {
-		Opacity = 0.4;
-		Icon = recovery;
+		Opacity = 1;
+		Icon = recoveryInit;
 	}
 	return (
 		<View>
@@ -116,7 +117,7 @@ const SettingsIcon = ({ focused }) => {
 		Icon = settingsSelected;
 	}
 	else {
-		Opacity = 0.4;
+		Opacity = 1;
 		Icon = settings;
 	}
 	return (
@@ -135,7 +136,7 @@ const HomeIcon = ({ focused }) => {
 
 	}
 	else {
-		Opacity = 0.4;
+		Opacity = 1;
 	}
 	return (
 		<View>
@@ -153,7 +154,7 @@ const RequestsIcon = ({ focused }) => {
 
 	}
 	else {
-		Opacity = 0.4;
+		Opacity = 1;
 	}
 	return (
 		<View>
@@ -171,7 +172,7 @@ const GetStartedIcon = ({ focused }) => {
 
 	}
 	else {
-		Opacity = 0.4;
+		Opacity = 1;
 	}
 	return (
 		<View>

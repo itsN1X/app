@@ -60,14 +60,16 @@ const styles = StyleSheet.create({
         padding: 15,
         paddingBottom: 0,
         paddingTop: 20,
-        backgroundColor: theme.grey
+        backgroundColor: 'white'
     },
     heading : {
         fontSize: 18,
         color: theme.black,
         fontFamily: theme.font,
         marginBottom: 15,
-        fontWeight: '400'
+        fontWeight: '400',
+        alignItems:'center',
+        justifyContent:'center'
     },
     transactionHeading : {
         flexDirection: 'row',

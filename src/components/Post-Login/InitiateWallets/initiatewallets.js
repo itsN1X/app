@@ -202,16 +202,10 @@ export default class InitiateWallets extends React.Component {
 			<View style={styles.container}>
 				<StatusBar />
 				<ScrollView style={{flex: 1, width: '100%'}} showsHorizontalScrollIndicator={false}>
-					<View style={{alignItems: 'center'}}>
+					<View style={{alignItems: 'center',justifyContent:'flex-end', flex:1}}>
 						<View style={styles.mainContainer}>
 							<View style={styles.mainHeadingContainer}>
 								<Text style={styles.mainHeadingText}>Initiate Wallets</Text>
-								<TouchableOpacity style={styles.pickerContainer} onPress={this.enablePicker}>
-									<Text style={styles.pickerHeadingText}>{this.state.currency}</Text>
-									<View style={styles.iconContainer}>
-										<Image style={styles.pickerIcon} source={Down} />
-									</View>
-								</TouchableOpacity>
 							</View>
 							<View style={styles.subHeadingContainer}>
 								<Text style={styles.subHeadingText}>Please Initiate atleast one wallet to get started.</Text>
@@ -219,15 +213,16 @@ export default class InitiateWallets extends React.Component {
 							{this.state.coinData.map((value, i) => {
 		                         return(<WalletItem key={value.asset_id} symbol={value.asset_symbol} value={value.asset_value} light={value.asset_icon_light} dark={value.asset_icon_dark} name={value.asset_name} currency={this.state.currency} selected={true} />);
 		                    })}
-							<View style={styles.buttonContainer}>
-								<TouchableOpacity style={[styles.buttonStyle, {height: buttonHeight}]} onPress={this.activateWallets}>
-									<Text style={styles.getStartedText}>Get Started</Text>
-								</TouchableOpacity>
-							</View>
+
 						</View>
 						{this.state.pickerEnabled ? <CurrencyPicker status={this.state.pickerEnabled} changeCurrency={this.changeCurrency} /> : null}
 					</View>
 				</ScrollView>
+				<View style={styles.buttonContainer}>
+					<TouchableOpacity style={[styles.buttonStyle, {height: buttonHeight}]} onPress={this.activateWallets}>
+						<Text style={styles.getStartedText}>Get Started</Text>
+					</TouchableOpacity>
+				</View>
 			</View>
 			);
 		}
@@ -242,7 +237,8 @@ const styles = StyleSheet.create({
 	},
 	mainContainer: {
 		flex: 1,
-		width: '85%'
+		width: '85%',
+		paddingBottom:150
 	},
 	mainHeadingContainer: {
 		position: 'relative',
@@ -255,29 +251,6 @@ const styles = StyleSheet.create({
 		fontWeight: '300',
 		fontSize: 40
 	},
-	pickerContainer: {
-		position: 'absolute',
-		top: 28,
-		right: 0,
-		flexDirection: 'row',
-		padding: 5,
-		paddingTop: 0,
-		justifyContent: 'center'
-	},
-	pickerHeadingText: {
-		fontFamily: theme.font,
-		color: theme.black,
-		fontSize: 16
-	},
-	iconContainer: {
-		height: '100%',
-		justifyContent: 'center'
-	},
-	pickerIcon: {
-		height: 15,
-		width: 15,
-		marginLeft: 3
-	},
 	subHeadingContainer: {
 		height: 80,
 		justifyContent: 'center'
@@ -289,19 +262,22 @@ const styles = StyleSheet.create({
 		fontSize: 16
 	},
 	buttonContainer: {
+		position:'absolute',
+		bottom:0,
 		height: 100,
-		width: '100%',
+		width: '85%',
 		alignItems: 'center',
-		justifyContent: 'center'
+		justifyContent: 'center',
+		backgroundColor:'white'
 	},
 	buttonStyle: {
-        width: '100%',
+		width: '100%',
 		backgroundColor: theme.dark,
 		justifyContent: 'center',
-	  	alignItems: 'center',
-        borderWidth: 2,
-        borderColor: theme.dark,
-	  	borderRadius: 100
+		alignItems: 'center',
+		borderWidth: 2,
+		borderColor: theme.dark,
+		borderRadius: 10
     },
 	getStartedText: {
 		fontFamily: theme.font,

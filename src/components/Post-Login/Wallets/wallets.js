@@ -270,12 +270,12 @@ const styles = StyleSheet.create({
 		backgroundColor: theme.dark,
 		alignItems: 'center',
 		justifyContent: 'flex-start',
-		borderBottomRightRadius: 25,
-		borderBottomLeftRadius: 25,
+		borderBottomRightRadius: 15,
+		borderBottomLeftRadius: 15,
 	},
 	totalBalanceText: {
 		fontFamily: theme.font500,
-		fontSize: 22,
+		fontSize: 24,
 		color: theme.white
 	}
 });

@@ -22,18 +22,18 @@ const Button = (props) => {
 
 const styles = {
     buttonStyle: {
-        width: '80%',
-		backgroundColor: theme.dark,
-		justifyContent: 'center',
-	  	alignItems: 'center',
-        borderWidth: 2,
-        borderColor: theme.dark,
-	  	borderRadius: 10
+      width: '80%',
+      backgroundColor: theme.dark,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderWidth: 2,
+      borderColor: theme.dark,
+      borderRadius: 10
     },
     text: {
-        fontFamily: theme.font,
-		fontSize: 18,
-		color: theme.white
+      fontFamily: theme.font,
+  		fontSize: 18,
+  		color: theme.white
     }
 };
 

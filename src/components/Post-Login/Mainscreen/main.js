@@ -196,9 +196,6 @@ export default class Main extends Component {
                                                 <Image style={styles.backIcon} source={{uri: Back}} />
                                             </TouchableOpacity>
                                         </View>
-                                        <View style={{flex: 0.4}} />
-                                        <View style={styles.exchangeIconFlex}>
-                                        </View>
                                     </View>
                                     <View style={styles.iconNameFlex}>
                                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -212,7 +209,7 @@ export default class Main extends Component {
                                         <Text style={styles.amountText}>{this.state.balance}</Text>
                                     </View>
                                     <View style={styles.valueFlex}>
-                                        <Text style={styles.valueText}>Est. Value    INR {this.state.currencyValue}</Text>
+                                        <Text style={styles.valueText}>INR {this.state.currencyValue}</Text>
                                     </View>
                                 </View>
                                 <TouchableOpacity style={styles.refreshContainer} onPress={this.onRefresh}>
@@ -221,12 +218,12 @@ export default class Main extends Component {
                             </ImageBackground>
                             <View style={styles.sendRecieve}>
                                 <TouchableOpacity onPress={this.receiveCoins} style={styles.recieveButtonContainer}>
-                                    <ElevatedView elevation={5} style={styles.recieveButton}>
+                                    <ElevatedView elevation={0} style={styles.recieveButton}>
                                         <Text style={styles.recieveText}>RECEIVE</Text>
                                     </ElevatedView>
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={this.sendCoins} style={styles.sendButtonContainer}>
-                                    <ElevatedView elevation={5} style={styles.sendButton}>
+                                    <ElevatedView elevation={0} style={styles.sendButton}>
                                         <Text style={styles.sendText}>SEND</Text>
                                     </ElevatedView>
                                 </TouchableOpacity>
@@ -258,7 +255,7 @@ const styles = StyleSheet.create({
     },
     upperFlex: {
         position: 'relative',
-        height: 280,
+        height: 250,
         width: '100%',
         backgroundColor: theme.dark,
         alignItems: 'center'
@@ -268,11 +265,12 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     contentContainer: {
+        position:'relative',
         height: '100%',
         width: '90%',
     },
     headerIconsFlex: {
-        flex: 0.25,
+        height:70,
         width: '100%',
         flexDirection: 'row',
         alignItems: 'center'
@@ -288,18 +286,18 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     backIcon: {
-        height: 30,
-        width: 30
+        height: 25,
+        width: 25
     },
     exchangeIcon: {
         height: 40,
         width: 40
     },
     iconNameFlex: {
-        flex: 0.22,
         width: '100%',
         alignItems: 'flex-start',
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-end',
+        marginVertical:15
     },
     iconNameText: {
         color: 'white',
@@ -312,16 +310,16 @@ const styles = StyleSheet.create({
         width: 45
     },
     amountFlex: {
-        flex: 0.28,
+        marginBottom:10,
         width: '100%',
         alignItems: 'center',
         flexDirection: 'row'
     },
     amountText: {
         color: 'white',
-        fontSize: 42,
+        fontSize: 52,
         fontWeight: '300',
-        fontFamily: theme.Lato300
+        fontFamily: theme.font300
     },
     receivingText: {
         color: 'white',
@@ -330,13 +328,13 @@ const styles = StyleSheet.create({
         fontFamily: theme.Lato300
     },
     valueFlex: {
-        flex: 0.25,
         width: '100%',
-        justifyContent: 'flex-start'
+        justifyContent: 'flex-start',
+        marginBottom:10
     },
     valueText: {
         color: 'white',
-        fontSize: 18,
+        fontSize: 16,
         fontWeight: '300',
         fontFamily: theme.Lato300
     },
@@ -351,8 +349,8 @@ const styles = StyleSheet.create({
     },
     sendRecieve : {
         flexDirection: 'row',
-        paddingVertical: 18,
-        backgroundColor: 'white'
+        paddingTop: 10,
+        backgroundColor:'white'
     },
     sendButtonContainer : {
         flex: 0.5,
@@ -372,9 +370,9 @@ const styles = StyleSheet.create({
         width: '95%',
         marginVertical: 8,
         paddingVertical: 15,
-        backgroundColor: 'white',
+        backgroundColor: theme.dark,
         alignItems: 'center',
-        borderRadius: 35,
+        borderRadius: 10,
     },
     sendButton : {
         width: '95%',
@@ -382,10 +380,10 @@ const styles = StyleSheet.create({
         backgroundColor: theme.dark,
         paddingVertical: 15,
         alignItems: 'center',
-        borderRadius: 35,
+        borderRadius: 10,
     },
     recieveText : {
-        color: theme.dark,
+        color: 'white',
         fontSize: 16,
         alignItems: 'center',
         justifyContent: 'center',
@@ -400,9 +398,11 @@ const styles = StyleSheet.create({
     },
     viewMoreContainer: {
         height: 35,
+        paddingBottom:5,
         width: '100%',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        backgroundColor:'white'
     },
     viewMoreText: {
         color: theme.dark,

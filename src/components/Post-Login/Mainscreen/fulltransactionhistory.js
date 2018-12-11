@@ -30,7 +30,7 @@ export default class FullTransactionHistory extends Component {
     	return (
     		<View style={styles.container}>
     			<StatusBar bColor={theme.dark} />
-    			<AppStatusBar bColor={theme.dark} left={true} Back={Back} leftFunction={this.goBack} center={true} text="Transaction Status" textColor={theme.white} />
+    			<AppStatusBar bColor={theme.dark} left={true} Back={Back} leftFunction={this.goBack} center={true} text="Transaction" textColor={theme.white} />
     			<View style={{flex: 1}}>
     				<TransactionHistory transactions={this.props.transactions} symbol={this.props.symbol} />
     			</View>

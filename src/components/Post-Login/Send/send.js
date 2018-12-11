@@ -330,7 +330,7 @@ const styles = StyleSheet.create({
 		color: theme.dark
 	},
 	lowerFlex: {
-		flex: 0.9,
+		flex: 0.78,
 		width: '100%'
 	},
 	inputFlexContainer: {
@@ -368,6 +368,6 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'flex-end',
 		position: 'absolute',
-		bottom: -22,
+		bottom: 0,
 	},
 });

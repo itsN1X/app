@@ -86,7 +86,7 @@ export default class Username extends React.Component {
 				<ImageBackground style={styles.bgImage} source={Background}>
 					<View style={styles.headingContainer}>
 		    			<Text style={styles.headingText}>
-		    				Choose a safe handle
+		    				Choose a user name
 		    			</Text>
 		    		</View>
 		    		<View style={styles.pinContainer}>
@@ -156,8 +156,8 @@ const styles = StyleSheet.create({
 	},
 	goIconContainer: {
 		width: '100%',
-		paddingVertical: 10,
-		paddingHorizontal: 10,
+		paddingVertical: 25,
+		paddingHorizontal: 25,
 		alignItems: 'center',
 		justifyContent: 'center'
 	},

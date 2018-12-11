@@ -274,8 +274,8 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	exchangeIcon: {
-		height: 50,
-		width: 50
+		height: 40,
+		width: 40
 	},
 	noteContainer: {
 		flex: 0.4,
@@ -290,10 +290,9 @@ const styles = StyleSheet.create({
 		opacity: 0.6
 	},
 	lowerFlex: {
-		flex: 0.5,
+		flex: 0.45,
 		width: '100%',
-		alignItems: 'center',
-		backgroundColor: theme.grey
+		alignItems: 'center'
 	},
 	instantRateFlex: {
 		flex: 0.32,

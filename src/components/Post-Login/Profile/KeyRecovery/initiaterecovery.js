@@ -85,16 +85,16 @@ export default class InitiateRecovery extends React.Component {
         }
         else {
 			if(this.state.Status === "0") {
-				infoText = "YOU NEED TO SET UP KEY RECOVERY FIRST";
+				infoText = "You need to set up Key Recovery First";
 				buttonText = "Setup Recovery";
 			}
 			else if(this.state.Status === "1") {
-				infoText = "CONTINUE TO COMPLETE YOUR KEY RECOVERY";
+				infoText = "Continue to complete you Key Recovery";
 				buttonText = "Continue Recovery";
 			}
 			else if(this.state.Status === "2"){
-				infoText = "SETUP COMPLETE";
-				buttonText = "-";
+				infoText = "Setup Complete";
+				buttonText = "Done";
 			}
 		}
 		return (
@@ -133,11 +133,11 @@ const styles = StyleSheet.create({
 	centerText: {
 		fontFamily: theme.font500,
 		fontWeight: Platform.OS === 'ios' ? '500' : '400',
-		fontSize: 18,
+		fontSize: 16,
 		textAlign: 'center',
-		color: theme.darkgrey,
-		maxWidth: '50%',
-		marginTop: 10
+		color: theme.dark,
+		maxWidth: '65%',
+		marginTop: 20
 	},
 	buttonContainer: {
 		width: '100%',

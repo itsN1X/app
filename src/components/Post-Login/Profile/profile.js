@@ -136,7 +136,7 @@ export default class Profile extends React.Component {
 			return (
 				<View style={styles.container}>
 					<StatusBar bColor={theme.dark}/>
-					<AppStatusBar bColor={theme.dark} center={true} centerImage={true} centerIcon={User} />
+					<AppStatusBar bColor={theme.dark} center={true} text="Settings" textColor={theme.white} />
 					<ScrollView style={{ height: '100%', width: '100%'}}>
 						<View style={{height: Dimensions.get('window').height-130, width: '100%', alignItems: 'center'}}>
 							<View style={styles.addressFlex}>
@@ -150,7 +150,7 @@ export default class Profile extends React.Component {
 										</View>
 									</View>
 									<View style={styles.personAddressContainer}>
-										<Text style={styles.addressText}>{this.state.username}</Text>
+										<Text style={styles.addressText}>@{this.state.username}</Text>
 									</View>
 								</View>
 							</View>

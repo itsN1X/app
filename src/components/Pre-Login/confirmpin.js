@@ -155,8 +155,8 @@ const styles = StyleSheet.create({
 	},
 	headingText: {
 		fontFamily: theme.font300,
-		fontWeight: '300',
-		fontSize: 45,
+		fontWeight: '400',
+		fontSize: 32,
 		color: theme.white
 	},
 	subHeadingText: {
@@ -183,8 +183,8 @@ const styles = StyleSheet.create({
 	},
 	goIconContainer: {
 		width: '100%',
-		paddingVertical: 10,
-		paddingHorizontal: 10,
+		paddingVertical: 25,
+		paddingHorizontal: 25,
 		alignItems: 'center',
 		justifyContent: 'center'
 	},
