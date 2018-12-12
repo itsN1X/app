@@ -3,9 +3,10 @@ import { StyleSheet, Text, View, Image, ActivityIndicator, TouchableOpacity, Scr
 import { Actions } from 'react-native-router-flux';
 import theme from '../common/theme';
 import StatusBar from '../common/statusbar';
+import AppStatusBar from '../common/appstatusbar';
 import Button from '../common/button';
 
-const Getstarted = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/getstarted.png";
+const Getstarted = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/wallet_tab.png";
 
 export default class GetStarted extends React.Component {
 	constructor(props) {
@@ -36,16 +37,17 @@ export default class GetStarted extends React.Component {
 	render() {
 		return(
 			<View style={styles.container}>
-				<StatusBar bColor={theme.white} />
+				<StatusBar bColor={theme.dark} />
+				<AppStatusBar bColor={theme.dark} center={true} text="Initiate Safe" textColor={theme.white} />
 				<View style={styles.contentContainer}>
 					<Image style={styles.centerImage} source={{uri: Getstarted}} />
 					<View>
-						<Text style={styles.centerText}>Ajo ji karlo apna nawa wallet start</Text>
+						<Text style={styles.centerText}>Initiate Safe</Text>
 					</View>
 				</View>
 				<View style={styles.buttonContainer}>
 					<Button bColor = {theme.dark} onPress={this.gotoSetupRecovery}>
-						<Text>Initiate Wallet</Text>
+						<Text>Initiate Safe</Text>
 					</Button>
 				</View>
 			</View>
@@ -64,8 +66,8 @@ const styles = StyleSheet.create({
 	    alignItems: 'center'
 	},
 	centerImage: {
-		width: 150,
-		height: 150
+		width: 100,
+		height: 100
 	},
 	centerText: {
 		fontFamily: theme.font500,

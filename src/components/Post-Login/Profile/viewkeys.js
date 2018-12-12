@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, ActivityIndicator, ScrollView, TouchableOpacity, Dimensions, KeyboardAvoidingView, Clipboard, AsyncStorage } from 'react-native';
+import { StyleSheet,BackHandler, Text, View, Image, ActivityIndicator, ScrollView, TouchableOpacity, Dimensions, KeyboardAvoidingView, Clipboard, AsyncStorage } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { BarIndicator } from 'react-native-indicators';
 import Toast from 'react-native-simple-toast';
@@ -23,6 +23,17 @@ export default class Profile extends React.Component {
 	componentWillMount() {
 		this.getCoinData();
 	}
+
+	componentDidMount() {
+				BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+		}
+		componentWillUnmount() {
+				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+		}
+		handleBackButton = () =>  {
+				Actions.pop();
+				return true;
+		}
 	goBack() {
 		Actions.pop();
 	}
@@ -42,7 +53,7 @@ export default class Profile extends React.Component {
     };
 	render() {
 		if(!this.state.loaded) {
-            return(<View style={{flex:1, backgroundColor: theme.white}}><BarIndicator color={theme.dark} size={50} count={5} /></View>)     
+            return(<View style={{flex:1, backgroundColor: theme.white}}><BarIndicator color={theme.dark} size={50} count={5} /></View>)
         }
         else {
 			return (
@@ -103,7 +114,7 @@ const styles = StyleSheet.create({
 	},
 	nameFlex: {
 		flex: 0.22,
-		justifyContent: 'flex-end' 
+		justifyContent: 'flex-end'
 	},
 	nameText: {
 		fontFamily: theme.font,

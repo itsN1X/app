@@ -13,7 +13,7 @@ var Back = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/lightback.png";
 var User = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/user.png";
 var Next = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/next.png";
 var Copy = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/copy.png";
-var back = 0 ;
+
 export default class Profile extends React.Component {
 	constructor(props) {
 		super(props);
@@ -24,7 +24,12 @@ export default class Profile extends React.Component {
 			publicKey: "",
 			privateKey: "",
 			mode : "",
-			username: ""
+			username: "",
+			viewkeys: "",
+			changeCurrency: "",
+			recoveryRequests: "",
+			guardian: "",
+			back:0
 		}
 		this.getAccountInfo = this.getAccountInfo.bind(this);
 		this.logout = this.logout.bind(this);
@@ -44,13 +49,15 @@ export default class Profile extends React.Component {
 				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
 		}
 		handleBackButton = () =>  {
-			back = back + 1;
-			if(back === 1) {
-				Toast.showWithGravity('Press again to EXIT', Toast.LONG, Toast.BOTTOM)
-			}
-			else {
-				BackHandler.exitApp();
-			}
+				if(this.state.viewKeys === "false"){
+					Actions.guardiantabs();
+					Actions.pendingrequests();
+				}
+				else {
+					Actions.postlogintabs();
+					Actions.wallets();
+				}
+
 				return true;
 		}
 	goBack() {
@@ -70,8 +77,9 @@ export default class Profile extends React.Component {
 		Actions.enterpin({mode : 'viewkeys'});
 	}
 	gotoBackupPhrase() {
-		Actions.postlogin();
-		Actions.enterpin({mode : 'backupphrase'});
+			Actions.postlogin();
+			Actions.enterpin({mode : 'backupphrase'});
+
 	}
 	changeCurrency(value) {
 		this.setState({ currency: value, pickerEnabled: false })
@@ -110,6 +118,12 @@ export default class Profile extends React.Component {
 	getAccountInfo = async () => {
 		try{
 			const value = await AsyncStorage.getItem('@UserData');
+			var guardian = await AsyncStorage.getItem('@Guardian');
+
+			if(guardian === "true") {
+				this.setState({viewKeys : "false",recoveryRequests: "false" , changeCurrency: "false",setGuardian: "true" });
+			}
+
 			var account = JSON.parse(value);
 			this.setState({username:account.username,publicKey: account.publicKey, privateKey: account.privateKey, loaded: true});
 		}
@@ -155,6 +169,7 @@ export default class Profile extends React.Component {
 								</View>
 							</View>
 							<View style={styles.greyline} />
+							{this.state.viewKeys === "false" ? null : (
 							<TouchableOpacity style={styles.otherTabFlex} onPress={this.gotoViewKeys}>
 								<View style={styles.otherTabContainer}>
 									<View style={styles.tabHeadingFlex}>
@@ -170,6 +185,7 @@ export default class Profile extends React.Component {
 									</View>
 								</View>
 							</TouchableOpacity>
+						)}
 							<View style={styles.greyline} />
 							<TouchableOpacity style={styles.otherTabFlex} onPress={this.gotoBackupPhrase}>
 								<View style={styles.otherTabContainer}>
@@ -187,7 +203,9 @@ export default class Profile extends React.Component {
 								</View>
 							</TouchableOpacity>
 							<View style={styles.greyline} />
-							<TouchableOpacity style={styles.otherTabFlex} onPress={this.gotoRequests}>
+
+							{this.state.recoveryRequests === "false" ? null : (
+								<TouchableOpacity style={styles.otherTabFlex} onPress={this.gotoRequests}>
 								<View style={styles.otherTabContainer}>
 									<View style={styles.tabHeadingFlex}>
 										<Text style={styles.tabheadingText}>Requests for Key Recovery</Text>
@@ -202,6 +220,7 @@ export default class Profile extends React.Component {
 									</View>
 								</View>
 							</TouchableOpacity>
+							)}
 							<View style={styles.greyline} />
 							<TouchableOpacity style={styles.otherTabFlex} onPress={this.changePin}>
 								<View style={styles.otherTabContainer}>
@@ -218,22 +237,26 @@ export default class Profile extends React.Component {
 									</View>
 								</View>
 							</TouchableOpacity>
+
 							<View style={styles.greyline} />
-							<TouchableOpacity style={styles.otherTabFlex} onPress={this.enablePicker}>
-								<View style={styles.otherTabContainer}>
-									<View style={styles.tabHeadingFlex}>
-										<Text style={styles.tabheadingText}>Change Currency</Text>
-									</View>
-									<View style={styles.tabActionFlex}>
-										<View style={styles.tabAction}>
-											<Text style={styles.tabActionText}>{this.state.currency}</Text>
+
+							{this.state.changeCurrency === "false" ? null : (
+								<TouchableOpacity style={styles.otherTabFlex} onPress={this.enablePicker}>
+									<View style={styles.otherTabContainer}>
+										<View style={styles.tabHeadingFlex}>
+											<Text style={styles.tabheadingText}>Change Currency</Text>
 										</View>
-										<View style={styles.tabActionIconContainer}>
-											<Image style={styles.tabActionIcon} source={{uri: Next}} />
+										<View style={styles.tabActionFlex}>
+											<View style={styles.tabAction}>
+												<Text style={styles.tabActionText}>{this.state.currency}</Text>
+											</View>
+											<View style={styles.tabActionIconContainer}>
+												<Image style={styles.tabActionIcon} source={{uri: Next}} />
+											</View>
 										</View>
 									</View>
-								</View>
-							</TouchableOpacity>
+								</TouchableOpacity>
+							)}
 							<View style={styles.greyline} />
 							<TouchableOpacity style={styles.otherTabFlex} onPress={this.promptUserForLogout}>
 								<View style={styles.otherTabContainer}>

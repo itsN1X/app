@@ -80,7 +80,7 @@ export default class WalletAddress extends React.Component {
 							self.storeWalletID(response.data.wallet_id);
 							self.setState({ loaded: true })
 							Actions.guardiantabs();
-							Actions.guardianprofile();
+							Actions.pendingrequests();
 
 					})
 					.catch(function (error) {

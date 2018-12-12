@@ -7,7 +7,6 @@ import AppStatusBar from '../../common/appstatusbar';
 import theme from '../../common/theme';
 import Button from '../../common/button';
 import Picker from '../../common/coinpicker';
-var backCount = 0 ;
 var Back = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/lightback.png";
 var ExchangeIcon = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/exchangedark.png";
 
@@ -52,15 +51,10 @@ export default class Exchange extends React.Component {
     componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
     }
-    handleBackButton() {
-    	backCount = backCount + 1;
-    	if(backCount === 1) {
-    		Toast.showWithGravity('Press again to EXIT', Toast.LONG, Toast.BOTTOM)
-    	}
-    	else {
-    		BackHandler.exitApp();
-    	}
-        return true;
+    handleBackButton = () => {
+      Actions.postlogintabs();
+      Actions.wallets();
+      return true;
     }
 	componentWillMount() {
 		this.spinValue = new Animated.Value(0)

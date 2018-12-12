@@ -20,6 +20,7 @@ export default class PendingRequests extends React.Component {
 		super(props);
 		this.state = {
 			loaded: false,
+			pendingRequestsTitle: "",
 			requestList: []
 		};
 	}
@@ -38,7 +39,7 @@ export default class PendingRequests extends React.Component {
 		data.publicKey = account.publicKey;
 		console.log(data);
 		const self = this;
-		try {        
+		try {
             axios({
                 method: 'post',
                 url: 'http://159.65.153.3:7001/recovery_key/fetch_recovery_data',
@@ -110,8 +111,15 @@ export default class PendingRequests extends React.Component {
 	getAccountInfo = async () => {
 		try{
 			const value = await AsyncStorage.getItem('@UserData');
+			var guardian = await AsyncStorage.getItem('@Guardian');
 			this.setState({loaded: true})
 			var account = JSON.parse(value);
+			if(guardian === "true") {
+				this.setState({pendingRequestsTitle : "@"+account.username});
+			}
+			else {
+				this.setState({pendingRequestsTitle : "Recovery Requests"});
+			}
 			this.fetchRequests(account);
 		}
 		catch(error) {
@@ -125,13 +133,13 @@ export default class PendingRequests extends React.Component {
     };
 	render() {
 		if(!this.state.loaded) {
-            return(<Loader activity="Fetching Recovery Requests"/>)     
+            return(<Loader activity="Fetching Recovery Requests"/>)
         }
         else {
 			return (
 				<View style={styles.container}>
 					<StatusBar bColor={theme.dark} />
-					{this.props.back ? <AppStatusBar bColor={theme.dark} left={true} Back={Back} leftFunction={this.goBack} center={true} text="Requests" textColor={theme.white} /> : <AppStatusBar bColor={theme.dark} center={true} text="Recovery Requests" textColor={theme.white} />}
+					{this.props.back ? <AppStatusBar bColor={theme.dark} left={true} Back={Back} leftFunction={this.goBack} center={true} text="Requests" textColor={theme.white} /> : <AppStatusBar bColor={theme.dark} center={true} text={this.state.pendingRequestsTitle} textColor={theme.white} />}
 					<ScrollView style={styles.scrollView}>
 						<View style={styles.requestsContainer}>
 							{this.state.requestList.map((value, i) => {

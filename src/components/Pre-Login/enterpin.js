@@ -61,8 +61,14 @@ export default class EnterPin extends React.Component {
 						if(bip39.validateMnemonic(data)){
 							wrongPinCount = 0;
 							if(this.props.mode == 'backupphrase'){
-								Actions.postlogintabs();
-								Actions.backupphrase();
+								if(this.props.guardian === "true"){
+									Actions.guardiantabs();
+									Actions.backupphrase();
+								}
+								else {
+									Actions.profile();
+									Actions.backupphrase();
+								}
 							}
 							else if(this.props.mode == 'viewkeys'){
 								Actions.profile();

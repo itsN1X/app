@@ -6,6 +6,7 @@ import Drawer from 'react-native-drawer';
 import axios from 'axios';
 import SideBar from '../Sidedrawer/drawercontent';
 import theme from '../../common/theme';
+import NoFunds from './nofunds';
 import Loader from '../../common/loader';
 import AppStatusBar from '../../common/appstatusbar';
 import TransactionHistory from './transactionhistory';
@@ -129,7 +130,20 @@ export default class Main extends Component {
             .then(function (response) {
                console.log(response);
                const balance = (response.data.result.wallet.final_balance / 100000000);
-                self.setState({ address: coinData.address, privateKey: coinData.privateKey, balance: balance, receiving: false, loaded: true, transactions: response.data.result.txs, receiving: false, utxo: response.data.utxo, loaded: true });
+
+               if(balance == 0){
+                 self.setState({ address: coinData.address,balance: balance});
+                 self.receiveCoins();
+               }
+
+               else {
+                 self.setState({ address: coinData.address, privateKey: coinData.privateKey, balance: balance, receiving: false, loaded: true, transactions: response.data.result.txs, receiving: false, utxo: response.data.utxo, loaded: true });
+
+               }
+
+
+
+
             })
             .catch(function (error) {
                 console.log(error);

@@ -4,11 +4,12 @@ import { Actions } from 'react-native-router-flux';
 import Toast from 'react-native-simple-toast';
 import theme from '../../../common/theme';
 import StatusBar from '../../../common/statusbar';
+import AppStatusBar from '../../../common/appstatusbar';
 import Button from '../../../common/button';
 import Loader from '../../../common/loader';
 
 SettingRecovery = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/photo633.jpg";
-var backCount = 0;
+
 export default class InitiateRecovery extends React.Component {
 	constructor(props) {
 		super(props);
@@ -27,13 +28,8 @@ export default class InitiateRecovery extends React.Component {
 				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
 		}
 		handleBackButton = () =>  {
-			backCount = backCount + 1;
-			if(backCount === 1) {
-				Toast.showWithGravity('Press again to EXIT', Toast.LONG, Toast.BOTTOM)
-			}
-			else {
-				BackHandler.exitApp();
-			}
+			Actions.postlogintabs();
+			Actions.wallets();
 				return true;
 		}
 	componentWillMount() {
@@ -99,8 +95,8 @@ export default class InitiateRecovery extends React.Component {
 		}
 		return (
 			<View style={styles.container}>
-				<StatusBar bColor={theme.white} />
-				<View style={styles.contentContainer}>
+				<StatusBar bColor={theme.dark} />
+				<AppStatusBar bColor={theme.dark} center={true} text="Recovery" textColor={theme.white} /><View style={styles.contentContainer}>
 					<Image style={styles.centerImage} source={{uri: SettingRecovery}} />
 					<View>
 						<Text style={styles.centerText}>{infoText}</Text>

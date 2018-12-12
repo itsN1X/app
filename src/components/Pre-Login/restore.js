@@ -73,7 +73,6 @@ export default class Restore extends React.Component {
 			    data: details
 		    })
 		    .then(function (response) {
-		    	console.log(response)
 		    	if(response.data.flag === 143 && response.data.result.wallet_id !== null) {
 		    		self.storeWalletID(response.data.result.wallet_id, account);
 		    		Actions.postlogintabs();

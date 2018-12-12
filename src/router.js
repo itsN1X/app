@@ -52,6 +52,28 @@ const home = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/home_tab.png"
 const getstarted = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/getstarted_tab.png";
 const requests = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/requests_tab.png";
 
+
+
+const SettingsGuradianIcon = ({ focused }) => {
+	let Opacity;
+	let Icon;
+	if (focused) {
+		Opacity = 1;
+		Icon = settingsSelected;
+	}
+	else {
+		Opacity = 1;
+		Icon = settingsSelected;
+	}
+	return (
+		<View>
+			<View style={[styles.navBarIconContainer, {opacity: Opacity}]}>
+				<Image style={styles.navBarIcon} source={{uri: Icon}} />
+				<Text style={styles.navBarText}>Settings</Text>
+			</View>
+		</View>
+	);
+};
 const WalletsIcon = ({ focused }) => {
 	let Opacity;
 	let Icon;
@@ -212,7 +234,7 @@ const RouterComponent = () => {
 				</Scene>
 				<Scene key="postlogintabs" hideNavBar panHandlers={null} tabs tabBarStyle={{ flexDirection: 'row', height: 60, borderTopWidth: 1, borderColor: theme.grey, width: Dimensions.get('window').width, backgroundColor: "#FFF", shadowOffset: { width: 0, height: -2 }, shadowColor: 'black', shadowOpacity: 0.1}} showLabel={false} >
 					<Stack key="wallets" hideNavBar icon={WalletsIcon} panHandlers={null}>
-						<Scene key="walletsmain" component={Wallets} hideNavBar panHandlers={null} />
+						<Scene key="walletsmain" component={Wallets} hideNavBar panHandlers={null}/>
 						<Scene key="mainscreen" component={MainScreen} hideNavBar panHandlers={null} />
 						<Scene key="fulltransactionhistory" component={FullTransactionHistory} hideNavBar panHandlers={null} />
 						<Scene key="transactioninfo" component={TransactionInfo} hideNavBar panHandlers={null} />
@@ -236,9 +258,12 @@ const RouterComponent = () => {
 					</Stack>
 				</Scene>
 				<Scene key="guardiantabs" hideNavBar panHandlers={null} tabs tabBarStyle={{flexDirection: 'row', height: 60, borderTopWidth: 1, borderColor: theme.grey, width: Dimensions.get('window').width, backgroundColor: "#FFF", shadowOffset: { width: 0, height: -2 }, shadowColor: 'black', shadowOpacity: 0.1}} showLabel={false}>
-				<Scene key="guardianprofile" component={GuardianProfile} icon={HomeIcon} hideNavBar panHandlers={null} />
 					<Scene key="pendingrequests" component={PendingRequests} icon={RequestsIcon} back={false} panHandlers={null} hideNavBar />
 					<Scene key="getstarted" component={GetStarted} icon={GetStartedIcon} panHandlers={null} hideNavBar />
+					<Stack key="profile" hideNavBar icon={SettingsGuradianIcon} panHandlers={null}>
+					<Scene key="profilemain" component={Profile} icon={SettingsGuradianIcon} panHandlers={null} hideNavBar/>
+					<Scene key="backupphrase" component={BackupPhrase} hideNavBar panHandlers={null} />
+					</Stack>
 				</Scene>
 			</Scene>
 		</Router>

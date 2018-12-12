@@ -20,22 +20,14 @@ export default class WalletCoinItem extends React.Component {
 						<View style={styles.upperContentFlex}>
 							<View style={styles.coinImageContainer}>
 								<Image style={styles.coinImage} source={{uri: this.props.icon}} />
-							</View>
-							<View style={styles.coinNameContainer}>
 								<Text style={styles.coinNameText}>{this.props.name}</Text>
 							</View>
 							<View style={styles.coinAmountContainer}>
 								<Text style={styles.coinAmountText}>{this.props.amount}</Text>
-							</View>
-						</View>
-						<View style={styles.lowerContentFlex}>
-							<View style={styles.coinValueContainer}>
 								<Text style={styles.coinValueText}>{this.props.value}</Text>
 							</View>
-							<View style={styles.INRContainer}>
-								<Text style={styles.INRText}>INR</Text>
-							</View>
 						</View>
+
 					</View>
 				</TouchableOpacity>
 			</View>
@@ -49,7 +41,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	walletItem: {
-		height: 120,
+		height: 80,
 		width: '90%',
 		justifyContent: 'center',
 		alignItems: 'center',
@@ -59,63 +51,55 @@ const styles = StyleSheet.create({
 		marginVertical:5
 	},
 	contentContainer: {
-		height: '60%',
-		width: '85%',
+		width: '90%',
 	},
 	upperContentFlex: {
-		flex: 0.6,
 		alignItems: 'center',
-		flexDirection: 'row'
-	},
-	lowerContentFlex: {
-		flex: 0.4,
-		alignItems: 'center',
+		justifyContent:'space-between',
 		flexDirection: 'row'
 	},
 	coinImageContainer: {
-		flex: 0.16,
-		justifyContent: 'center',
-		alignItems: 'flex-start'
+		flex:0.6,
+		justifyContent: 'flex-start',
+		alignItems: 'center',
+		flexDirection:'row'
 	},
 	coinImage: {
 		width: 40,
-		height: 40
-	},
-	coinNameContainer: {
-		flex: 0.4,
-		justifyContent: 'center',
-		alignItems: 'flex-start'
+		height: 40,
+		marginRight:10
 	},
 	coinNameText: {
-		fontFamily: theme.Lato,
-		fontWeight: '300',
+		fontFamily: theme.font,
 		fontSize: 20,
 		color: theme.dark
 	},
 	coinAmountContainer: {
-		flex: 0.44,
+		flex:0.4,
 		justifyContent: 'center',
 		alignItems: 'flex-end'
 	},
 	coinAmountText: {
 		fontFamily: theme.Lato,
 		fontWeight: '300',
-		fontSize: 22,
+		fontSize: 18,
 		color: theme.dark
 	},
 	coinValueContainer: {
-		flex: 0.9,
+		flex:0.2,
+		backgroundColor:'grey',
 		justifyContent: 'center',
-		alignItems: 'flex-start'
+		alignItems: 'flex-end'
 	},
 	coinValueText: {
 		fontFamily: theme.Lato,
+		marginTop:5,
 		fontWeight: '300',
-		fontSize: 16,
-		color: theme.dark
+		fontSize: 12,
+		color: theme.dark,
+		opacity:0.5
 	},
 	INRContainer: {
-		flex: 0.1,
 		justifyContent: 'center',
 		alignItems: 'flex-end'
 	},

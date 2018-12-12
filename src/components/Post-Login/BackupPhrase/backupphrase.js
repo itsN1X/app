@@ -29,9 +29,10 @@ export default class BackupPhrase extends React.Component {
     componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
     }
-    handleBackButton() {
-        return true;
-    }
+		handleBackButton = () =>  {
+				Actions.pop();
+				return true;
+		}
 	componentWillMount() {
 		this.getMnemonic();
 	}

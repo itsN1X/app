@@ -215,7 +215,7 @@ export default class ChooseFriends extends React.Component {
             	if(response.data.flag === 143) {
             		Toast.showWithGravity("Setup Complete", Toast.LONG, Toast.CENTER);
             		self.changeRecoveryStatus();
-            		Actions.popTo('initiaterecovery', {recovery: true});
+            		Actions.initiaterecovery();
             	}
             	else {
             		Toast.showWithGravity(response.data.log, Toast.LONG, Toast.TOP, Toast.CENTER);
@@ -313,7 +313,6 @@ export default class ChooseFriends extends React.Component {
         }
         else {
 			return (
-				<TouchableWithoutFeedback onPress={ this.onUnfocus }>
 					<View style={styles.container}>
 						<StatusBar />
 						<AppStatusBar left={true} Back={Back} leftFunction={this.goBack} bColor={theme.white} elevation={true} center={true} text="Choose Friends" textColor={theme.black} />
@@ -369,7 +368,6 @@ export default class ChooseFriends extends React.Component {
 							</View>
 						</ScrollView>
 					</View>
-				</TouchableWithoutFeedback>
 			);
 		}
 	}

@@ -67,7 +67,7 @@ export default class Wallets extends React.Component {
             }
             else if(guardian === "true") {
             	Actions.guardiantabs();
-							Actions.guardianprofile();
+							Actions.pendingrequests();
             }
             else {
             	if(!user_data) {
@@ -223,21 +223,18 @@ export default class Wallets extends React.Component {
 					<View style={styles.container}>
 						<StatusBar bColor={theme.dark} />
 						<AppStatusBar bColor={theme.dark} center={true} text="Wallets" textColor={theme.white} />
-						<View style={styles.totalBalanceContainer}>
-							<Text style={styles.totalBalanceText}>$ 26,052.34</Text>
-						</View>
 						<ScrollView style={{flex: 1, width: '100%'}}>
 							<View style={styles.mainContainer}>
 								<View style={{height: 3}} />
-								<WalletCoinItem lighticon="https://s3.ap-south-1.amazonaws.com/maxwallet-images/Group+378.png" icon="https://s3.ap-south-1.amazonaws.com/maxwallet-images/Group+380.png" name="Bitcoin" value="5,78,168.98" amount="1.5624" symbol="BTC" onWalletOpen={this.onWalletOpen} />
+								<WalletCoinItem lighticon="https://s3.ap-south-1.amazonaws.com/maxwallet-images/Group+378.png" icon="https://s3.ap-south-1.amazonaws.com/maxwallet-images/Group+380.png" name="Bitcoin" value="$5,78,168.98" amount="1.56240001" symbol="BTC" onWalletOpen={this.onWalletOpen} />
 								<View style={{height: 3}} />
-								<WalletCoinItem lighticon="https://s3.ap-south-1.amazonaws.com/maxwallet-images/Group+377.png" icon="https://s3.ap-south-1.amazonaws.com/maxwallet-images/Group+379.png" name="Ethereum" value="45,400.98" amount="1456.2" symbol="ETH" onWalletOpen={this.onWalletOpen} />
+								<WalletCoinItem lighticon="https://s3.ap-south-1.amazonaws.com/maxwallet-images/Group+377.png" icon="https://s3.ap-south-1.amazonaws.com/maxwallet-images/Group+379.png" name="Ethereum" value="$45,400.98" amount="1456.23764882" symbol="ETH" onWalletOpen={this.onWalletOpen} />
 								<View style={{height: 3}} />
-								<WalletCoinItem lighticon="https://s3.ap-south-1.amazonaws.com/maxwallet-images/light_icons/lmonerol.png" icon="https://s3.ap-south-1.amazonaws.com/maxwallet-images/monero.png" name="Monero" value="13,903.13" amount="12.4523" symbol="XMR" onWalletOpen={this.onWalletOpen} />
+								<WalletCoinItem lighticon="https://s3.ap-south-1.amazonaws.com/maxwallet-images/light_icons/lmonerol.png" icon="https://s3.ap-south-1.amazonaws.com/maxwallet-images/monero.png" name="Monero" value="$13,903.13" amount="12.45227363" symbol="XMR" onWalletOpen={this.onWalletOpen} />
 								<View style={{height: 3}} />
-								<WalletCoinItem lighticon="https://s3.ap-south-1.amazonaws.com/maxwallet-images/gusd_light.png" icon="https://s3.ap-south-1.amazonaws.com/maxwallet-images/gusd_dark.png" name="Gemini Dollar" value="13,903.13" amount="13.556" symbol="GUSD" onWalletOpen={this.onWalletOpen} />
+								<WalletCoinItem lighticon="https://s3.ap-south-1.amazonaws.com/maxwallet-images/gusd_light.png" icon="https://s3.ap-south-1.amazonaws.com/maxwallet-images/gusd_dark.png" name="Gemini Dollar" value="$13,903.13" amount="13.55213236" symbol="GUSD" onWalletOpen={this.onWalletOpen} />
 								<View style={{height: 3}} />
-								<WalletCoinItem lighticon="https://s3.ap-south-1.amazonaws.com/maxwallet-images/dai_light.png" icon="https://s3.ap-south-1.amazonaws.com/maxwallet-images/dai_dark.png" name="Dai" value="5,78,168.98" amount="12.4523" symbol="DAI" onWalletOpen={this.onWalletOpen} />
+								<WalletCoinItem lighticon="https://s3.ap-south-1.amazonaws.com/maxwallet-images/dai_light.png" icon="https://s3.ap-south-1.amazonaws.com/maxwallet-images/dai_dark.png" name="Dai" value="$5,78,168.98" amount="12.45233211" symbol="DAI" onWalletOpen={this.onWalletOpen} />
 								<View style={{height: 3}} />
 							</View>
 						</ScrollView>
@@ -267,11 +264,9 @@ const styles = StyleSheet.create({
 	totalBalanceContainer: {
 		height: 50,
 		width: '100%',
-		backgroundColor: theme.dark,
+		// backgroundColor: theme.dark,
 		alignItems: 'center',
-		justifyContent: 'flex-start',
-		borderBottomRightRadius: 15,
-		borderBottomLeftRadius: 15,
+		justifyContent: 'flex-start'
 	},
 	totalBalanceText: {
 		fontFamily: theme.font500,
