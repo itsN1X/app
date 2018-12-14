@@ -63,7 +63,7 @@ export default class EnterOTP extends React.Component {
 		data.email = this.state.email;
 		data.public_key = this.state.public_key;
 		console.log(data)
-		try {        
+		try {
             axios({
                 method: 'post',
                 url: 'http://206.189.137.43:4013/verify_otp',
@@ -98,11 +98,10 @@ export default class EnterOTP extends React.Component {
 	authenticateVerifyOTP() {
 		var self = this;
 		var data={};
-		data.otp = Number(this.state.otp);
-		data.session_id = this.state.session_id;
-		data.email = this.state.email;
-		console.log(data)
-		try {        
+		data.otp = Number(self.state.otp);
+		data.session_id = self.state.session_id;
+		data.email = self.state.email;
+		try {
             axios({
                 method: 'post',
                 url: 'http://206.189.137.43:4013/verify_recovery_otp',
@@ -128,7 +127,7 @@ export default class EnterOTP extends React.Component {
 	}
 	render() {
 		if(!this.state.loaded) {
-            return(<View style={{flex:1, backgroundColor: theme.white}}><BarIndicator color={theme.dark} size={50} count={5} /></View>)     
+            return(<View style={{flex:1, backgroundColor: theme.white}}><BarIndicator color={theme.dark} size={50} count={5} /></View>)
         }
         else {
 			return (
@@ -162,7 +161,7 @@ export default class EnterOTP extends React.Component {
 						<Button bColor = {theme.dark} onPress={this.authenticateOTP}>
 							<Text style={styles.nextText}>Proceed</Text>
 						</Button>
-					</View> 
+					</View>
 				</View>
 			);
 		}

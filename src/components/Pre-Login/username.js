@@ -37,7 +37,8 @@ export default class Username extends React.Component {
 
 	checkUserName(){
 		let details = {};
-		details.user_name = this.state.username;
+		let username = this.state.username.replace('@','');
+		details.user_name = username;
 		details.status = "0";
 		this.fetchUsernameDetails(details);
 	}
@@ -54,15 +55,15 @@ export default class Username extends React.Component {
 					let flag = parseInt(response.data.flag);
 					if(response.data.flag == 144) {
 						if(self.props.mode == "wallet"){
-							Actions.createpin({mode : "wallet", username: self.state.username});
+							Actions.createpin({mode : "wallet", username: self.state.username.replace('@','')});
 						}
 						else {
-							Actions.createpin({mode : "guardian", username : self.state.username});
+							Actions.createpin({mode : "guardian", username : self.state.username.replace('@','')});
 						}
 
 					}
 					else {
-					 	Toast.showWithGravity("User already exist", Toast.LONG, Toast.CENTER);
+					 	Toast.showWithGravity("Username not available", Toast.LONG, Toast.CENTER);
 					}
 				})
 				.catch(function (error) {
@@ -80,13 +81,15 @@ export default class Username extends React.Component {
 		  Actions.walletseed({mnemonic: result, mode: Mode});
 		})
 	}
+
+
 	render () {
 		return (
 			<View style={styles.container}>
 				<ImageBackground style={styles.bgImage} source={Background}>
 					<View style={styles.headingContainer}>
 		    			<Text style={styles.headingText}>
-		    				Choose a user name
+		    				Type a username
 		    			</Text>
 		    		</View>
 		    		<View style={styles.pinContainer}>
@@ -94,11 +97,19 @@ export default class Username extends React.Component {
 		    				style={styles.pinInput}
 		    				autoFocus = {true}
 		    				keyboardAppearance="dark"
-		    				value={this.state.username}
+		    				value={this.state.username.length == 0 ? "@" : this.state.username}
 		    				placeholderTextColor="rgba(255,255,255,0.15)"
-		    				onChangeText={(text) => this.setState({username: text})}
+								placeholder="@"
+		    				onChangeText={(text) => {
+									this.setState({username:text})
+								}
+								}
+
 		    			/>
+
 		    		</View>
+
+
 		    		<KeyboardAvoidingView keyboardVerticalOffset={Platform.select({ios: 0, android: 500})} behavior= {(Platform.OS === 'ios')? "padding" : null} style={{position: 'absolute', bottom: 0, right: 0}}>
 			    		<TouchableOpacity style={styles.goIconContainer} onPress={this.checkUserName}>
 			    			<Image style={styles.goIcon} source={{uri: "https://s3.ap-south-1.amazonaws.com/maxwallet-images/go.png"}} />
@@ -129,7 +140,7 @@ const styles = StyleSheet.create({
 	headingText: {
 		fontFamily: theme.font300,
 		fontWeight: '300',
-		fontSize: 30,
+		fontSize: 24,
 		color: theme.white
 	},
 	subHeadingText: {
@@ -149,8 +160,8 @@ const styles = StyleSheet.create({
 		fontFamily: theme.Lato,
 		borderBottomColor: "rgba(255,255,255,0.15)",
 		borderBottomWidth: 3,
-		textAlign: 'center',
-		fontSize: 40,
+		textAlign: 'left',
+		fontSize: 26,
 		width: '50%',
 		color: theme.white
 	},

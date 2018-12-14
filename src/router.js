@@ -62,7 +62,7 @@ const SettingsGuradianIcon = ({ focused }) => {
 		Icon = settingsSelected;
 	}
 	else {
-		Opacity = 1;
+		Opacity = 0.5;
 		Icon = settingsSelected;
 	}
 	return (
@@ -158,7 +158,7 @@ const HomeIcon = ({ focused }) => {
 
 	}
 	else {
-		Opacity = 1;
+		Opacity = 0.5;
 	}
 	return (
 		<View>
@@ -176,7 +176,7 @@ const RequestsIcon = ({ focused }) => {
 
 	}
 	else {
-		Opacity = 1;
+		Opacity = 0.5;
 	}
 	return (
 		<View>
@@ -194,7 +194,7 @@ const GetStartedIcon = ({ focused }) => {
 
 	}
 	else {
-		Opacity = 1;
+		Opacity = 0.5;
 	}
 	return (
 		<View>
@@ -224,10 +224,11 @@ const RouterComponent = () => {
 					<Scene key="choosefriends" component={ChooseFriends} panHandlers={null} hideNavBar />
 					<Scene key="dummy" component={Dummy} hideNavBar panHandlers={null} />
 					<Scene key="keychain" component={KeychainExample} hideNavBar panHandlers={null} />
-					<Scene key="showmnemonic" component={ShowMnemonic} panHandlers={null} hideNavBar />
+
 				</Scene>
 				<Scene key="postlogin" panHandlers={null} hideNavBar>
 				<Scene key="recoveryrequests" component={RecoveryRequests} hideNavBar panHandlers={null} />
+				<Scene key="showmnemonic" component={ShowMnemonic} panHandlers={null} hideNavBar />
 					<Scene key="initiatewallets" component={InitiateWallets} panHandlers={null} hideNavBar />
 					<Scene key="enterpin" component={EnterPin} hideNavBar panHandlers={null}/>
 					<Scene key="newaddress" component={NewAddress} hideNavBar panHandlers={null} />

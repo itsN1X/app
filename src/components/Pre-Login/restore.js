@@ -48,7 +48,6 @@ export default class Restore extends React.Component {
 		account.publicKey = publicKey;
 		account.privateKey = privateKey;
 		account.privateKeyHash = privateKeyHash;
-		account = JSON.stringify(account);
 		let details = {};
 		details.private_key_hash = privateKeyHash;
 		details.public_key = publicKey;
@@ -74,7 +73,9 @@ export default class Restore extends React.Component {
 		    })
 		    .then(function (response) {
 		    	if(response.data.flag === 143 && response.data.result.wallet_id !== null) {
-		    		self.storeWalletID(response.data.result.wallet_id, account);
+						account.username = response.data.result.user_name;
+						account = JSON.stringify(account);
+						self.storeWalletID(response.data.result.wallet_id, account);
 		    		Actions.postlogintabs();
 		    		Actions.wallets();
 		    		Actions.refresh({ user_data: account, loggedIn: true, wallet_id: response.data.result.wallet_id, new: false });

@@ -60,7 +60,7 @@ export default class Recieve extends React.Component {
 				<AppStatusBar bColor={theme.grey} left={true} Back={Back} leftFunction={this.goBack} center={true} text="Receive" />
 				<View style={styles.upperFlex}>
 					<View style={styles.addressHeadingFlex}>
-						<Text style={styles.addressHeadingText}>Business Address</Text>
+						<Text style={styles.addressHeadingText}>Address</Text>
 						<View style={styles.copyFlex}>
 							<TouchableOpacity onPress={this.writeToClipboard}>
 								<Image style={styles.copyIcon} source={{uri: Copy}} />
@@ -79,9 +79,6 @@ export default class Recieve extends React.Component {
 				          bgColor='black'
 				          fgColor='white'
 				        />
-					</View>
-					<View style={styles.scanQRTextContainer}>
-						<Text style={styles.scanQRText}>Scan the QR Code</Text>
 					</View>
 				</View>
 			</View>
@@ -137,18 +134,8 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	QRCodeFlex: {
-		flex: 0.85,
+		flex: 0.9,
 		justifyContent: 'center',
 		alignItems: 'center'
-	},
-	scanQRTextContainer: {
-		flex: 0.15,
-		justifyContent: 'flex-start',
-		alignItems: 'center'
-	},
-	scanQRText: {
-		fontFamily: theme.font,
-		fontSize: 16,
-		color: theme.black
 	}
 });

@@ -50,7 +50,7 @@ export default class FirstScreen extends React.Component {
 				<View style={styles.container}>
 					<ImageBackground style={styles.bgImage} source={{uri: "https://s3.ap-south-1.amazonaws.com/maxwallet-images/coinsafeBg.png"}}>
 						<View style={styles.logoFlex}>
-							<Image style={styles.logoImage} source={{uri: "https://s3.ap-south-1.amazonaws.com/maxwallet-images/coinsafe-logo-light.png"}} />
+							<Image style={styles.logoImage} source={{uri: "https://s3.ap-south-1.amazonaws.com/maxwallet-images/logoLight.png"}} />
 						</View>
 						<View style={styles.emptyFlex} />
 						<View style={styles.buttonsFlex}>

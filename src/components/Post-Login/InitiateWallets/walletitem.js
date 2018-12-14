@@ -15,6 +15,10 @@ export default class WalletItem extends React.Component {
 	}
 	componentWillMount() {
 		this.setState({ Icon: this.props.dark });
+
+		if(this.props.name == "bitcoin") {
+			this.setState({ selected: true, Icon: this.props.light })
+		}
 	}
 	selectWallet() {
 		if(this.state.selected) {
@@ -41,7 +45,7 @@ export default class WalletItem extends React.Component {
 					<View style={styles.upperFlex}>
 						<View style={styles.coinIconContainer}>
 							<Image source={{uri: this.state.Icon}} style={styles.coinIcon} />
-						</View> 
+						</View>
 						<View style={styles.coinNameContainer}>
 							<Text style={[styles.coinNameText, {color: textColor}]}>{this.props.name.toUpperCase()}</Text>
 						</View>
@@ -74,7 +78,7 @@ const styles = StyleSheet.create({
 		flex: 0.5,
 		marginTop: 5,
 		alignItems: 'center',
-		flexDirection: 'row' 
+		flexDirection: 'row'
 	},
 	coinIconContainer: {
 		flex: 0.17,
@@ -90,7 +94,7 @@ const styles = StyleSheet.create({
 	},
 	coinNameText: {
 		fontFamily: theme.font,
-		color: theme.dark, 
+		color: theme.dark,
 		fontSize: 14
 	},
 	lowerFlex: {
@@ -103,14 +107,14 @@ const styles = StyleSheet.create({
 		flex: 0.8,
 		fontFamily: theme.Lato300,
 		fontWeight: '300',
-		color: theme.dark, 
+		color: theme.dark,
 		fontSize: 22,
 		marginBottom: 12
 	},
 	selectedImageContainer: {
 		position: 'absolute',
 		top: 8,
-		right: 8 
+		right: 8
 	},
 	selectedIcon: {
 		width: 25,

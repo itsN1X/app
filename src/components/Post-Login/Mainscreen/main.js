@@ -117,7 +117,6 @@ export default class Main extends Component {
         Actions.pop();
     }
     getBalance (coinData) {
-        console.log(coinData);
         coinAddress = {};
         coinAddress.addresses = [coinData.address];
         try {
@@ -128,7 +127,6 @@ export default class Main extends Component {
                 data: coinAddress
             })
             .then(function (response) {
-               console.log(response);
                const balance = (response.data.result.wallet.final_balance / 100000000);
 
                if(balance == 0){
@@ -140,9 +138,6 @@ export default class Main extends Component {
                  self.setState({ address: coinData.address, privateKey: coinData.privateKey, balance: balance, receiving: false, loaded: true, transactions: response.data.result.txs, receiving: false, utxo: response.data.utxo, loaded: true });
 
                }
-
-
-
 
             })
             .catch(function (error) {
@@ -158,7 +153,7 @@ export default class Main extends Component {
             const value = await AsyncStorage.getItem('@BTC');
             var coinData = JSON.parse(value);
             this.getBalance(coinData);
-        }
+        } 
       catch(error) {
             alert(error)
         }
@@ -233,12 +228,12 @@ export default class Main extends Component {
                             <View style={styles.sendRecieve}>
                                 <TouchableOpacity onPress={this.receiveCoins} style={styles.recieveButtonContainer}>
                                     <ElevatedView elevation={0} style={styles.recieveButton}>
-                                        <Text style={styles.recieveText}>RECEIVE</Text>
+                                        <Text style={styles.recieveText}>Receive</Text>
                                     </ElevatedView>
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={this.sendCoins} style={styles.sendButtonContainer}>
                                     <ElevatedView elevation={0} style={styles.sendButton}>
-                                        <Text style={styles.sendText}>SEND</Text>
+                                        <Text style={styles.sendText}>Send</Text>
                                     </ElevatedView>
                                 </TouchableOpacity>
                             </View>
@@ -331,9 +326,9 @@ const styles = StyleSheet.create({
     },
     amountText: {
         color: 'white',
-        fontSize: 52,
+        fontSize: 48,
         fontWeight: '300',
-        fontFamily: theme.font300
+        fontFamily: theme.Lato300
     },
     receivingText: {
         color: 'white',

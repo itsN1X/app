@@ -38,16 +38,13 @@ export default class GetStarted extends React.Component {
 		return(
 			<View style={styles.container}>
 				<StatusBar bColor={theme.dark} />
-				<AppStatusBar bColor={theme.dark} center={true} text="Initiate Safe" textColor={theme.white} />
+				<AppStatusBar bColor={theme.dark} center={true} text="Get Started" textColor={theme.white} />
 				<View style={styles.contentContainer}>
 					<Image style={styles.centerImage} source={{uri: Getstarted}} />
-					<View>
-						<Text style={styles.centerText}>Initiate Safe</Text>
-					</View>
 				</View>
 				<View style={styles.buttonContainer}>
 					<Button bColor = {theme.dark} onPress={this.gotoSetupRecovery}>
-						<Text>Initiate Safe</Text>
+						<Text>Initialize</Text>
 					</Button>
 				</View>
 			</View>

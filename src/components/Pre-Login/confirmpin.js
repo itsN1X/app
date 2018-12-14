@@ -47,7 +47,7 @@ export default class ConfirmPin extends React.Component {
     }
 
     else {
-      Toast.showWithGravity('Pin does not matched!', Toast.LONG, Toast.CENTER)
+      Toast.showWithGravity('Pin does not match.', Toast.LONG, Toast.CENTER)
     }
 
 	}
@@ -109,9 +109,6 @@ export default class ConfirmPin extends React.Component {
 		    			<Text style={styles.headingText}>
 		    				Confirm Pin
 		    			</Text>
-		    			<Text style={styles.subHeadingText}>
-		    				Re-Enter 4 Digit Pin
-		    			</Text>
 		    		</View>
 		    		<View style={styles.pinContainer}>
 		    			<TextInput
@@ -122,6 +119,7 @@ export default class ConfirmPin extends React.Component {
 		    				keyboardType="number-pad"
 		    				value={this.state.pinCode}
 		    				maxLength={4}
+								placeholder="****"
 		    				placeholderTextColor="rgba(255,255,255,0.15)"
 		    				onChangeText={(text) => this.setState({confirmPin: text})}
 		    			/>
@@ -156,7 +154,7 @@ const styles = StyleSheet.create({
 	headingText: {
 		fontFamily: theme.font300,
 		fontWeight: '400',
-		fontSize: 32,
+		fontSize: 24,
 		color: theme.white
 	},
 	subHeadingText: {
@@ -177,7 +175,7 @@ const styles = StyleSheet.create({
 		borderBottomColor: "rgba(255,255,255,0.15)",
 		borderBottomWidth: 3,
 		textAlign: 'center',
-		fontSize: 40,
+		fontSize: 26,
 		width: '50%',
 		color: theme.white
 	},

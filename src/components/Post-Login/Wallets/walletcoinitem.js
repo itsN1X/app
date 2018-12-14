@@ -12,6 +12,7 @@ export default class WalletCoinItem extends React.Component {
 			Toast.showWithGravity("Coming Soon!", Toast.LONG, Toast.CENTER);
 		}
 	}
+
 	render () {
 		return (
 			<View style={styles.walletItemContainer}>
@@ -24,10 +25,9 @@ export default class WalletCoinItem extends React.Component {
 							</View>
 							<View style={styles.coinAmountContainer}>
 								<Text style={styles.coinAmountText}>{this.props.amount}</Text>
-								<Text style={styles.coinValueText}>{this.props.value}</Text>
+								<Text style={styles.coinValueText}>{"$"+this.props.value}</Text>
 							</View>
 						</View>
-
 					</View>
 				</TouchableOpacity>
 			</View>

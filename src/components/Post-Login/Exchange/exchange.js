@@ -36,7 +36,7 @@ export default class Exchange extends React.Component {
 			pickerEnabled: false,
 			rotated: false,
 			amount: "",
-			rate: "12.3120964",
+			rate: "38.46153",
 			spendable: "0.000000"
 		}
 		this.interchangeCoins = this.interchangeCoins.bind(this);
@@ -73,9 +73,13 @@ export default class Exchange extends React.Component {
 			    duration: 300,
 			    easing: Easing.linear
 			}).start();
+
+
 		}
-		let temp = this.state.pickerFromValue;
-		this.setState({ pickerToValue: temp, pickerFromValue: this.state.pickerToValue, rotated: !this.state.rotated });
+
+    let temp = this.state.pickerFromValue;
+    this.setState({ pickerToValue: temp, pickerFromValue: this.state.pickerToValue, rotated: !this.state.rotated });
+
 	}
 	changeEndPoint() {
 		if(endPoint === 1) {
@@ -104,7 +108,7 @@ export default class Exchange extends React.Component {
 		Actions.pop();
 	}
 	onExchangePress() {
-		Toast.showWithGravity("Coming Soon", Toast.LONG, Toast.CENTER);
+		Toast.showWithGravity("Exchange Feature Coming Soon", Toast.LONG, Toast.CENTER);
 	}
 	render() {
 		const spin = this.spinValue.interpolate({
@@ -150,8 +154,8 @@ export default class Exchange extends React.Component {
 									<TouchableOpacity style={styles.leftCoinContainer} onPress={() => this.enablePicker("from")}>
 										<Text style={styles.coinText}>{this.state.pickerFromValue}</Text>
 									</TouchableOpacity>
-									<TouchableOpacity style={styles.exchangeImageContainer} onPress={this.interchangeCoins}>
-										<Animated.Image style={[styles.exchangeIcon, {transform:[{rotate: spin}]}]} source={{uri: ExchangeIcon}} />
+									<TouchableOpacity style={styles.exchangeImageContainer}>
+										<Animated.Image style={[styles.exchangeIcon]} source={{uri: ExchangeIcon}} />
 									</TouchableOpacity>
 									<TouchableOpacity style={styles.rightCoinContainer} onPress={() => this.enablePicker("to")}>
 										<Text style={styles.coinText}>{this.state.pickerToValue}</Text>
@@ -182,7 +186,7 @@ export default class Exchange extends React.Component {
 							<View style={styles.buttonFlex}>
 								<Text style={styles.disabledText}>{disabledText}</Text>
 								<TouchableOpacity disabled={buttonDisabled} onPress={this.onExchangePress} style = {[styles.buttonStyle, {backgroundColor: theme.dark, opacity: buttonOpacity, height: buttonHeight}]}>
-						            <Text style= {styles.text}>Exchange</Text>
+						            <Text style= {styles.text}>Coming Soon</Text>
 						        </TouchableOpacity>
 							</View>
 							{this.state.pickerEnabled ? <Picker status={this.state.pickerEnabled} changeCoin={this.changeCoin} /> : null}
@@ -211,7 +215,7 @@ const styles = StyleSheet.create({
 	},
 	enterAddressHeading: {
 		flex: 0.3,
-		alignItems: 'flex-start',
+		alignItems: 'center',
 		justifyContent: 'center'
 	},
 	enterAddressText: {
@@ -308,7 +312,7 @@ const styles = StyleSheet.create({
 	},
 	instantRateHeadingText: {
 		fontFamily: theme.Lato,
-		fontSize: 10,
+		fontSize: 12,
 		color: theme.black,
 	},
 	instantRateContainer: {
@@ -319,11 +323,11 @@ const styles = StyleSheet.create({
 	instantRateText: {
 		fontFamily: theme.Lato300,
 		fontWeight: '300',
-		fontSize: 16,
+		fontSize: 14,
 		color: theme.black,
 	},
 	spendableFlex: {
-		flex: 0.34,
+		flex: 0.3,
 		width: '100%',
 		alignItems: 'center',
 		justifyContent: 'flex-end'
@@ -336,7 +340,7 @@ const styles = StyleSheet.create({
 	spendableHeadingText: {
 		fontFamily: theme.Lato,
 		fontWeight: '300',
-		fontSize: 14,
+		fontSize: 12,
 		color: theme.dark,
 	},
 	spendableContainer: {
@@ -347,7 +351,7 @@ const styles = StyleSheet.create({
 	spendableText: {
 		fontFamily: theme.Lato300,
 		fontWeight: '300',
-		fontSize: 28,
+		fontSize: 14,
 		color: theme.dark,
 	},
 	buttonStyle: {

@@ -78,7 +78,6 @@ export default class RecoveryRequests extends React.Component {
                 data: data
             })
             .then(function (response) {
-                console.log(response)
                 if(response.data.flag === 143) {
             		if(response.data.result[0].trust_status == 1 && response.data.result[1].trust_status == 1 && response.data.result[2].trust_status == 1) {
 			        	self.setState({loaded: true, requestList: response.data.result, ready: true})
@@ -102,7 +101,7 @@ export default class RecoveryRequests extends React.Component {
 	}
 	recoverMnemonic() {
 		this.setState({loaded: false}, () => {
-			requestAnimationFrame(() => {Actions.showmnemonic({ privateKey: this.state.newPrivateKey, data: this.state.requestList })}, 0)
+			requestAnimationFrame(() => {Actions.showmnemonic({publicKey:this.state.oldPublicKey, privateKey: this.state.newPrivateKey, data: this.state.requestList })}, 0)
 		});
 	}
 	render() {

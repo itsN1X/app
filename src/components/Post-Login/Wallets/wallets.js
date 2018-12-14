@@ -22,7 +22,8 @@ export default class Wallets extends React.Component {
 		this.state = {
 			loaded: false,
 			activity: "",
-			asset_data: ""
+			asset_data: "",
+			coinData: ""
 		};
 		this.onWalletOpen = this.onWalletOpen.bind(this);
 		this.closeDrawer = this.closeDrawer.bind(this);
@@ -76,6 +77,7 @@ export default class Wallets extends React.Component {
             	}
             	else {
 	            	if(value === 'LoggedIn' || this.props.loggedIn) {
+									this.fetchPrices();
 
 	            		if(!this.props.wallet_id) {
 	            			if(!wallet_id) {
@@ -151,6 +153,25 @@ export default class Wallets extends React.Component {
         var assetData = decryptedMessage;
         this.saveData(assetData);
     }
+
+	fetchPrices(){
+			try {
+				var self = this;
+				axios({
+				    method: 'post',
+				    url: 'http://206.189.137.43:4013/show_all_coins',
+			    })
+			    .then(function (response) {
+			       self.setState({ coinData: response.data.data});
+			    })
+			    .catch(function (error) {
+			    });
+			}
+			catch(error) {
+				alert(error);
+			}
+		}
+
     saveData = async (data) => {
     	try {
            await AsyncStorage.setItem('@BTC',data);
@@ -226,16 +247,10 @@ export default class Wallets extends React.Component {
 						<ScrollView style={{flex: 1, width: '100%'}}>
 							<View style={styles.mainContainer}>
 								<View style={{height: 3}} />
-								<WalletCoinItem lighticon="https://s3.ap-south-1.amazonaws.com/maxwallet-images/Group+378.png" icon="https://s3.ap-south-1.amazonaws.com/maxwallet-images/Group+380.png" name="Bitcoin" value="$5,78,168.98" amount="1.56240001" symbol="BTC" onWalletOpen={this.onWalletOpen} />
-								<View style={{height: 3}} />
-								<WalletCoinItem lighticon="https://s3.ap-south-1.amazonaws.com/maxwallet-images/Group+377.png" icon="https://s3.ap-south-1.amazonaws.com/maxwallet-images/Group+379.png" name="Ethereum" value="$45,400.98" amount="1456.23764882" symbol="ETH" onWalletOpen={this.onWalletOpen} />
-								<View style={{height: 3}} />
-								<WalletCoinItem lighticon="https://s3.ap-south-1.amazonaws.com/maxwallet-images/light_icons/lmonerol.png" icon="https://s3.ap-south-1.amazonaws.com/maxwallet-images/monero.png" name="Monero" value="$13,903.13" amount="12.45227363" symbol="XMR" onWalletOpen={this.onWalletOpen} />
-								<View style={{height: 3}} />
-								<WalletCoinItem lighticon="https://s3.ap-south-1.amazonaws.com/maxwallet-images/gusd_light.png" icon="https://s3.ap-south-1.amazonaws.com/maxwallet-images/gusd_dark.png" name="Gemini Dollar" value="$13,903.13" amount="13.55213236" symbol="GUSD" onWalletOpen={this.onWalletOpen} />
-								<View style={{height: 3}} />
-								<WalletCoinItem lighticon="https://s3.ap-south-1.amazonaws.com/maxwallet-images/dai_light.png" icon="https://s3.ap-south-1.amazonaws.com/maxwallet-images/dai_dark.png" name="Dai" value="$5,78,168.98" amount="12.45233211" symbol="DAI" onWalletOpen={this.onWalletOpen} />
-								<View style={{height: 3}} />
+								{this.state.coinData.map((value, i) => {
+			                         return(<WalletCoinItem key={value.asset_id} symbol={value.asset_symbol} value={value.asset_value} amount={1.23} lighticon={value.asset_icon_light} icon={value.asset_icon_dark} name={value.asset_name} currency={this.state.currency} onWalletOpen={this.onWalletOpen} />);
+			                    })}
+							<View style={{height: 3}} />
 							</View>
 						</ScrollView>
 					</View>

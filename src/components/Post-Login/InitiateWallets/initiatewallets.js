@@ -205,11 +205,9 @@ export default class InitiateWallets extends React.Component {
 					<View style={{alignItems: 'center',justifyContent:'flex-end', flex:1}}>
 						<View style={styles.mainContainer}>
 							<View style={styles.mainHeadingContainer}>
-								<Text style={styles.mainHeadingText}>Initiate Wallets</Text>
+								<Text style={styles.mainHeadingText}>Select Coins</Text>
 							</View>
-							<View style={styles.subHeadingContainer}>
-								<Text style={styles.subHeadingText}>Please Initiate atleast one wallet to get started.</Text>
-							</View>
+
 							{this.state.coinData.map((value, i) => {
 		                         return(<WalletItem key={value.asset_id} symbol={value.asset_symbol} value={value.asset_value} light={value.asset_icon_light} dark={value.asset_icon_dark} name={value.asset_name} currency={this.state.currency} selected={true} />);
 		                    })}
@@ -220,7 +218,7 @@ export default class InitiateWallets extends React.Component {
 				</ScrollView>
 				<View style={styles.buttonContainer}>
 					<TouchableOpacity style={[styles.buttonStyle, {height: buttonHeight}]} onPress={this.activateWallets}>
-						<Text style={styles.getStartedText}>Get Started</Text>
+						<Text style={styles.getStartedText}>Go</Text>
 					</TouchableOpacity>
 				</View>
 			</View>
@@ -249,7 +247,8 @@ const styles = StyleSheet.create({
 		fontFamily: theme.font300,
 		color: theme.dark,
 		fontWeight: '300',
-		fontSize: 40
+		fontSize: 40,
+		marginBottom:35
 	},
 	subHeadingContainer: {
 		height: 80,

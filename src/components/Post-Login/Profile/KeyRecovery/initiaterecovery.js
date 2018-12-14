@@ -81,15 +81,15 @@ export default class InitiateRecovery extends React.Component {
         }
         else {
 			if(this.state.Status === "0") {
-				infoText = "You need to set up Key Recovery First";
-				buttonText = "Setup Recovery";
+				infoText = "Keep your bitcoins safe, forever.";
+				buttonText = "Get Started";
 			}
 			else if(this.state.Status === "1") {
-				infoText = "Continue to complete you Key Recovery";
+				infoText = "Continue to complete youR Key Recovery";
 				buttonText = "Continue Recovery";
 			}
 			else if(this.state.Status === "2"){
-				infoText = "Setup Complete";
+				infoText = "Your coins are safe";
 				buttonText = "Done";
 			}
 		}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, ActivityIndicator, TouchableOpacity, ScrollView, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Dimensions, TextInput, AsyncStorage, Clipboard } from 'react-native';
+import { StyleSheet, BackHandler,Text, View, Image, ActivityIndicator, TouchableOpacity, ScrollView, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Dimensions, TextInput, AsyncStorage, Clipboard } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import Toast from 'react-native-simple-toast';
 import axios from 'axios';
@@ -59,6 +59,20 @@ export default class ChooseFriends extends React.Component {
 			this.getNewKeys();
 		}
 	}
+
+
+	componentDidMount() {
+				BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+		}
+		componentWillUnmount() {
+				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+		}
+		handleBackButton = () =>  {
+		 Actions.popTo('enteremail');
+		 return true;
+		}
+
+
 	getNewKeys() {
 		const keyPair = virgilCrypto.generateKeys();
 		const privateKeyData = virgilCrypto.exportPrivateKey(keyPair.privateKey);
@@ -91,7 +105,7 @@ export default class ChooseFriends extends React.Component {
 		}
 	}
 	goBack() {
-		Actions.pop();
+		Actions.popTo('enteremail');
 	}
 	pushFriendData() {
 		var friends = this.state.friends;
@@ -164,7 +178,7 @@ export default class ChooseFriends extends React.Component {
     };
     onSavePress() {
     	if(this.props.mode==="verify") {
-    		this.setState({loaded: false, activity: "Retrieving Mnemonic Seed"}, () => {
+    		this.setState({loaded: false, activity: "Setting Up Request"}, () => {
 				requestAnimationFrame(() => this.createRecoveryTrustData(), 0);
 			});
 		}
@@ -250,10 +264,9 @@ export default class ChooseFriends extends React.Component {
 	sendRecoveryTrustData(trustData) {
 		const self = this;
 		var userData = {};
-		userData.publicKey = this.state.old_public_key;
-		userData.newPublicKey = this.state.new_public_key;
+		userData.publicKey = self.state.old_public_key;
+		userData.newPublicKey = self.state.new_public_key;
 		userData.trust_data = trustData;
-		console.log(userData);
 		try {
             axios({
                 method: 'post',
@@ -261,11 +274,15 @@ export default class ChooseFriends extends React.Component {
                 data: userData
             })
             .then(function (response) {
-            	console.log(response);
             	if(response.data.flag === 143) {
             		Toast.showWithGravity("Recovery Initiated", Toast.LONG, Toast.CENTER);
-            		self.initiateRecovery();
+            		self.changeRequestRecoveryStatus();
             	}
+
+							else if(response.data.flag === 144) {
+								Toast.showWithGravity(response.data.log, Toast.LONG, Toast.CENTER);
+								Actions.popTo('enteremail');
+							}
             	else {
             		Toast.showWithGravity(response.data.log, Toast.LONG, Toast.CENTER);
             	}
@@ -278,13 +295,14 @@ export default class ChooseFriends extends React.Component {
             console.log(error);
         }
 	}
-	initiateRecovery = async () => {
+	changeRequestRecoveryStatus = async () => {
 		try {
 			await AsyncStorage.setItem('@RecoveryInitiated', "true");
+			Actions.postlogin();
 			Actions.recoveryrequests();
 		}
 		catch(error) {
-			console.log(error);
+			Toast.showWithGravity(error, Toast.LONG, Toast.CENTER);
 		}
 	}
 	onUnfocus() {
@@ -318,15 +336,21 @@ export default class ChooseFriends extends React.Component {
 						<AppStatusBar left={true} Back={Back} leftFunction={this.goBack} bColor={theme.white} elevation={true} center={true} text="Choose Friends" textColor={theme.black} />
 						<ScrollView keyboardShouldPersistTaps="always" style={{flex: 1, width: '100%'}}>
 							<View style={{flex: 1, width: '100%', alignItems: 'center'}}>
-								<View style={styles.friendHeadingFlex}>
-									<View style={styles.friendHeadingContainer}>
-										<Text style={styles.friendHeadingText}>Friend</Text>
-									</View>
-									<View style={styles.friendNumberContainer}>
-										<Text style={styles.friendNumberText}>{this.state.length}/3</Text>
-									</View>
+
+
+						{this.state.friendsAdded ? null : (
+							<View style={styles.friendHeadingFlex}>
+								<View style={styles.friendHeadingContainer}>
+									<Text style={styles.friendHeadingText}>Friend</Text>
 								</View>
-								<View style={styles.emailContainer}>
+								<View style={styles.friendNumberContainer}>
+									<Text style={styles.friendNumberText}>{this.state.length}/3</Text>
+								</View>
+							</View>
+						)}
+
+						{this.state.friendsAdded ? null : (
+							<View style={styles.emailContainer}>
 									<View style={styles.enterEmailHeading}>
 										<Text style={styles.enterEmailText}>Enter Friends Public Address</Text>
 									</View>
@@ -343,13 +367,17 @@ export default class ChooseFriends extends React.Component {
 											underlineColorAndroid='transparent'
 										/>
 									</View>
-								</View>
-								<View style={styles.addButtonFlex}>
-									<TouchableOpacity disabled={this.state.friendsAdded} style={[styles.addButton, {opacity: buttonOpacity}]} onPress={this.onAddPress}>
-										<Text style={styles.addText}>Add</Text>
-									</TouchableOpacity>
-								</View>
-								<View style={[styles.friendsContainer, {minHeight: sectionHeight}]}>
+							</View>
+						)}
+
+						{this.state.friendsAdded ? null : (
+							<View style={styles.addButtonFlex}>
+	 						 <TouchableOpacity disabled={this.state.friendsAdded} style={[styles.addButton, {opacity: buttonOpacity}]} onPress={this.onAddPress}>
+	 							 <Text style={styles.addText}>Add</Text>
+	 						 </TouchableOpacity>
+	 					 </View>
+						)}
+							<View style={[styles.friendsContainer, {minHeight: sectionHeight}]}>
 									<View style={styles.friendsAddedHeadingContainer}>
 										<Text style={styles.friendsAddedHeadingText}>Friends Added for Recovery</Text>
 									</View>
@@ -364,7 +392,7 @@ export default class ChooseFriends extends React.Component {
 											{this.props.mode==="register" ? <Text>Send Request</Text> : <Text>Save</Text>}
 										</Button> : null}
 									</View>
-								</View>
+							</View>
 							</View>
 						</ScrollView>
 					</View>
@@ -446,7 +474,7 @@ const styles = StyleSheet.create({
 	},
 	addButton: {
 		borderWidth: 0.1,
-		borderRadius: 30,
+		borderRadius: 10,
 		backgroundColor: theme.dark
 	},
 	addText: {

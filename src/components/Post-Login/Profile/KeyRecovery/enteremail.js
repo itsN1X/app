@@ -34,17 +34,29 @@ export default class EnterEmail extends React.Component {
 		}
 		else {}
 	}
+
+
 	onUnfocus() {
 		Keyboard.dismiss();
 	}
+
+	validateEmail = (email) => {
+  var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+  };
 	getOTP() {
-		if(this.props.mode==="verify") {
-			this.verifyEmail();
+		if (!this.validateEmail(this.state.email)) {
+		  Toast.showWithGravity('Enter valid email', Toast.LONG, Toast.CENTER)
+		} else {
+			if(this.props.mode==="verify") {
+				this.verifyEmail();
+			}
+			else if(this.props.mode==="register") {
+				this.registerEmail();
+			}
+			else {}
 		}
-		else if(this.props.mode==="register") {
-			this.registerEmail();
-		}
-		else {}
+
 	}
 	getUserPublicKey = async () => {
 		try {
@@ -60,7 +72,7 @@ export default class EnterEmail extends React.Component {
 		var data = {};
 		data.email = self.state.email;
 		console.log(data);
-		try {        
+		try {
             axios({
                 method: 'post',
                 url: 'http://206.189.137.43:4013/send_recovery_otp',
@@ -84,13 +96,15 @@ export default class EnterEmail extends React.Component {
             console.log(error);
         }
 	}
+
+
 	registerEmail() {
 		var self = this;
 		var data = {};
 		data.email = self.state.email;
 		data.wallet_id = self.state.wallet_id;
 		console.log(data);
-		try {        
+		try {
             axios({
                 method: 'post',
                 url: 'http://206.189.137.43:4013/send_otp',

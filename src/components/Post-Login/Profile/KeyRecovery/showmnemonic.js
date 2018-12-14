@@ -35,10 +35,37 @@ export default class ShowMnemonic extends React.Component {
 			this.recoverMnemonic();
 		});
 	}
+
+
 	writeToClipboard = async () => {
 	  	await Clipboard.setString(this.state.mnemonicstr);
 	  	Toast.showWithGravity('Copied to Clipboard!', Toast.LONG, Toast.CENTER);
 	};
+
+	// updateRequestStatus = async () => {
+	// 	var request_id = this.props.data.result[0].request_id;
+	// 	var data = {};
+	// 	data.publicKey = this.props.publicKey;
+	// 	data.requestid = request_id;
+	//
+	// 	try {
+  //   		var self = this;
+  //           axios({
+  //               method: 'post',
+  //               url: 'http://159.65.153.3:7001/recovery_key/update_recovery_request_status',
+  //               data: data
+  //           })
+  //           .then(function (response) {
+  //           this.changeRecoveryStatus();
+  //           })
+  //           .catch(function (error) {
+  //               console.log(error);
+  //           });
+  //       }
+  //       catch(error) {
+  //           alert(error);
+  //       }
+	// }
 	goBack() {
 		this.logout();
 	}
@@ -50,6 +77,7 @@ export default class ShowMnemonic extends React.Component {
   		var mnemonicstr = cryptr.decrypt(comb);
   		mnemonic = mnemonicstr.split(" ",12);
   		this.setState({mnemonicstr: mnemonicstr, mnemonic: mnemonic, loaded: true});
+			// this.updateRequestStatus();
 	}
 	getShares() {
 		var shares = [];
@@ -63,8 +91,9 @@ export default class ShowMnemonic extends React.Component {
 	logout = async () => {
 		try {
 		    await AsyncStorage.clear();
-		    Actions.firstscreen()
-		  } 
+				Actions.prelogin();
+				Actions.auth();
+		  }
 		  catch (error) {
 		    console.log(error)
 		  }
@@ -74,21 +103,18 @@ export default class ShowMnemonic extends React.Component {
 		const privateKey = virgilCrypto.importPrivateKey(privateKeyStr);
 		const decryptedDataStr = virgilCrypto.decrypt(encryptedData, privateKey);
 		var decryptedData =  decryptedDataStr.toString('utf8');
-		if(encryptedData == decryptedData) {
-			console.log("Han")
-		}
-		console.log(decryptedData);
+
 		return decryptedData;
 	}
 	render() {
 		if(!this.state.loaded) {
-            return(<View style={{flex:1, backgroundColor: theme.white}}><BarIndicator color={theme.dark} size={50} count={5} /></View>)     
+            return(<View style={{flex:1, backgroundColor: theme.white}}><BarIndicator color={theme.dark} size={50} count={5} /></View>)
         }
         else {
 			return (
 				<View style={styles.container}>
 					<StatusBar bColor={theme.white} />
-					
+
 					<View style={styles.mainFlex}>
 						<View style={styles.textFlex}>
 							<View style={styles.mainTextContainer}>
@@ -174,7 +200,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	},
 	seedContainer: {
-		position: 'relative', 
+		position: 'relative',
 		flex: 0.8,
 		width: Dimensions.get('window').width,
 		backgroundColor: theme.grey,

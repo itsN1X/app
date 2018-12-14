@@ -68,9 +68,6 @@ export default class CreatePin extends React.Component {
 		    			<Text style={styles.headingText}>
 		    				Create Pin
 		    			</Text>
-		    			<Text style={styles.subHeadingText}>
-		    				Enter 4 Digit Pin
-		    			</Text>
 		    		</View>
 		    		<View style={styles.pinContainer}>
 		    			<TextInput
@@ -82,6 +79,7 @@ export default class CreatePin extends React.Component {
 		    				value={this.state.pinCode}
 		    				maxLength={4}
 		    				placeholderTextColor="rgba(255,255,255,0.15)"
+								placeholder="****"
 		    				onChangeText={(text) => this.setState({pinCode: text})}
 		    			/>
 		    		</View>
@@ -115,7 +113,7 @@ const styles = StyleSheet.create({
 	headingText: {
 		fontFamily: theme.font300,
 		fontWeight: '400',
-		fontSize: 32,
+		fontSize: 24,
 		color: theme.white
 	},
 	subHeadingText: {
@@ -136,7 +134,7 @@ const styles = StyleSheet.create({
 		borderBottomColor: "rgba(255,255,255,0.15)",
 		borderBottomWidth: 3,
 		textAlign: 'center',
-		fontSize: 40,
+		fontSize: 26,
 		width: '50%',
 		color: theme.white
 	},
@@ -146,6 +144,9 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 25,
 		alignItems: 'center',
 		justifyContent: 'center'
+	},
+	toolTip:{
+		color:theme.white
 	},
 	goIcon: {
 		width: 55,

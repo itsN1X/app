@@ -91,7 +91,7 @@ export default class EnterPin extends React.Component {
 								this.logout();
 							}
 							else{
-								Toast.showWithGravity('Attemt Left: '+ (5 - wrongPinCount), Toast.LONG, Toast.CENTER);
+								Toast.showWithGravity('Attemt Left: '+ (10 - wrongPinCount), Toast.LONG, Toast.CENTER);
 
 							}
 						}
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
 	headingText: {
 		fontFamily: theme.font300,
 		fontWeight: '400',
-		fontSize: 32,
+		fontSize: 24,
 		color: theme.white
 	},
 	subHeadingText: {
@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
 		borderBottomColor: "rgba(255,255,255,0.15)",
 		borderBottomWidth: 3,
 		textAlign: 'center',
-		fontSize: 40,
+		fontSize: 26,
 		width: '50%',
 		color: theme.white
 	},
