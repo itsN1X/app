@@ -156,7 +156,7 @@ export default class Profile extends React.Component {
 							<View style={styles.addressFlex}>
 								<View style={styles.addressContainer}>
 									<View style={styles.addressHeadingContainer}>
-										<Text style={styles.addressHeadingText}>Coinsafe handle</Text>
+										<Text style={styles.addressHeadingText}>Coinsafe Handle</Text>
 										<View style={styles.copyIconContainer}>
 											<TouchableOpacity onPress={() => this.copyToClipboard(this.state.username)}>
 												<Image style={styles.copyIcon} source={{uri: Copy}} />

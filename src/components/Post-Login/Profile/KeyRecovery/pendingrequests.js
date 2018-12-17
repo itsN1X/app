@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, ActivityIndicator, ScrollView, TouchableOpacity, Dimensions, KeyboardAvoidingView, Clipboard, AsyncStorage } from 'react-native';
+import { StyleSheet, Text, View, Image, Platform, ActivityIndicator, ScrollView, TouchableOpacity, Dimensions, KeyboardAvoidingView, Clipboard, AsyncStorage } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import axios from 'axios';
 import Loader from '../../../common/loader';
@@ -146,6 +146,19 @@ export default class PendingRequests extends React.Component {
 				               return(<View style={{height: 141, width: '100%', alignItems: 'center'}} key={i}><RequestItem onCopy={this.writeToClipboard} from_public_key={value.from_public_key} user_public_key={value.user_public_key} secret={value.secret} date={value.logged_on} new_public_key={value.new_public_key} request_id={value.request_id} /><View style={styles.line} /></View>);
 				             })}
 						</View>
+						<View style={styles.pendingRequestsContainer}>
+							<Text style={styles.pendingRequestsTitle}> Pending Requests </Text>
+							<View style={styles.requestwrapper}>
+								<View style={styles.leftflex}>
+									<Text style={styles.name}> @naman </Text>
+									<Text style={styles.date}> 22-07-2018 </Text>
+								</View>
+								<View style={styles.rightflex}>
+									<Text style={styles.reject}> X </Text>
+									<Text style={styles.accept}> 7 </Text>
+								</View>
+							</View>
+						</View>
 					</ScrollView>
 				</View>
 			);
@@ -171,5 +184,28 @@ const styles = StyleSheet.create({
 		height: 1,
 		width: '100%',
 		backgroundColor: theme.grey
+	},
+	pendingRequestsContainer : {
+		paddingVertical:20,
+		paddingHorizontal:10
+	},
+	pendingRequestsTitle : {
+		fontFamily: theme.font500,
+		fontWeight: Platform.OS === 'ios' ? '500' : '400',
+		fontSize: 24
+	},
+	requestwrapper : {
+		flexDirection:'row',
+		alignItems:'center'
+	},
+	name : {
+		fontSize:20
+	},
+	leftflex : {
+		flex:1
+	},
+	rightflex : {
+		flexDirection:'row',
+		alignItems:'center'
 	}
 });
