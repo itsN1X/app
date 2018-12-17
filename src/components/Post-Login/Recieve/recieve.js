@@ -25,8 +25,7 @@ export default class Recieve extends React.Component {
 		};
 	}
 	goBack() {
-		Actions.postlogintabs();
-		Actions.wallets();
+		Actions.pop();
 	}
 	changeAddress() {
 		Actions.addresses();
@@ -43,8 +42,7 @@ export default class Recieve extends React.Component {
 				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
 		}
 		handleBackButton = () =>  {
-		 Actions.postlogintabs();
- 		 Actions.wallets();
+		 Actions.pop();
 		 return true;
 		}
 

@@ -16,7 +16,7 @@ export default class WalletItem extends React.Component {
 	componentWillMount() {
 		this.setState({ Icon: this.props.dark });
 
-		if(this.props.name == "bitcoin") {
+		if(this.props.name == "Bitcoin") {
 			this.setState({ selected: true, Icon: this.props.light })
 		}
 	}

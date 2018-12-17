@@ -173,7 +173,7 @@ export default class Profile extends React.Component {
 							<TouchableOpacity style={styles.otherTabFlex} onPress={this.gotoViewKeys}>
 								<View style={styles.otherTabContainer}>
 									<View style={styles.tabHeadingFlex}>
-										<Text style={styles.tabheadingText}>View Keys</Text>
+										<Text style={styles.tabheadingText}>Display Private Keys</Text>
 									</View>
 									<View style={styles.tabActionFlex}>
 										<View style={styles.tabAction}>
@@ -190,7 +190,7 @@ export default class Profile extends React.Component {
 							<TouchableOpacity style={styles.otherTabFlex} onPress={this.gotoBackupPhrase}>
 								<View style={styles.otherTabContainer}>
 									<View style={styles.tabHeadingFlex}>
-										<Text style={styles.tabheadingText}>Backup Phrase</Text>
+										<Text style={styles.tabheadingText}>Backup Wallet</Text>
 									</View>
 									<View style={styles.tabActionFlex}>
 										<View style={styles.tabAction}>
@@ -225,7 +225,7 @@ export default class Profile extends React.Component {
 							<TouchableOpacity style={styles.otherTabFlex} onPress={this.changePin}>
 								<View style={styles.otherTabContainer}>
 									<View style={styles.tabHeadingFlex}>
-										<Text style={styles.tabheadingText}>PIN Change</Text>
+										<Text style={styles.tabheadingText}>Change PIN</Text>
 									</View>
 									<View style={styles.tabActionFlex}>
 										<View style={styles.tabAction}>

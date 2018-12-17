@@ -46,7 +46,7 @@ export default class EnterEmail extends React.Component {
   };
 	getOTP() {
 		if (!this.validateEmail(this.state.email)) {
-		  Toast.showWithGravity('Enter valid email', Toast.LONG, Toast.CENTER)
+		  Toast.showWithGravity('Enter valid email address', Toast.LONG, Toast.CENTER)
 		} else {
 			if(this.props.mode==="verify") {
 				this.verifyEmail();
@@ -137,7 +137,7 @@ export default class EnterEmail extends React.Component {
 					<View style={styles.upperFlex}>
 						<View style={styles.emailContainer}>
 							<View style={styles.enterEmailHeading}>
-								<Text style={styles.enterEmailText}>Enter Your Email ID</Text>
+								<Text style={styles.enterEmailText}>Enter Your Email Address</Text>
 							</View>
 							<View style={styles.emailInput}>
 								<TextInput
@@ -155,7 +155,7 @@ export default class EnterEmail extends React.Component {
 					<View style={styles.lowerFlex}>
 						<KeyboardAvoidingView keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 35} behavior={'padding'} style={{width: '100%', alignItems: 'center'}}>
 							<Button bColor = {theme.dark} onPress={this.getOTP}>
-								<Text style={styles.nextText}>Get OTP</Text>
+								<Text style={styles.nextText}>Send Verification Code</Text>
 							</Button>
 						</KeyboardAvoidingView>
 					</View>

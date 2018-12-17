@@ -8,6 +8,8 @@ import bip39 from 'react-native-bip39';
 import theme from '../common/theme';
 import Button from '../common/button';
 
+let bgImage ="https://s3.ap-south-1.amazonaws.com/maxwallet-images/coinsafeBg.png";
+let logoImage = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/logoLight.png";
 var backCount = 0;
 export default class FirstScreen extends React.Component {
 	constructor(props) {
@@ -16,6 +18,8 @@ export default class FirstScreen extends React.Component {
 			loaded: true,
 		};
 	}
+
+
 	componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
     }
@@ -48,9 +52,9 @@ export default class FirstScreen extends React.Component {
         else {
 			return (
 				<View style={styles.container}>
-					<ImageBackground style={styles.bgImage} source={{uri: "https://s3.ap-south-1.amazonaws.com/maxwallet-images/coinsafeBg.png"}}>
+					<ImageBackground style={styles.bgImage}  source={{uri: bgImage}}>
 						<View style={styles.logoFlex}>
-							<Image style={styles.logoImage} source={{uri: "https://s3.ap-south-1.amazonaws.com/maxwallet-images/logoLight.png"}} />
+							<Image style={styles.logoImage} source={{uri: logoImage}} />
 						</View>
 						<View style={styles.emptyFlex} />
 						<View style={styles.buttonsFlex}>
@@ -62,7 +66,7 @@ export default class FirstScreen extends React.Component {
 								</View>
 								<View style={styles.walletButton}>
 									<TouchableOpacity style={styles.restoreWalletButton} onPress={this.gotoRestore}>
-										<Text style={styles.restoreWalletText}>Restore</Text>
+										<Text style={styles.restoreWalletText}>Recover</Text>
 									</TouchableOpacity>
 								</View>
 							</View>

@@ -133,11 +133,11 @@ export default class EnterOTP extends React.Component {
 			return (
 				<View style={styles.container}>
 					<StatusBar bColor={theme.dark} />
-					<AppStatusBar bColor={theme.dark} left={true} Back={Back} leftFunction={this.goBack} center={true} text="Setup Recovery" textColor={theme.white} />
+					<AppStatusBar bColor={theme.dark} left={true} Back={Back} leftFunction={this.goBack} center={true} text="Set Up Recovery" textColor={theme.white} />
 					<View style={styles.upperFlex}>
 						<View style={styles.emailContainer}>
 							<View style={styles.enterEmailHeading}>
-								<Text style={styles.enterEmailText}>Enter OTP</Text>
+								<Text style={styles.enterEmailText}>Enter Verification Code</Text>
 							</View>
 							<View style={styles.enterEmailHeading}>
 								<Text style={styles.otpText}>{this.props.otp}</Text>

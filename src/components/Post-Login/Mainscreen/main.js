@@ -128,16 +128,7 @@ export default class Main extends Component {
             })
             .then(function (response) {
                const balance = (response.data.result.wallet.final_balance / 100000000);
-
-               if(balance == 0){
-                 self.setState({ address: coinData.address,balance: balance});
-                 self.receiveCoins();
-               }
-
-               else {
                  self.setState({ address: coinData.address, privateKey: coinData.privateKey, balance: balance, receiving: false, loaded: true, transactions: response.data.result.txs, receiving: false, utxo: response.data.utxo, loaded: true });
-
-               }
 
             })
             .catch(function (error) {
@@ -153,7 +144,7 @@ export default class Main extends Component {
             const value = await AsyncStorage.getItem('@BTC');
             var coinData = JSON.parse(value);
             this.getBalance(coinData);
-        } 
+        }
       catch(error) {
             alert(error)
         }
@@ -218,34 +209,42 @@ export default class Main extends Component {
                                         <Text style={styles.amountText}>{this.state.balance}</Text>
                                     </View>
                                     <View style={styles.valueFlex}>
-                                        <Text style={styles.valueText}>INR {this.state.currencyValue}</Text>
+                                        <Text style={styles.valueText}>${this.state.currencyValue}</Text>
                                     </View>
                                 </View>
                                 <TouchableOpacity style={styles.refreshContainer} onPress={this.onRefresh}>
                                     <Animated.Image style={[styles.refreshIcon, {transform:[{rotate: spin}]}]} source={{uri: Refresh}} />
                                 </TouchableOpacity>
                             </ImageBackground>
-                            <View style={styles.sendRecieve}>
-                                <TouchableOpacity onPress={this.receiveCoins} style={styles.recieveButtonContainer}>
-                                    <ElevatedView elevation={0} style={styles.recieveButton}>
-                                        <Text style={styles.recieveText}>Receive</Text>
-                                    </ElevatedView>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={this.sendCoins} style={styles.sendButtonContainer}>
-                                    <ElevatedView elevation={0} style={styles.sendButton}>
-                                        <Text style={styles.sendText}>Send</Text>
-                                    </ElevatedView>
-                                </TouchableOpacity>
-                            </View>
+
+
+                              <View style={styles.sendRecieve}>
+                                  <TouchableOpacity onPress={this.receiveCoins} style={styles.recieveButtonContainer}>
+                                      <ElevatedView elevation={0} style={styles.recieveButton}>
+                                          <Text style={styles.recieveText}>Receive</Text>
+                                      </ElevatedView>
+                                  </TouchableOpacity>
+                                  <TouchableOpacity onPress={this.sendCoins} style={styles.sendButtonContainer}>
+                                      <ElevatedView elevation={0} style={styles.sendButton}>
+                                          <Text style={styles.sendText}>Send</Text>
+                                      </ElevatedView>
+                                  </TouchableOpacity>
+                              </View>
+
+
                         <TransactionHistory transactions={this.state.transactions} symbol={this.state.currencySymbol} />
-                        <View style={styles.viewMoreContainer}>
-                            <TouchableOpacity onPress={this.openTransactions}>
-                                <Text style={styles.viewMoreText}>
-                                    View More
-                                </Text>
-                            </TouchableOpacity>
-                            <View style={styles.line} />
-                        </View>
+
+                        {this.state.balance == 0 ? null : (
+                          <View style={styles.viewMoreContainer}>
+                              <TouchableOpacity onPress={this.openTransactions}>
+                                  <Text style={styles.viewMoreText}>
+                                      View More
+                                  </Text>
+                              </TouchableOpacity>
+                              <View style={styles.line} />
+                          </View>
+                        )}
+
                 </Animated.View>
             </Drawer>
             );

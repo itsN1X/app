@@ -333,7 +333,7 @@ export default class ChooseFriends extends React.Component {
 			return (
 					<View style={styles.container}>
 						<StatusBar />
-						<AppStatusBar left={true} Back={Back} leftFunction={this.goBack} bColor={theme.white} elevation={true} center={true} text="Choose Friends" textColor={theme.black} />
+						<AppStatusBar left={true} Back={Back} leftFunction={this.goBack} bColor={theme.white} elevation={true} center={true} text="Add Trusted Devices" textColor={theme.black} />
 						<ScrollView keyboardShouldPersistTaps="always" style={{flex: 1, width: '100%'}}>
 							<View style={{flex: 1, width: '100%', alignItems: 'center'}}>
 
@@ -341,7 +341,7 @@ export default class ChooseFriends extends React.Component {
 						{this.state.friendsAdded ? null : (
 							<View style={styles.friendHeadingFlex}>
 								<View style={styles.friendHeadingContainer}>
-									<Text style={styles.friendHeadingText}>Friend</Text>
+									<Text style={styles.friendHeadingText}>Added Devices</Text>
 								</View>
 								<View style={styles.friendNumberContainer}>
 									<Text style={styles.friendNumberText}>{this.state.length}/3</Text>
@@ -352,7 +352,7 @@ export default class ChooseFriends extends React.Component {
 						{this.state.friendsAdded ? null : (
 							<View style={styles.emailContainer}>
 									<View style={styles.enterEmailHeading}>
-										<Text style={styles.enterEmailText}>Enter Friends Public Address</Text>
+										<Text style={styles.enterEmailText}>Enter Trusted Device Username</Text>
 									</View>
 									<View style={styles.emailInput}>
 										<TextInput
@@ -379,17 +379,15 @@ export default class ChooseFriends extends React.Component {
 						)}
 							<View style={[styles.friendsContainer, {minHeight: sectionHeight}]}>
 									<View style={styles.friendsAddedHeadingContainer}>
-										<Text style={styles.friendsAddedHeadingText}>Friends Added for Recovery</Text>
+										<Text style={styles.friendsAddedHeadingText}>Devices Added for Recovery</Text>
 									</View>
 									{this.state.friends.map((value, i) => {
 				                         return(<FriendItem key={value.id} address={value.friendsHandle} id={value.id} onCopy={this.writeToClipboard} />);
 									})}
-									<View style={styles.saveNoteContainer}>
-										<Text style={styles.saveNoteText}>Please save all Public keys, you will need them while recovering</Text>
-									</View>
+
 									<View style={styles.saveButtonContainer}>
 										{this.state.friendsAdded ? <Button bColor = {theme.dark} onPress={this.onSavePress}>
-											{this.props.mode==="register" ? <Text>Send Request</Text> : <Text>Save</Text>}
+											{this.props.mode==="register" ? <Text>Confirm</Text> : <Text>Save</Text>}
 										</Button> : null}
 									</View>
 							</View>

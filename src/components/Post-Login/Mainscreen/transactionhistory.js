@@ -21,15 +21,18 @@ export default class TransactionHistory extends Component {
         return (
             <View style={styles.TransactionHistoryWrapper}>
                 <View>
-                    <Text style={styles.heading}> Transaction History  </Text>
+                    <Text style={styles.heading}> {this.state.transactions.length == 0 ? "No Transactions":"Transaction History"}</Text>
                 </View>
                 <ScrollView>
                     <View>
-                        <View style={styles.transactionHeading}>
-                            <View style={{width: 16, height: 14}} />
-                            <Text style={styles.nameHeading}>Transaction ID</Text>
-                            <Text style={styles.amountHeading}>Amount ({this.props.symbol})</Text>
-                        </View>
+                     {this.state.transactions.length == 0 ? null : (
+                       <View style={styles.transactionHeading}>
+                           <View style={{width: 16, height: 14}} />
+                           <Text style={styles.nameHeading}>Transaction ID</Text>
+                           <Text style={styles.amountHeading}>Amount ({this.props.symbol})</Text>
+                       </View>
+                     )}
+
                         {this.state.transactions.map((value, i) => {
                             var status;
                             var id = value.hash;

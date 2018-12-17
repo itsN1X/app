@@ -118,8 +118,7 @@ export default class InitiateWallets extends React.Component {
 			this.updateGuardianStatus();
 		}
 		Actions.postlogintabs();
-		Actions.wallets();
-		Actions.refresh({new: true, user_data: this.state.userDetails, loggedIn: true, wallet_id: data.wallet_id, coin_data: encryptedData});
+		Actions.wallets({new: true,coinData:this.state.coinData, user_data: this.state.userDetails, loggedIn: true, wallet_id: data.wallet_id, coin_data: encryptedData});
 	}
 
 	updateGuardianStatus = async () => {
