@@ -6,7 +6,7 @@ import StatusBar from '../common/statusbar';
 import AppStatusBar from '../common/appstatusbar';
 import Button from '../common/button';
 
-const Getstarted = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/wallet_tab.png";
+const Getstarted = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/getStarted.png";
 
 export default class GetStarted extends React.Component {
 	constructor(props) {
@@ -41,10 +41,11 @@ export default class GetStarted extends React.Component {
 				<AppStatusBar bColor={theme.dark} center={true} text="Get Started" textColor={theme.white} />
 				<View style={styles.contentContainer}>
 					<Image style={styles.centerImage} source={{uri: Getstarted}} />
+					<Text style={styles.subtext}>Want to send and receive bitcoin & other cryptocurrencies?</Text>
 				</View>
 				<View style={styles.buttonContainer}>
 					<Button bColor = {theme.dark} onPress={this.gotoSetupRecovery}>
-						<Text>Initialize</Text>
+						<Text>Get Started</Text>
 					</Button>
 				</View>
 			</View>
@@ -63,8 +64,8 @@ const styles = StyleSheet.create({
 	    alignItems: 'center'
 	},
 	centerImage: {
-		width: 100,
-		height: 100
+		width: 150,
+		height: 150
 	},
 	centerText: {
 		fontFamily: theme.font500,
@@ -79,5 +80,13 @@ const styles = StyleSheet.create({
 		width: '100%',
 		alignItems: 'center',
 		bottom: 15
+	},
+	subtext : {
+		fontFamily: theme.font500,
+		fontSize: 16,
+		textAlign: 'center',
+		color: theme.dark,
+		opacity:0.5,
+		marginTop:10
 	}
 });

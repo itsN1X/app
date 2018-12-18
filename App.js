@@ -7,6 +7,7 @@
  */
 import React, {Component} from 'react';
 import {View , Image , Text} from 'react-native';
+import SplashScreen from 'react-native-splash-screen';
 import Router from './src/router';
 import NotificationUtils from './src/components/common/notificationutils';
 var MessageBarAlert = require('react-native-message-bar').MessageBar;
@@ -20,6 +21,7 @@ export default class App extends Component {
 	  // This MessageBar will be accessible from the current (same) component, and from its child component
 	  // The MessageBar is then declared only once, in your main component.
 	  MessageBarManager.registerMessageBar(this.refs.alert);
+		SplashScreen.hide();
 	}
 
 	componentWillUnmount() {
