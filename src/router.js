@@ -182,7 +182,7 @@ const RequestsIcon = ({ focused }) => {
 		<View>
 			<View style={[styles.navBarIconContainer, {opacity: Opacity}]}>
 				<Image style={styles.navBarIcon} source={{uri: requests}} />
-				<Text style={styles.navBarText}>Requests</Text>
+				<Text style={styles.navBarText}>Home</Text>
 			</View>
 		</View>
 	);

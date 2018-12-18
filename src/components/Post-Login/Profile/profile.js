@@ -156,16 +156,16 @@ export default class Profile extends React.Component {
 							<View style={styles.addressFlex}>
 								<View style={styles.addressContainer}>
 									<View style={styles.addressHeadingContainer}>
-										<Text style={styles.addressHeadingText}>Coinsafe Handle</Text>
+										<View style={styles.personAddressContainer}>
+											<Text style={styles.addressText}>@{this.state.username}</Text>
+										</View>
 										<View style={styles.copyIconContainer}>
 											<TouchableOpacity onPress={() => this.copyToClipboard(this.state.username)}>
 												<Image style={styles.copyIcon} source={{uri: Copy}} />
 											</TouchableOpacity>
 										</View>
 									</View>
-									<View style={styles.personAddressContainer}>
-										<Text style={styles.addressText}>@{this.state.username}</Text>
-									</View>
+
 								</View>
 							</View>
 							<View style={styles.greyline} />
@@ -225,7 +225,7 @@ export default class Profile extends React.Component {
 							<TouchableOpacity style={styles.otherTabFlex} onPress={this.changePin}>
 								<View style={styles.otherTabContainer}>
 									<View style={styles.tabHeadingFlex}>
-										<Text style={styles.tabheadingText}>Change PIN</Text>
+										<Text style={styles.tabheadingText}>PIN Change</Text>
 									</View>
 									<View style={styles.tabActionFlex}>
 										<View style={styles.tabAction}>
@@ -287,12 +287,13 @@ const styles = StyleSheet.create({
 	},
 	addressContainer: {
 		width: '90%',
-		flex: 1
+		flex: 1,
+		alignItems: 'center',
+		justifyContent:'center'
 	},
 	addressHeadingContainer: {
-		flex: 0.35,
 		flexDirection: 'row',
-		alignItems: 'flex-end'
+		alignItems: 'center',
 	},
 	addressHeadingText: {
 		fontFamily: theme.font,
@@ -319,7 +320,7 @@ const styles = StyleSheet.create({
 	addressText: {
 		fontFamily: theme.Lato,
 		fontWeight: '300',
-		fontSize: 15,
+		fontSize: 20,
 		color: theme.black
 	},
 	otherTabFlex: {
