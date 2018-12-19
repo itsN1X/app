@@ -210,7 +210,7 @@ const RouterComponent = () => {
 		<Router>
 			<Scene key="root">
 				<Scene key="prelogin" hideNavBar panHandlers={null}>
-					<Scene key="auth" component={Auth} hideNavBar panHandlers={null} initial/>
+					<Scene key="auth" component={Auth} hideNavBar panHandlers={null}/>
 					<Scene key="walletaddress" component={WalletAddress}  hideNavBar panHandlers={null} />
 					<Scene key="firstscreen" component={FirstScreen} hideNavBar panHandlers={null} />
 					<Scene key="username" component={Username} hideNavBar panHandlers={null} />
@@ -222,9 +222,8 @@ const RouterComponent = () => {
 					<Scene key="enteremail" component={EnterEmail} panHandlers={null} hideNavBar />
 					<Scene key="enterotp" component={EnterOTP} panHandlers={null} hideNavBar />
 					<Scene key="choosefriends" component={ChooseFriends} panHandlers={null} hideNavBar />
-					<Scene key="dummy" component={Dummy} hideNavBar panHandlers={null} />
+					<Scene key="dummy" component={Dummy} hideNavBar panHandlers={null} initial/>
 					<Scene key="keychain" component={KeychainExample} hideNavBar panHandlers={null} />
-
 				</Scene>
 				<Scene key="postlogin" panHandlers={null} hideNavBar>
 				<Scene key="recoveryrequests" component={RecoveryRequests} hideNavBar panHandlers={null} />
