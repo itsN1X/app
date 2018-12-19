@@ -13,14 +13,14 @@ export default class FriendItem extends React.Component {
 			<View style={styles.itemContainer}>
 				<View style={styles.friendHeadingContainer}>
 					<View>
-						<Text style={styles.friendHeadingText}>Friend {this.props.id}</Text>
+						<Text style={styles.friendHeadingText}>Device {this.props.id}</Text>
 					</View>
-					<TouchableOpacity style={styles.copyIconContainer} onPress={() => this.copyToClipboard(this.props.address)}>
+					{/*<TouchableOpacity style={styles.copyIconContainer} onPress={() => this.copyToClipboard(this.props.address)}>
 						<Image style={styles.copyIcon} source={{uri: Copy}} />
-					</TouchableOpacity>
+						</TouchableOpacity>*/}
 				</View>
 				<View style={styles.friendAddressContainer}>
-					<Text style={styles.friendAddressText}>{this.props.address}</Text>
+					<Text style={styles.friendAddressText}>@{this.props.address}</Text>
 				</View>
 			</View>
 		);

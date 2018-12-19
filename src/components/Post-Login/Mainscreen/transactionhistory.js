@@ -20,7 +20,7 @@ export default class TransactionHistory extends Component {
     render() {
         return (
             <View style={styles.TransactionHistoryWrapper}>
-                <View>
+                <View style={{alignItems:"center",justifyContent:"center"}}>
                     <Text style={styles.heading}> {this.state.transactions.length == 0 ? "No Transactions":"Transaction History"}</Text>
                 </View>
                 <ScrollView>

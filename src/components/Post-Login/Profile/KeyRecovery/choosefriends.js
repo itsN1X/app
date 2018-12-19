@@ -133,12 +133,12 @@ export default class ChooseFriends extends React.Component {
 		const friends = this.state.friends;
 		for(i = 0; i < friends.length; i++) {
 			if(this.state.address === friends[i].address) {
-				Toast.showWithGravity('Friend Already Added!', Toast.LONG, Toast.CENTER);
+				Toast.showWithGravity('Device Already Added!', Toast.LONG, Toast.CENTER);
 				return true;
 			}
 		}
 		if(this.state.address === this.state.publicKey) {
-			Toast.showWithGravity('Invalid Friend!', Toast.LONG, Toast.CENTER);
+			Toast.showWithGravity('Invalid Device!', Toast.LONG, Toast.CENTER);
 		}
 		if(friends.length === 3) {
 			self.setState({friendsAdded: true});

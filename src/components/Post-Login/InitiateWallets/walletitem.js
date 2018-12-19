@@ -105,10 +105,10 @@ const styles = StyleSheet.create({
 	},
 	coinPriceText: {
 		flex: 0.8,
-		fontFamily: theme.Lato300,
+		fontFamily: theme.font,
 		fontWeight: '300',
 		color: theme.dark,
-		fontSize: 22,
+		fontSize: 20,
 		marginBottom: 12
 	},
 	selectedImageContainer: {

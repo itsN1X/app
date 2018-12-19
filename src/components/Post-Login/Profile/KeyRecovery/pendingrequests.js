@@ -15,8 +15,8 @@ const virgilCrypto = new VirgilCrypto.VirgilCrypto();
 
 var Back = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/lightback.png";
 
-var Unconfirmed = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/reject.png";
-var Confirmed = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/accept.png";
+var Unconfirmed = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/new/reject.png";
+var Confirmed = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/new/accept.png";
 var Protected = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/confirmed.png";
 
 export default class PendingRequests extends React.Component {
@@ -155,7 +155,7 @@ export default class PendingRequests extends React.Component {
 								<Text style={styles.pendingRequestsTitle}> Pending Requests </Text>
 							</View>
 							<View style={styles.requestwrapper}>
-								<View style={styles.leftflex}>
+								<View style={styles.topflex}>
 									<View style={styles.namewrap}>
 										<Text style={styles.symbol}>@</Text>
 										<Text style={styles.name}>naman</Text>
@@ -165,24 +165,30 @@ export default class PendingRequests extends React.Component {
 										<Text style={styles.date}>22-07-2018 </Text>
 									</View>
 								</View>
-								<View style={styles.rightflex}>
+								<View style={styles.bottomflex}>
 									<TouchableOpacity style={styles.reject}>
-										<Image
-											style={{width: 40, height: 40, opacity:0.5}}
-											source={{uri: Unconfirmed}}
-										/>
+										<View style={styles.rejectIconWrapper}>
+											<Image
+												style={styles.rejectIcon}
+												source={{uri: Unconfirmed}}
+											/>
+											<Text style={styles.rejectText}>Ignore</Text>
+										</View>	
 									</TouchableOpacity>
 									<TouchableOpacity style={styles.accept}>
-										<Image
-											style={{width: 40, height: 40, opacity:0.5}}
-											source={{uri: Confirmed}}
-										/>
+										<View style={styles.acceptIconWrapper}>
+											<Image
+												style={styles.acceptIcon}
+												source={{uri: Confirmed}}
+											/>
+											<Text style={styles.acceptText}>Accept</Text>
+										</View>	
 									</TouchableOpacity>
 								</View>
 							</View>
 
 							<View style={styles.requestwrapper}>
-								<View style={styles.leftflex}>
+								<View style={styles.topflex}>
 									<View style={styles.namewrap}>
 										<Text style={styles.symbol}>@</Text>
 										<Text style={styles.name}>naman</Text>
@@ -192,24 +198,30 @@ export default class PendingRequests extends React.Component {
 										<Text style={styles.date}>22-07-2018 </Text>
 									</View>
 								</View>
-								<View style={styles.rightflex}>
+								<View style={styles.bottomflex}>
 									<TouchableOpacity style={styles.reject}>
-										<Image
-										style={{width: 40, height: 40, opacity:0.5}}
-											source={{uri: Unconfirmed}}
-										/>
+										<View style={styles.rejectIconWrapper}>
+											<Image
+												style={styles.rejectIcon}
+												source={{uri: Unconfirmed}}
+											/>
+											<Text style={styles.rejectText}>Ignore</Text>
+										</View>	
 									</TouchableOpacity>
 									<TouchableOpacity style={styles.accept}>
-										<Image
-										style={{width: 40, height: 40, opacity:0.5}}
-											source={{uri: Confirmed}}
-										/>
+										<View style={styles.acceptIconWrapper}>
+											<Image
+												style={styles.acceptIcon}
+												source={{uri: Confirmed}}
+											/>
+											<Text style={styles.acceptText}>Accept</Text>
+										</View>	
 									</TouchableOpacity>
 								</View>
 							</View>
 
 							<View style={styles.requestwrapper}>
-								<View style={styles.leftflex}>
+								<View style={styles.topflex}>
 									<View style={styles.namewrap}>
 										<Text style={styles.symbol}>@</Text>
 										<Text style={styles.name}>naman</Text>
@@ -219,24 +231,30 @@ export default class PendingRequests extends React.Component {
 										<Text style={styles.date}>22-07-2018 </Text>
 									</View>
 								</View>
-								<View style={styles.rightflex}>
+								<View style={styles.bottomflex}>
 									<TouchableOpacity style={styles.reject}>
-										<Image
-										style={{width: 40, height: 40, opacity:0.5}}
-											source={{uri: Unconfirmed}}
-										/>
+										<View style={styles.rejectIconWrapper}>
+											<Image
+												style={styles.rejectIcon}
+												source={{uri: Unconfirmed}}
+											/>
+											<Text style={styles.rejectText}>Ignore</Text>
+										</View>	
 									</TouchableOpacity>
 									<TouchableOpacity style={styles.accept}>
-										<Image
-										style={{width: 40, height: 40, opacity:0.5}}
-											source={{uri: Confirmed}}
-										/>
+										<View style={styles.acceptIconWrapper}>
+											<Image
+												style={styles.acceptIcon}
+												source={{uri: Confirmed}}
+											/>
+											<Text style={styles.acceptText}>Accept</Text>
+										</View>	
 									</TouchableOpacity>
 								</View>
 							</View>
 
 							<View style={styles.requestwrapper}>
-								<View style={styles.leftflex}>
+								<View style={styles.topflex}>
 									<View style={styles.namewrap}>
 										<Text style={styles.symbol}>@</Text>
 										<Text style={styles.name}>naman</Text>
@@ -246,23 +264,28 @@ export default class PendingRequests extends React.Component {
 										<Text style={styles.date}>22-07-2018 </Text>
 									</View>
 								</View>
-								<View style={styles.rightflex}>
+								<View style={styles.bottomflex}>
 									<TouchableOpacity style={styles.reject}>
-										<Image
-										style={{width: 40, height: 40, opacity:0.5}}
-
-											source={{uri: Unconfirmed}}
-										/>
+										<View style={styles.rejectIconWrapper}>
+											<Image
+												style={styles.rejectIcon}
+												source={{uri: Unconfirmed}}
+											/>
+											<Text style={styles.rejectText}>Ignore</Text>
+										</View>	
 									</TouchableOpacity>
 									<TouchableOpacity style={styles.accept}>
-										<Image
-										style={{width: 40, height: 40, opacity:0.5}}
-
-											source={{uri: Confirmed}}
-										/>
+										<View style={styles.acceptIconWrapper}>
+											<Image
+												style={styles.acceptIcon}
+												source={{uri: Confirmed}}
+											/>
+											<Text style={styles.acceptText}>Accept</Text>
+										</View>	
 									</TouchableOpacity>
 								</View>
 							</View>
+
 						</View>
 
 						<View style={styles.walletIProtectContainer}>
@@ -270,7 +293,7 @@ export default class PendingRequests extends React.Component {
 								<Text style={styles.walletIProtectTitle}> Wallets I Protect</Text>
 							</View>
 							<View style={styles.protectwrapper}>
-								<View style={styles.leftflex}>
+								<View style={styles.topflex}>
 									<View style={styles.namewrap}>
 										<Text style={styles.symbol}>@</Text>
 										<Text style={styles.name}>naman</Text>
@@ -279,35 +302,6 @@ export default class PendingRequests extends React.Component {
 										<Text style={styles.dateTitle}>Since</Text>
 										<Text style={styles.date}>22-07-2018 </Text>
 									</View>
-								</View>
-								<View style={styles.rightflex}>
-									<TouchableOpacity style={styles.accept}>
-										<Image
-											style={{width: 30, height: 30}}
-											source={{uri: Protected}}
-										/>
-									</TouchableOpacity>
-								</View>
-							</View>
-
-							<View style={styles.protectwrapper}>
-								<View style={styles.leftflex}>
-									<View style={styles.namewrap}>
-										<Text style={styles.symbol}>@</Text>
-										<Text style={styles.name}>naman</Text>
-									</View>
-									<View style={styles.datewrap}>
-										<Text style={styles.dateTitle}>Since</Text>
-										<Text style={styles.date}>22-07-2018 </Text>
-									</View>
-								</View>
-								<View style={styles.rightflex}>
-									<TouchableOpacity style={styles.accept}>
-										<Image
-											style={{width: 30, height: 30}}
-											source={{uri: Protected}}
-										/>
-									</TouchableOpacity>
 								</View>
 							</View>
 						</View>
@@ -321,7 +315,7 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 	    backgroundColor: theme.white,
-	    alignItems: 'center'
+	    alignItems: 'center',
 	},
 	scrollView: {
 		flex: 1,
@@ -355,13 +349,20 @@ const styles = StyleSheet.create({
 	requestwrapper : {
 		flexDirection:'row',
 		alignItems:'center',
-		marginBottom:20
+		justifyContent:'center',
+		marginBottom:15,
+		backgroundColor: theme.grey,
+		paddingHorizontal:15,
+		paddingVertical:15,
+		borderRadius:10
 	},
 	protectwrapper : {
-		flexDirection:'row',
-		alignItems:'center',
-		marginBottom:10,
-		height:50
+		flexDirection:'column',
+		marginBottom:20,
+		backgroundColor: theme.grey,
+		paddingHorizontal:15,
+		paddingVertical:15,
+		borderRadius:10
 	},
 	namewrap : {
 		flexDirection: 'row'
@@ -388,12 +389,37 @@ const styles = StyleSheet.create({
 		fontSize:12,
 		opacity:0.75,
 	},
-	leftflex : {
-		flex:1
+	topflex : {
+		flex:1,
+		flexDirection:"column",
+		alignItems:'flex-start',
+		justifyContent:'space-between',
 	},
-	rightflex : {
+	bottomflex : {
 		flexDirection:'row',
-		alignItems:'center'
+		alignItems:'flex-end',
+		justifyContent:'flex-end',
+
+	},
+	acceptIconWrapper : {
+		alignItems:'center',
+	},
+	acceptText : {
+		fontFamily:theme.font	
+	},
+	acceptIcon : {
+		width:25,
+		height:25
+	},
+	rejectIconWrapper : {
+		alignItems:'center',
+	},
+	rejectText : {
+		fontFamily:theme.font
+	},
+	rejectIcon : {
+		width:25,
+		height:25
 	},
 	accept : {
 		height:50,
@@ -409,7 +435,6 @@ const styles = StyleSheet.create({
 		marginRight:10
 	},
 	walletIProtectContainer : {
-		backgroundColor:theme.grey,
 		paddingVertical:20,
 		paddingHorizontal:10
 	},

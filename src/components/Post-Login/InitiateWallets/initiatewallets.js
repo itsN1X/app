@@ -246,7 +246,7 @@ const styles = StyleSheet.create({
 		fontFamily: theme.font300,
 		color: theme.dark,
 		fontWeight: '300',
-		fontSize: 40,
+		fontSize: 32,
 		marginBottom:35
 	},
 	subHeadingContainer: {
