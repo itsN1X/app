@@ -10,6 +10,7 @@ import Username from './components/Pre-Login/username';
 import ConfirmPin from './components/Pre-Login/confirmpin';
 import EnterPin from './components/Pre-Login/enterpin';
 import Dummy from './components/Pre-Login/dummy';
+import Modal from './components/Pre-Login/modal';
 import WalletAddress from './components/Guardian/walletaddress';
 import GuardianProfile from './components/Guardian/guardianprofile';
 import GetStarted from './components/Guardian/getstarted';
@@ -224,9 +225,9 @@ const RouterComponent = () => {
 					<Scene key="enteremail" component={EnterEmail} panHandlers={null} hideNavBar />
 					<Scene key="enterotp" component={EnterOTP} panHandlers={null} hideNavBar />
 					<Scene key="choosefriends" component={ChooseFriends} panHandlers={null} hideNavBar />
-					<Scene key="dummy" component={Dummy} hideNavBar panHandlers={null} />
+					<Scene key="dummy" component={Dummy} hideNavBar panHandlers={null}/>
+					<Scene key="modal" component={Modal} hideNavBar panHandlers={null} />
 					<Scene key="keychain" component={KeychainExample} hideNavBar panHandlers={null} />
-
 				</Scene>
 				<Scene key="postlogin" panHandlers={null} hideNavBar>
 				<Scene key="recoveryrequests" component={RecoveryRequests} hideNavBar panHandlers={null} />

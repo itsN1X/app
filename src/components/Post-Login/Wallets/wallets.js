@@ -248,7 +248,10 @@ export default class Wallets extends React.Component {
 					<View style={styles.container}>
 						<StatusBar bColor={theme.dark} />
 						<AppStatusBar bColor={theme.dark} center={true} text="Wallets" textColor={theme.white} />
-						<ScrollView style={{flex: 1, width: '100%'}}>
+						<View style={{flex: 1, width: '100%'}} scrollEventThrottle={16}>
+						<View>
+							<Text style={{fontSize:24,}}>Wallets</Text>
+						</View>
 							<View style={styles.mainContainer}>
 								<View style={{height: 3}} />
 								{this.state.coinData.map((value, i) => {
@@ -256,7 +259,7 @@ export default class Wallets extends React.Component {
 			                    })}
 							<View style={{height: 3}} />
 							</View>
-						</ScrollView>
+						</View>
 					</View>
 				</Drawer>
 			);

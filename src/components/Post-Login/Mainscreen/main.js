@@ -287,7 +287,7 @@ const styles = StyleSheet.create({
     contentContainer: {
         position:'relative',
         height: '100%',
-        width: '90%',
+        width: '100%',
     },
     headerIconsFlex: {
         height:70,
