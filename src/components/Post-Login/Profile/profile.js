@@ -225,7 +225,7 @@ export default class Profile extends React.Component {
 							<TouchableOpacity style={styles.otherTabFlex} onPress={this.changePin}>
 								<View style={styles.otherTabContainer}>
 									<View style={styles.tabHeadingFlex}>
-										<Text style={styles.tabheadingText}>PIN Change</Text>
+										<Text style={styles.tabheadingText}>Change PIN</Text>
 									</View>
 									<View style={styles.tabActionFlex}>
 										<View style={styles.tabAction}>

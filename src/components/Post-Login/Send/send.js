@@ -291,7 +291,7 @@ export default class Send extends React.Component {
 								</KeyboardAvoidingView>
 								<View style={styles.buttonFlexContainer}>
 									<Button bColor={theme.dark} onPress={this.sendCoins}>
-										SEND
+										Proceed
 									</Button>
 								</View>
 							</View>

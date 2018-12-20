@@ -14,6 +14,7 @@ import StatusBar from '../../common/statusbar';
 
 var Exchange = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/exchange.png";
 var Back = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/lightback.png";
+var Notification = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/new/notification.png";
 var Background = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/menubg.png";
 var Refresh = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/refresh.png";
 
@@ -199,6 +200,9 @@ export default class Main extends Component {
                                             <TouchableOpacity onPress={this.goBack}>
                                                 <Image style={styles.backIcon} source={{uri: Back}} />
                                             </TouchableOpacity>
+                                            <TouchableOpacity>
+                                                <Image style={styles.notificationIcon} source={{uri: Notification}} />
+                                            </TouchableOpacity>
                                         </View>
                                     </View>
                                     <View style={styles.iconNameFlex}>
@@ -221,33 +225,35 @@ export default class Main extends Component {
                                 </TouchableOpacity>
                             </ImageBackground>
 
+                            <View style={styles.lowerflex}>
+                                <View style={styles.sendRecieve}>
+                                    <TouchableOpacity onPress={this.receiveCoins} style={styles.recieveButtonContainer}>
+                                        <ElevatedView elevation={0} style={styles.recieveButton}>
+                                            <Text style={styles.recieveText}>Receive</Text>
+                                        </ElevatedView>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={this.sendCoins} style={styles.sendButtonContainer}>
+                                        <ElevatedView elevation={0} style={styles.sendButton}>
+                                            <Text style={styles.sendText}>Send</Text>
+                                        </ElevatedView>
+                                    </TouchableOpacity>
+                                </View>
 
-                              <View style={styles.sendRecieve}>
-                                  <TouchableOpacity onPress={this.receiveCoins} style={styles.recieveButtonContainer}>
-                                      <ElevatedView elevation={0} style={styles.recieveButton}>
-                                          <Text style={styles.recieveText}>Receive</Text>
-                                      </ElevatedView>
-                                  </TouchableOpacity>
-                                  <TouchableOpacity onPress={this.sendCoins} style={styles.sendButtonContainer}>
-                                      <ElevatedView elevation={0} style={styles.sendButton}>
-                                          <Text style={styles.sendText}>Send</Text>
-                                      </ElevatedView>
-                                  </TouchableOpacity>
-                              </View>
 
+                                <TransactionHistory transactions={this.state.transactions} symbol={this.state.currencySymbol} />
 
-                        <TransactionHistory transactions={this.state.transactions} symbol={this.state.currencySymbol} />
+                                {this.state.balance == 0 ? null : (
+                                <View style={styles.viewMoreContainer}>
+                                    <TouchableOpacity onPress={this.openTransactions}>
+                                        <Text style={styles.viewMoreText}>
+                                            View More
+                                        </Text>
+                                    </TouchableOpacity>
+                                    <View style={styles.line} />
+                                </View>
+                                )}
+                            </View>
 
-                        {this.state.balance == 0 ? null : (
-                          <View style={styles.viewMoreContainer}>
-                              <TouchableOpacity onPress={this.openTransactions}>
-                                  <Text style={styles.viewMoreText}>
-                                      View More
-                                  </Text>
-                              </TouchableOpacity>
-                              <View style={styles.line} />
-                          </View>
-                        )}
 
                 </Animated.View>
             </Drawer>
@@ -262,16 +268,18 @@ const drawerStyles = {
 }
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         backgroundColor: theme.dark
     },
     upperFlex: {
+        height:275,
         position: 'relative',
-        height: 250,
         width: '100%',
         backgroundColor: theme.dark,
         alignItems: 'center'
     },
+    lowerflex : {
+        flex:1,
+    },  
     statusbar: {
         height: statusBarHeight,
         width: '100%',
@@ -288,22 +296,18 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     menuIconFlex: {
-        flex: 0.3,
+        width:'100%',
+        flexDirection:'row',
         alignItems: 'flex-start',
-        justifyContent: 'center'
-    },
-    exchangeIconFlex: {
-        flex: 0.3,
-        alignItems: 'flex-end',
-        justifyContent: 'center'
+        justifyContent: 'space-between'
     },
     backIcon: {
         height: 25,
         width: 25
     },
-    exchangeIcon: {
-        height: 40,
-        width: 40
+    notificationIcon: {
+        height: 30,
+        width: 30
     },
     iconNameFlex: {
         width: '100%',

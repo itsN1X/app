@@ -59,14 +59,12 @@ export default class Recieve extends React.Component {
 				<View style={styles.upperFlex}>
 					<View style={styles.addressHeadingFlex}>
 						<Text style={styles.addressHeadingText}>Address</Text>
-						<View style={styles.copyFlex}>
-							<TouchableOpacity onPress={this.writeToClipboard}>
-								<Image style={styles.copyIcon} source={{uri: Copy}} />
-							</TouchableOpacity>
-						</View>
 					</View>
 					<View style={styles.addressContainer}>
 						<Text style={styles.addressText}>{this.state.address}</Text>
+						<TouchableOpacity onPress={this.writeToClipboard} style={styles.copyWrapper}>
+							<Image style={styles.copyIcon} source={{uri: Copy}} />
+						</TouchableOpacity>
 					</View>
 				</View>
 				<View style={styles.lowerFlex}>
@@ -90,44 +88,52 @@ const styles = StyleSheet.create({
 	    backgroundColor: theme.white,
 	    alignItems: 'center'
 	},
+	copyWrapper : {
+		paddingVertical:5,
+		paddingHorizontal:5
+	},
 	upperFlex: {
-		flex: 0.3,
+		height:100,
 		width: '100%',
 		alignItems: 'center',
-		backgroundColor: theme.grey
+		justifyContent:'flex-end',
+		backgroundColor: theme.grey,
+		paddingBottom:20
 	},
 	addressHeadingFlex: {
-		flex: 0.25,
-		width: '90%',
+		marginBottom:10,
 		flexDirection: 'row',
-		alignItems: 'flex-end'
+		alignItems: 'center'
 	},
 	addressHeadingText: {
 		fontFamily: theme.font,
 		fontSize: 16,
-		color: theme.darkgrey
+		color: theme.dark,
+		opacity:0.5
 	},
 	copyFlex: {
 		flex: 1,
 		alignItems: 'flex-end'
 	},
 	copyIcon: {
-		width: 25,
-		height: 25
+		width: 20,
+		height: 20,
+		marginRight:5
 	},
 	addressContainer: {
-		flex: 0.5,
-		width: '90%',
-		justifyContent: 'center'
+		flexDirection:'row',
+		justifyContent: 'space-between',
+		alignItems:'center',
+		width:'90%'
 	},
 	addressText: {
 		fontFamily: theme.Lato,
 		fontWeight: '300',
-		fontSize: 17,
+		fontSize: 16,
 		color: theme.black,
 	},
 	lowerFlex: {
-		flex: 0.7,
+		flex: 1,
 		width: '100%',
 		alignItems: 'center'
 	},
