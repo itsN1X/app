@@ -3,10 +3,10 @@ package com.coinsafe;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.bitgo.randombytes.RandomBytesPackage;
+import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.tradle.react.UdpSocketsModule;
 import com.peel.react.TcpSocketsModule;
-import org.devio.rn.splashscreen.SplashScreenReactPackage;
-import com.bitgo.randombytes.RandomBytesPackage;
 import com.peel.react.rnos.RNOSModule;
 import com.oblador.keychain.KeychainPackage;
 import org.reactnative.camera.RNCameraPackage;
@@ -30,10 +30,10 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RandomBytesPackage(),
+            new SplashScreenReactPackage(),
             new UdpSocketsModule(),
             new TcpSocketsModule(),
-            new SplashScreenReactPackage(),
-            new RandomBytesPackage(),
             new RNOSModule(),
             new KeychainPackage(),
             new RNCameraPackage()

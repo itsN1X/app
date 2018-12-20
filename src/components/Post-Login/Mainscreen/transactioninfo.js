@@ -106,22 +106,6 @@ export default class TransactionInfo extends Component {
 	                    </View>
 	                    <View style={styles.cardContent}>
 	                        <View style={styles.contentHeading}>
-	                            <Text style={styles.contentHeadingText}>Transaction Amount (BTC)</Text>
-	                        </View>
-	                        <View style={styles.contentTextContainer}>
-	                            <Text style={styles.contentText}>{this.state.amount}</Text>
-	                        </View>
-	                    </View>
-	                    <View style={styles.cardContent}>
-	                        <View style={styles.contentHeading}>
-	                            <Text style={styles.contentHeadingText}>Transaction Fee (BTC)</Text>
-	                        </View>
-	                        <View style={styles.contentTextContainer}>
-	                            <Text style={styles.contentText}>{this.state.fee}</Text>
-	                        </View>
-	                    </View>
-	                    <View style={styles.cardContent}>
-	                        <View style={styles.contentHeading}>
 	                            <Text style={styles.contentHeadingText}>Total Amount (BTC)</Text>
 	                        </View>
 	                        <View style={styles.contentTextContainer}>
@@ -145,7 +129,7 @@ export default class TransactionInfo extends Component {
 		                            <Text style={styles.contentText}>{this.state.status} {this.state.confirmations}</Text>
 		                        </View>
 		                    </View>
-	                    </View>       
+	                    </View>
 	    			</View>
 	    			<View style={styles.lowerFlex}>
 						<Image style={styles.statusIcon} source={{uri: this.state.icon}} />
@@ -199,7 +183,7 @@ const styles = StyleSheet.create({
     lastCard: {
     	flex: 0.19,
         width: '90%',
-        flexDirection: 'row', 
+        flexDirection: 'row',
     },
     dateFlex: {
     	flex: 0.6

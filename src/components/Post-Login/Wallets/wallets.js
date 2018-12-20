@@ -125,15 +125,14 @@ export default class Wallets extends React.Component {
                 data: data
             })
             .then(function (response) {
-                console.log(response)
-                if(response.data.flag === 404) {
-                	Actions.postlogin();
-                	Actions.initiatewallets({wallet_id: response.data.wallet_id});
-                }
-                else {
-                	const assetData = response.data.result.asset_data;
-                	self.decryptData(assetData, user_data)
-                }
+
+							if(response.data.result.length == 0){
+									Actions.postlogin();
+                	Actions.initiatewallets({wallet_id: wallet_id});
+							}
+							if(response.data.result.length > 0){
+								self.decryptData(response.data.result, user_data)
+							}
             })
             .catch(function (error) {
                 console.log(error);
@@ -145,13 +144,18 @@ export default class Wallets extends React.Component {
         }
     }
     decryptData(asset_data, user_data) {
+			var coinsData = [];
     	var user_data = JSON.parse(user_data);
-        var privateKey = virgilCrypto.importPrivateKey(user_data.privateKey);
-        const decryptedData = virgilCrypto.decrypt(asset_data, privateKey);
+			var privateKey = virgilCrypto.importPrivateKey(user_data.privateKey);
+			for(i =0 ; i < asset_data.length; i++){
+				const decryptedData = virgilCrypto.decrypt(asset_data[i].asset_data, privateKey);
         const decryptedMessage = decryptedData.toString('utf8');
-        console.log(decryptedMessage);
-        var assetData = decryptedMessage;
-        this.saveData(assetData);
+				coinsData.push(JSON.parse(decryptedMessage));
+			}
+
+
+				this.setState({decryptedCoinsData:JSON.stringify(coinsData)});
+        this.saveData(JSON.stringify(coinsData));
     }
 
 	fetchPrices(){
@@ -174,7 +178,7 @@ export default class Wallets extends React.Component {
 
     saveData = async (data) => {
     	try {
-           await AsyncStorage.setItem('@BTC',data);
+           await AsyncStorage.setItem('@CoinsData',data);
            this.setState({ loaded: true })
        }
        catch(error) {

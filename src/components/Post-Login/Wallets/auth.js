@@ -39,11 +39,11 @@ export default class Auth extends React.Component {
 
 						else {
 
-						if(recovery === "true") {
-							Actions.postlogin();
-							Actions.enterpin();
+							if(recovery === "true") {
+								Actions.postlogin();
+								Actions.enterpin();
 
-						}
+							}
 
 						else if(value == 'LoggedIn'){
 

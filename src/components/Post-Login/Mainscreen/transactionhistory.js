@@ -34,20 +34,19 @@ export default class TransactionHistory extends Component {
                      )}
 
                         {this.state.transactions.map((value, i) => {
-                            var status;
-                            var id = value.hash;
-                            var minID = id.slice(0, 20);
-                            minID = minID + "..";
-                            var finalAmount = Math.abs((value.result / 100000000));
-                            var amount = (value.out[0].value / 100000000);
-                            var fee = (value.fee / 100000000);
-                            if(value.result >= 0) {
-                                status = "Received";
-                            }
-                            else {
-                                status = "Sent";
-                            }
-                            return(<Transaction key={i} minID={minID} id={id} fee={fee} amount={amount} finalAmount={finalAmount} status={status} />);
+                          var status;
+                          var id = value.transaction_id;
+                          var minID = id.slice(0, 20);
+                          minID = minID + "..";
+                          var finalAmount = value.amount;
+                          // var fee = (value.fee / 100000000);
+                          if(value.transaction_status == 0) {
+                              status = "Received";
+                          }
+                          else {
+                              status = "Sent";
+                          }
+                            return(<Transaction key={i} minID={minID} id={id} finalAmount={finalAmount} status={status} />);
                         })}
                     </View>
                 </ScrollView>

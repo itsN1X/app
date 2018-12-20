@@ -23,13 +23,14 @@ export default class Send extends React.Component {
 			utxo: "",
 			privateKey: "",
 			balance: "",
-			loaded: false,
+			loaded: true,
 			amount: null,
 			estValue: "129870",
 			fees: "",
-			feesBTC: ""
+			feesBTC: "",
+			finalUtxo:""
 		};
-		this.calculateFees = this.calculateFees.bind(this);
+		this.calculateUtxo = this.calculateUtxo.bind(this);
 		this.signTransaction = this.signTransaction.bind(this);
 		this.sendCoins = this.sendCoins.bind(this);
 		this.sendTransactionHash = this.sendTransactionHash.bind(this);
@@ -47,9 +48,9 @@ export default class Send extends React.Component {
 		});
 	}
 	componentWillMount() {
-		this.setState({activity: "Calculating Network Fee"}, () => {
-            requestAnimationFrame(()=>this.calculateFees(), 0);
-        });
+		// this.setState({activity: "Calculating Network Fee"}, () => {
+    //         requestAnimationFrame(()=>this.calculateFees(), 0);
+    //     });
 	}
 
 
@@ -63,16 +64,73 @@ export default class Send extends React.Component {
 		 Actions.pop();
 		 return true;
 		}
-	calculateFees() {
-		var utxo = this.props.utxo;
-		var from = this.props.fromAddress;
-		var txn = new bitcoin.Transaction();
-		txn.from(utxo).to("mu76UABwqefXrV93cFbsEvH9eg11QYooau", 1000)       // Feed information about what unspent outputs one can use
-		.change(from).sign(this.props.privateKey);		 					// Add an output with the given amount of satoshis
-		var fees = txn.getFee();
-		var feesBTC = fees / 100000000;
-		console.log(fees);
-		this.setState({balance: this.props.balance, feesBTC: feesBTC, fees: fees, loaded: true, utxo: this.props.utxo, fromAddress: this.props.fromAddress, privateKey: this.props.privateKey});
+	calculateUtxo() {
+		let utxo = this.props.utxo;
+		let amount = this.state.amount * 100000000;
+		let final_utxo = [];
+		let lessers = [];
+		let greaters = [];
+
+		for (var i=0 ; i< utxo.length ; i++){
+        if ( utxo[i].amount*100000000 < amount) {
+        	lessers.push(utxo[i])
+        }
+        else {
+        	greaters.push(utxo[i])
+        }
+		}
+
+
+		if (greaters.length !== 0) {
+
+				greaters.sort(function(a, b) {
+				    return a.amount*100000000 - b.amount*100000000;
+				});
+
+				var min_greater = greaters[0];
+				change = min_greater.amount*100000000 - amount;
+
+				final_utxo.push(min_greater);
+		}
+
+		else {
+
+					var accum = 0
+
+				lessers.sort(function(a, b) {
+				    return a.amount*100000000 - b.amount*100000000;
+				});
+					for (var a= lessers.length-1 ; a >= 0; a--){
+						final_utxo.push(lessers[a])
+						accum = accum+ lessers[a].amount*100000000 ;
+						if (accum >= amount) {
+							change = accum - amount
+							break ;
+						}
+					}
+
+	}
+
+	return final_utxo;
+
+
+
+
+
+
+
+
+
+
+		// var utxo = this.props.utxo;
+		// var from = this.props.fromAddress;
+		// var txn = new bitcoin.Transaction();
+		// txn.from(utxo).to("mu76UABwqefXrV93cFbsEvH9eg11QYooau", 1000)       // Feed information about what unspent outputs one can use
+		// .change(from).sign(this.props.privateKey);		 					// Add an output with the given amount of satoshis
+		// var fees = txn.getFee();
+		// var feesBTC = fees / 100000000;
+		// console.log(fees);
+		// this.setState({balance: this.props.balance, feesBTC: feesBTC, fees: fees, loaded: true, utxo: this.props.utxo, fromAddress: this.props.fromAddress, privateKey: this.props.privateKey});
 		/*try {
             var self = this;
             axios({
@@ -94,55 +152,48 @@ export default class Send extends React.Component {
         }*/
 	}
 	sendCoins() {
-		var privateKey = this.state.privateKey;
-		var from = this.state.fromAddress;
+		let utxo = this.calculateUtxo();
+		var privateKey = this.props.privateKey;
+		var from = this.props.fromAddress;
 		var to = this.state.toAddress;
-		var feesBTC = this.state.feesBTC;
-		var fees = this.state.fees;
-		var utxo = this.state.utxo;
-		var amountBTC = this.state.amount;
-		amountBTC = Number(amountBTC);
-		var amount = amountBTC * 100000000;
+		var amount = this.state.amount * 100000000;
 		if(!bitcoin.Address.isValid(to)) {
 			Toast.showWithGravity('Enter a valid address', Toast.LONG, Toast.CENTER);
 		}
-		else {
-			var total = amountBTC+feesBTC;
-			var balance = this.state.balance;
-			var diff = amountBTC-balance;
-			console.log("Total Amount: ", total);
-			console.log("Balance: ",balance);
-			console.log("Diff: ",diff);
-			if(amount-fees < 0 ) {
-				Toast.showWithGravity('Amount should be greater than fee', Toast.LONG, Toast.CENTER);
-				return true;
-			}
-			if(total > balance) {
-				console.log("Invalid Amount")
-				Toast.showWithGravity('Invalid Amount', Toast.LONG, Toast.CENTER);
-				return true;
-			}
+			// var total = amountBTC+feesBTC;
+			// var balance = this.state.balance;
+			// var diff = amountBTC-balance;
+			// if(amount-fees < 0 ) {
+			// 	Toast.showWithGravity('Amount should be greater than fee', Toast.LONG, Toast.CENTER);
+			// 	return true;
+			// }
+			// if(total > balance) {
+			// 	console.log("Invalid Amount")
+			// 	Toast.showWithGravity('Invalid Amount', Toast.LONG, Toast.CENTER);
+			// 	return true;
+			// }
 			else {
 				this.setState({loaded: false, activity: "Signing Transaction"}, () => {
-					requestAnimationFrame(() => this.signTransaction(utxo, amount, from, privateKey, fees, to), 0)
+					requestAnimationFrame(() => this.signTransaction(utxo, amount, from, privateKey,to), 0)
 				});
 			}
-		}
+
 	}
-	signTransaction(utxo, amount, from, privateKey, fees, to) {
-		console.log(utxo)
-		console.log(amount)
-		console.log(from)
-		console.log(privateKey)
-		console.log("fees :",fees)
+	signTransaction(utxo, amount, from, privateKey, to) {
 		var transaction = new bitcoin.Transaction();
-		transaction.from(utxo).fee(fees).to(to, amount).change(from).sign(privateKey);                              // Feed information about what unspent outputs one can use
-		            // Add an output with the given amount of satoshis
-		transaction = transaction.toString()
-		console.log(transaction);
+		transaction.from(utxo).to(to, amount).change(from);
+		let size = transaction._estimateSize();
+
+		let fees = (size * 1000)/1000;
+
+		let estimatedFees =  transaction._estimateFee(size,amount, 1000);
+		transaction.fee(estimatedFees);
+		transaction.sign(privateKey);
+		transaction = transaction.toString();
 		hash = {};
 		hash.transaction_hash = transaction;
-		console.log(hash);
+		hash.address = from;
+		hash.amount = amount/100000000;
 		this.setState({activity: "Broadcasting Transaction"}, () => {
 			requestAnimationFrame(() => this.sendTransactionHash(hash), 0)
 		});
@@ -155,7 +206,6 @@ export default class Send extends React.Component {
                 data: hash
             })
             .then(function (response) {
-                console.log(response)
                 Actions.transactionsuccess({id: response.data.result})
             })
             .catch(function (error) {
@@ -167,27 +217,27 @@ export default class Send extends React.Component {
         }
 	}
 	render() {
-		var totalAmount;
-		var feesBTC = this.state.feesBTC;
-		var spendableColor;
-		if(this.state.amount===0 || this.state.amount==="" || this.state.amount===null) {
-			totalAmount = feesBTC;
-			totalAmount = parseFloat(totalAmount);
-		}
-		else {
-			var amount = this.state.amount;
-			amount = parseFloat(amount);
-			totalAmount = feesBTC + amount;
-		}
-		var amountLeft = this.state.balance - totalAmount;
-		amountLeft = amountLeft.toFixed(6);
-		totalAmount = totalAmount.toFixed(6);
-		if(amountLeft > 0) {
-			spendableColor = theme.dark;
-		}
-		else {
-			spendableColor = '#FF0000';
-		}
+		// var totalAmount;
+		// var feesBTC = this.state.feesBTC;
+		// var spendableColor;
+		// if(this.state.amount===0 || this.state.amount==="" || this.state.amount===null) {
+		// 	totalAmount = feesBTC;
+		// 	totalAmount = parseFloat(totalAmount);
+		// }
+		// else {
+		// 	var amount = this.state.amount;
+		// 	amount = parseFloat(amount);
+		// 	totalAmount = feesBTC + amount;
+		// }
+		// var amountLeft = this.state.balance - totalAmount;
+		// amountLeft = amountLeft.toFixed(6);
+		// totalAmount = totalAmount.toFixed(6);
+		// if(amountLeft > 0) {
+		// 	spendableColor = theme.dark;
+		// }
+		// else {
+		// 	spendableColor = '#FF0000';
+		// }
 		if(!this.state.loaded) {
             return(<Loader activity={this.state.activity} />)
         }
@@ -223,9 +273,7 @@ export default class Send extends React.Component {
 										</View>
 									</View>
 								</View>
-								<View style={styles.spendableContainer}>
-									<Text style={[styles.spendableText, {color: spendableColor}]}>Spendable : {amountLeft} BTC</Text>
-								</View>
+
 							</View>
 							<View style={styles.lowerFlex}>
 								<KeyboardAvoidingView behavior={'padding'} keyboardVerticalOffset={35} style={styles.inputFlexContainer}>
@@ -239,7 +287,7 @@ export default class Send extends React.Component {
 										maxLength={14}
 										underlineColorAndroid='transparent'
 									/>
-									<Text style={styles.estValueText}>Fee : {this.state.feesBTC} BTC     Total Amount : {totalAmount} BTC</Text>
+
 								</KeyboardAvoidingView>
 								<View style={styles.buttonFlexContainer}>
 									<Button bColor={theme.dark} onPress={this.sendCoins}>

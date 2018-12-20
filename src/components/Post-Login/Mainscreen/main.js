@@ -74,6 +74,7 @@ export default class Main extends Component {
     }
     handleBackButton() {
         this.goBack();
+
     }
     componentWillMount() {
         this.spinValue = new Animated.Value(0);
@@ -117,8 +118,11 @@ export default class Main extends Component {
         Actions.pop();
     }
     getBalance (coinData) {
+
+      // console.error(coinData[0].address);
         coinAddress = {};
-        coinAddress.addresses = [coinData.address];
+        coinAddress.addresses = [coinData[0].address];
+        coinAddress.asset_id = coinData[0].asset_id;
         try {
             var self = this;
             axios({
@@ -127,8 +131,8 @@ export default class Main extends Component {
                 data: coinAddress
             })
             .then(function (response) {
-               const balance = (response.data.result.wallet.final_balance / 100000000);
-                 self.setState({ address: coinData.address, privateKey: coinData.privateKey, balance: balance, receiving: false, loaded: true, transactions: response.data.result.txs, receiving: false, utxo: response.data.utxo, loaded: true });
+               const balance = (response.data.balanceHistory.balance);
+               self.setState({ address: coinData[0].address, privateKey: coinData[0].privateKey, balance: balance, receiving: false, loaded: true, transactions: response.data.transactions, receiving: false, utxo: response.data.balanceHistory.utxo, loaded: true });
 
             })
             .catch(function (error) {
@@ -141,7 +145,7 @@ export default class Main extends Component {
     }
     getCoinData = async () => {
       try {
-            const value = await AsyncStorage.getItem('@BTC');
+            const value = await AsyncStorage.getItem('@CoinsData');
             var coinData = JSON.parse(value);
             this.getBalance(coinData);
         }
@@ -209,7 +213,7 @@ export default class Main extends Component {
                                         <Text style={styles.amountText}>{this.state.balance}</Text>
                                     </View>
                                     <View style={styles.valueFlex}>
-                                        <Text style={styles.valueText}>${this.state.currencyValue}</Text>
+                                        <Text style={styles.valueText}>${((this.state.currencyValue * (this.state.balance*100000000))/100000000).toFixed(3)}</Text>
                                     </View>
                                 </View>
                                 <TouchableOpacity style={styles.refreshContainer} onPress={this.onRefresh}>

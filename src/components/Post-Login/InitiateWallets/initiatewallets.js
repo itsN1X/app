@@ -24,6 +24,7 @@ import StarcoinLight from '../../../../images/coins/light/starcoin.png';
 import StarcoinDark from '../../../../images/coins/dark/starcoin.png';
 import Down from '../../../../images/downdark.png';
 var bitcoin = require('bitcore-lib');
+var ethereum = require('ethereumjs-wallet-react-native');
 const VirgilCrypto =require('virgil-crypto');
 const virgilCrypto = new VirgilCrypto.VirgilCrypto();
 let output = [];
@@ -43,7 +44,7 @@ export default class InitiateWallets extends React.Component {
 		this.enablePicker = this.enablePicker.bind(this);
 		this.disablePicker = this.disablePicker.bind(this);
 		this.changeCurrency = this.changeCurrency.bind(this);
-		this.createBTCKeys = this.createBTCKeys.bind(this);
+		this.createKeys = this.createKeys.bind(this);
 		this.activateWallets = this.activateWallets.bind(this);
 		this.getUserData = this.getUserData.bind(this);
 	}
@@ -82,13 +83,17 @@ export default class InitiateWallets extends React.Component {
 		}
 	activateWallets() {
 		this.setState({loaded: false, activity: "Generating Crypto Wallets"}, () => {
-			requestAnimationFrame(() => this.createBTCKeys(), 0);
+			requestAnimationFrame(() => this.createKeys(), 0);
 		});
 	}
 	gotoWallets() {
 		Actions.wallets();
 	}
-	createBTCKeys() {
+
+
+	createKeys = async () =>{
+		var coinsArr = [];
+		var encryptedReqArr = [];
 		var privateKey = new bitcoin.PrivateKey();
 		const privateKeyStr = privateKey.toString();
 
@@ -97,29 +102,76 @@ export default class InitiateWallets extends React.Component {
 
 		var address = publicKey.toAddress(bitcoin.Networks.testnet);
 		const addressStr = address.toString();
+
+
 		let BTCData = {}
+		BTCData.asset_id = 1;
 		BTCData.privateKey = privateKeyStr;
 		BTCData.publicKey = publicKeyStr;
 		BTCData.address = addressStr;
-		this.storeCoinData(BTCData);
-		BTCData = JSON.stringify(BTCData);
-		const encryptedData = this.encryptData(BTCData);
-		var data = {};
-		data.wallet_id = this.props.wallet_id;
-		if(data.wallet_id == undefined || data.wallet_id == null) {
-			data.wallet_id = this.state.wallet_id;
+		BTCData.encryptedData = this.encryptData(JSON.stringify(BTCData));
+		this.storeCoinData(BTCData , "1");
+		coinsArr.push(BTCData);
+
+
+		const wallet = await ethereum.generate();
+		const ethPrivateKeyStr = wallet.getPrivateKeyString();
+		const ethPublicKeyStr = wallet.getPublicKeyString();
+		const ethAddressStr = wallet.getAddressString();
+
+		let ETHData = {};
+		ETHData.asset_id = 2;
+		ETHData.privateKey = ethPrivateKeyStr;
+		ETHData.publicKey = ethPublicKeyStr;
+		ETHData.address = ethAddressStr;
+		ETHData.encryptedData = this.encryptData(JSON.stringify(ETHData));
+		this.storeCoinData(ETHData, "2");
+
+		coinsArr.push(ETHData);
+
+		var requestArr = [];
+		for(i =0 ; i < coinsArr.length ; i++){
+			var data = {};
+
+			data.asset_id = coinsArr[i].asset_id;
+			data.asset_address = coinsArr[i].address;
+			data.asset_data = coinsArr[i].encryptedData;
+			requestArr.push(data);
+
 		}
-		data.asset_id = 1;
-		data.asset_address = addressStr;
-		data.asset_data = encryptedData;
-		output.push(data);
-		this.sendCoinsData(data);
+
+		this.storeEncryptedCoinData(JSON.stringify(requestArr));
+
+
+		var reqData = {};
+		reqData.wallet_id = this.props.wallet_id;
+		if(reqData.wallet_id == undefined || reqData.wallet_id == null) {
+			reqData.wallet_id = this.state.wallet_id;
+		}
+
+
+		var user = {
+			"wallet_id": reqData.wallet_id,
+			"request_arr": requestArr
+		};
+
+		// console.error(user);
+
+		this.sendCoinsData(user);
 		if(this.props.updateGuardian == 'yes'){
 			this.updateGuardianStatus();
 		}
 		Actions.postlogintabs();
-		Actions.wallets({new: true,coinData:this.state.coinData, user_data: this.state.userDetails, loggedIn: true, wallet_id: data.wallet_id, coin_data: encryptedData});
-	}
+		Actions.wallets({new: true,coinData:this.state.coinData, user_data: this.state.userDetails, loggedIn: true, wallet_id:reqData.wallet_id});
+}
+
+storeEncryptedCoinData = async (data) => {
+	try {
+			 await AsyncStorage.setItem('@CoinsData', data);
+
+		} catch (error) {
+		}
+}
 
 	updateGuardianStatus = async () => {
 			try {
@@ -155,10 +207,17 @@ export default class InitiateWallets extends React.Component {
 			alert(error);
 		}
 	}
-	storeCoinData = async (data) => {
+	storeCoinData = async (data , status) => {
 		data = JSON.stringify(data);
 		try {
-		    await AsyncStorage.setItem('@BTCData', data);
+			 if(status == "1") {
+				 await AsyncStorage.setItem('@BTCData', data);
+			 }
+
+			 else {
+				 await AsyncStorage.setItem('@ETHData', data);
+			 }
+
 		  } catch (error) {
 		  }
 	}

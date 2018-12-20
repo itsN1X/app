@@ -3,6 +3,7 @@ import { Text, Image, View, Dimensions, StyleSheet } from 'react-native';
 import { Scene, Router, Stack } from 'react-native-router-flux';
 import theme from './components/common/theme';
 import FirstScreen from './components/Pre-Login/firstscreen';
+import Eth from './components/Pre-Login/eth';
 import WalletSeed from './components/Pre-Login/walletseed';
 import CreatePin from './components/Pre-Login/createpin';
 import Username from './components/Pre-Login/username';
@@ -215,6 +216,7 @@ const RouterComponent = () => {
 					<Scene key="firstscreen" component={FirstScreen} hideNavBar panHandlers={null} />
 					<Scene key="username" component={Username} hideNavBar panHandlers={null} />
 					<Scene key="createpin" component={CreatePin} hideNavBar panHandlers={null} />
+					<Scene key="eth" component={Eth} hideNavBar panHandlers={null} />
 					<Scene key="confirmpin" component={ConfirmPin} hideNavBar panHandlers={null} />
 					<Scene key="walletseed" component={WalletSeed} hideNavBar panHandlers={null} />
 					<Scene key="verification" component={Verification} hideNavBar panHandlers={null} />
