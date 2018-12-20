@@ -253,8 +253,6 @@ export default class Main extends Component {
                                 </View>
                                 )}
                             </View>
-
-
                 </Animated.View>
             </Drawer>
             );
@@ -271,15 +269,15 @@ const styles = StyleSheet.create({
         backgroundColor: theme.dark
     },
     upperFlex: {
-        height:275,
+        height:250,
         position: 'relative',
         width: '100%',
         backgroundColor: theme.dark,
-        alignItems: 'center'
+        alignItems: 'center',
     },
     lowerflex : {
         flex:1,
-    },  
+    },
     statusbar: {
         height: statusBarHeight,
         width: '100%',
@@ -287,7 +285,7 @@ const styles = StyleSheet.create({
     contentContainer: {
         position:'relative',
         height: '100%',
-        width: '100%',
+        width: '90%',
     },
     headerIconsFlex: {
         height:70,
