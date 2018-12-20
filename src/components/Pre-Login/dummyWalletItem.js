@@ -45,6 +45,13 @@ class DummyWalletItem extends Component {
                         />
                     </TouchableOpacity>
                 </View>
+                <View style={styles.exploreWrap}>
+                    <TouchableOpacity>
+                    <Text style={{color:'white', fontFamily:theme.font}}>
+                        Explore
+                    </Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         );
     }
@@ -60,7 +67,7 @@ const styles = StyleSheet.create({
     walletWrapper : {
         flex:1, 
         width: Dimensions.get('window').width * 0.75,
-        marginLeft: 20,
+        marginRight: 30,
         backgroundColor:theme.dark,
         borderRadius:10,
         padding:20
@@ -87,6 +94,11 @@ const styles = StyleSheet.create({
     buttonImage : {
         width: 60, 
         height: 60
+    },
+    exploreWrap : {
+        height:25,
+        alignItems:'center',
+        justifyContent:'center'
     }
 
 });

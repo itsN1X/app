@@ -15,12 +15,12 @@ export default class ScanQR extends React.Component {
 	render() {
 		return (
 			<View style={{flex:1}}>
-				<View style={{height:75, justifyContent:'center', paddingHorizontal: 20}}>
-					<Text style={{ fontSize: 32, fontFamily:theme.font }}>
+				<View style={{height:100, justifyContent:'center', paddingLeft: 30}}>
+					<Text style={{ fontSize: 36, fontFamily:theme.font }}>
 						Wallets
 					</Text>
 				</View>
-				<View style={{ flex:1,flexDirection:'column', paddingVertical:30}}>
+				<View style={{ flex:1,flexDirection:'column', paddingBottom:30, paddingLeft:30}}>
 					<ScrollView
 						horizontal={true}
 						showsHorizontalScrollIndicator={false}
