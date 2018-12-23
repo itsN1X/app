@@ -187,16 +187,32 @@ export default class Send extends React.Component {
 		let fees = (size * 1000)/1000;
 
 		let estimatedFees =  transaction._estimateFee(size,amount, 1000);
-		transaction.fee(estimatedFees);
-		transaction.sign(privateKey);
-		transaction = transaction.toString();
-		hash = {};
-		hash.transaction_hash = transaction;
-		hash.address = from;
-		hash.amount = amount/100000000;
-		this.setState({activity: "Broadcasting Transaction"}, () => {
-			requestAnimationFrame(() => this.sendTransactionHash(hash), 0)
-		});
+		let balance = this.props.balance*100000000;
+
+		if((amount + estimatedFees) > balance){
+			Toast.showWithGravity('Amount should not be greater than balance', Toast.LONG, Toast.CENTER);
+			this.setState({loaded:true});
+		}
+
+
+		else if((amount - estimatedFees) <= 0){
+		Toast.showWithGravity('Amount should be greater than fee', Toast.LONG, Toast.CENTER);
+		this.setState({loaded:true});
+		}
+
+		else{
+			transaction.fee(estimatedFees);
+			transaction.sign(privateKey);
+			transaction = transaction.toString();
+			hash = {};
+			hash.transaction_hash = transaction;
+			hash.address = from;
+			hash.amount = amount/100000000;
+			this.setState({activity: "Broadcasting Transaction"}, () => {
+				requestAnimationFrame(() => this.sendTransactionHash(hash), 0)
+			});
+		}
+
 	}
 	sendTransactionHash(hash) {
 		try {
@@ -206,7 +222,12 @@ export default class Send extends React.Component {
                 data: hash
             })
             .then(function (response) {
-                Actions.transactionsuccess({id: response.data.result})
+								if(response.data.flag == 144){
+									Toast.showWithGravity(response.data.log, Toast.LONG, Toast.CENTER);
+								}
+								else{
+									Actions.transactionsuccess({id: response.data.result})
+								}
             })
             .catch(function (error) {
                 console.log(error);
@@ -257,7 +278,7 @@ export default class Send extends React.Component {
 										<View style={styles.addressInput}>
 											<TextInput
 												multiline = {true}
-			         							numberOfLines = {4}
+			         					numberOfLines = {4}
 												value={this.state.toAddress}
 												style={styles.wordInput}
 												returnKeyType="next"
@@ -276,9 +297,10 @@ export default class Send extends React.Component {
 
 							</View>
 							<View style={styles.lowerFlex}>
+
 								<KeyboardAvoidingView behavior={'padding'} keyboardVerticalOffset={35} style={styles.inputFlexContainer}>
 									<TextInput
-										keyboardType="number-pad"
+										keyboardType="numeric"
 										value={this.state.amount}
 										style={styles.amountInput}
 										returnKeyType="done"
@@ -390,6 +412,7 @@ const styles = StyleSheet.create({
 	amountInput: {
 		width: '100%',
 		textAlign: 'center',
+		borderBottomColor: "red",
 		height: 120,
 		opacity: 0.7,
 		fontFamily: theme.Lato300,

@@ -16,8 +16,8 @@ export default class Profile extends React.Component {
         super(props);
         this.state = {
             loaded: false,
-            privateKey: "",
-            publicKey: ""
+            btcPrivateKey: "",
+            btcPublicKey: ""
         }
     }
 	componentWillMount() {
@@ -39,9 +39,9 @@ export default class Profile extends React.Component {
 	}
 	getCoinData = async () => {
       try {
-            const value = await AsyncStorage.getItem('@BTC');
+            const value = await AsyncStorage.getItem('@CoinsData');
             var coinData = JSON.parse(value);
-            this.setState({ privateKey: coinData.privateKey, publicKey: coinData.publicKey, loaded: true })
+            this.setState({ethPublicKey:coinData[1].publicKey ,ethPrivateKey:coinData[1].privateKey,btcPrivateKey: coinData[0].privateKey, btcPublicKey: coinData[0].publicKey, loaded: true })
         }
       catch(error) {
             alert(error)
@@ -70,9 +70,9 @@ export default class Profile extends React.Component {
 									<Text style={styles.headingText}>Public</Text>
 								</View>
 								<View style={styles.addressContainer}>
-									<Text style={styles.addressText}>{this.state.publicKey}</Text>
+									<Text style={styles.addressText}>{this.state.btcPublicKey}</Text>
 									<View style={styles.copyIconContainer}>
-										<TouchableOpacity onPress={() => this.writeToClipboard(this.state.publicKey)}>
+										<TouchableOpacity onPress={() => this.writeToClipboard(this.state.btcPublicKey)}>
 											<Image style={styles.copyIcon} source={{uri: Copy}} />
 										</TouchableOpacity>
 									</View>
@@ -81,15 +81,11 @@ export default class Profile extends React.Component {
 									<Text style={styles.headingText}>Private</Text>
 								</View>
 								<View style={[styles.addressContainer, {marginBottom: 15}]}>
-									<Text style={styles.addressText}>{this.state.privateKey}</Text>
-									<View style={styles.copyIconContainer}>
-										<TouchableOpacity onPress={() => this.writeToClipboard(this.state.privateKey)}>
-											<Image style={styles.copyIcon} source={{uri: Copy}} />
-										</TouchableOpacity>
-									</View>
+									<Text style={styles.addressText}>{this.state.btcPrivateKey}</Text>
 								</View>
 							</View>
 							<View style={styles.greyline} />
+							
 						</View>
 					</ScrollView>
 				</View>

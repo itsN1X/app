@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, BackHandler,Text, View, Image, ActivityIndicator, TouchableOpacity, ScrollView, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Dimensions, TextInput, AsyncStorage, Clipboard } from 'react-native';
+import { StyleSheet, Alert,Picker,BackHandler,Text, View, Image, ActivityIndicator, TouchableOpacity, ScrollView, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Dimensions, TextInput, AsyncStorage, Clipboard } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import Toast from 'react-native-simple-toast';
 import axios from 'axios';
@@ -7,6 +7,7 @@ import ElevatedView from 'react-native-elevated-view';
 import FriendItem from './frienditem';
 import Loader from '../../../common/loader';
 import theme from '../../../common/theme';
+import SharmirPicker from '../../../common/shamirPicker';
 import StatusBar from '../../../common/statusbar';
 import AppStatusBar from '../../../common/appstatusbar';
 import Button from '../../../common/button';
@@ -17,6 +18,7 @@ const VirgilCrypto =require('virgil-crypto');
 const virgilCrypto = new VirgilCrypto.VirgilCrypto();
 
 var Back = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/darkback.png";
+var arrow = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/new/down.png";
 
 var friends;
 
@@ -25,7 +27,11 @@ export default class ChooseFriends extends React.Component {
 		super(props);
 		this.state = {
 			activity: "",
+			maxDevices:3,
+			minDevices:2,
+			shamirValue:"2/3",
 			mode: "",
+			pickerEnabled: false,
 			loaded: false,
 			mnemonic: "",
 			address: "",
@@ -43,6 +49,7 @@ export default class ChooseFriends extends React.Component {
 		this.onAddPress = this.onAddPress.bind(this);
 		this.pushFriendData = this.pushFriendData.bind(this);
 		this.getSecretParts = this.getSecretParts.bind(this);
+		this.enablePicker = this.enablePicker.bind(this);
 		this.getNewKeys = this.getNewKeys.bind(this);
 		this.onSavePress = this.onSavePress.bind(this);
 		this.createTrustData = this.createTrustData.bind(this);
@@ -68,9 +75,20 @@ export default class ChooseFriends extends React.Component {
 				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
 		}
 		handleBackButton = () =>  {
-		 Actions.popTo('enteremail');
+		if(this.props.mode == "register"){
+			Actions.initiaterecovery();
+		}
+		else{
+			Actions.popTo('enteremail');
+		}
 		 return true;
 		}
+
+
+	enablePicker() {
+			this.setState({ pickerEnabled: true});
+		}
+
 
 
 	getNewKeys() {
@@ -96,9 +114,7 @@ export default class ChooseFriends extends React.Component {
 			const value = await AsyncStorage.getItem('@UserData');
 			const mnemonicstr = JSON.parse(value);
 			const mnemonic = mnemonicstr.mnemonic;
-			this.setState({mnemonic: mnemonic, publicKey: mnemonicstr.publicKey, loaded: true});
-			const shares = this.getSecretParts(mnemonic);
-			this.setState({shares: shares});
+			this.setState({mnemonic: mnemonic, publicKey: mnemonicstr.publicKey, username: mnemonicstr.username, loaded: true});
 		}
 		catch(error) {
 			console.log(error)
@@ -115,7 +131,7 @@ export default class ChooseFriends extends React.Component {
 		data.friendsHandle = this.state.friendsHandle;
 		data.id = length + 1;
 		friends.push(data);
-		if(data.id === 3) {
+		if(data.id === this.state.maxDevices) {
 			this.setState({friends: friends, friendsAdded: true, length: data.id, address: ""});
 		}
 		else {
@@ -125,26 +141,25 @@ export default class ChooseFriends extends React.Component {
 	getSecretParts(mnemonic){
 		const cryptr = new Cryptr('Hello');
 		const encryptedString = cryptr.encrypt(mnemonic);
-		var shares = secrets.share(encryptedString, 3, 3);
+		var shares = secrets.share(encryptedString, this.state.maxDevices, this.state.minDevices);
 		return shares;
 	}
 	onAddPress() {
 		const self = this;
 		const friends = this.state.friends;
+
+
 		for(i = 0; i < friends.length; i++) {
-			if(this.state.address === friends[i].address) {
+			if(this.state.address.replace('@','') === friends[i].friendsHandle) {
 				Toast.showWithGravity('Device Already Added!', Toast.LONG, Toast.CENTER);
 				return true;
 			}
 		}
-		if(this.state.address === this.state.publicKey) {
-			Toast.showWithGravity('Invalid Device!', Toast.LONG, Toast.CENTER);
-		}
-		if(friends.length === 3) {
+		if(friends.length === this.state.maxDevices) {
 			self.setState({friendsAdded: true});
 		}
 		var data = {};
-		data.user_name = this.state.address;
+		data.user_name = this.state.address.replace('@','');
 		data.status = "1";
 		try {
             axios({
@@ -153,9 +168,8 @@ export default class ChooseFriends extends React.Component {
                 data: data
             })
             .then(function (response) {
-            	console.log(response);
             	if(response.data.flag === 143) {
-            		Toast.showWithGravity(response.data.log, Toast.LONG, Toast.TOP, Toast.CENTER);
+            		Toast.showWithGravity("Trusted Device Added.", Toast.LONG,Toast.CENTER);
 								self.setState({friendsPublickey : response.data.result[0].public_key, friendsHandle : response.data.result[0].user_name});
             		self.pushFriendData();
             	}
@@ -193,12 +207,13 @@ export default class ChooseFriends extends React.Component {
     }
     createTrustData() {
     	const friends = this.state.friends;
-    	const shares = this.state.shares;
+			const shares = this.getSecretParts(this.state.mnemonic);
     	var trust_data = [];
     	for (i = 0; i < friends.length; i++) {
     		var data = {};
     		data.user_public_key = friends[i].address;
     		var messageToEncrypt = {};
+				messageToEncrypt.username = this.state.username;
   			messageToEncrypt.user_public_key = this.state.publicKey;
   			messageToEncrypt.secret = shares[i];
   			messageToEncrypt = JSON.stringify(messageToEncrypt);
@@ -206,7 +221,6 @@ export default class ChooseFriends extends React.Component {
     		trust_data.push(data);
     	}
     	this.sendTrustData(trust_data);
-    	console.log(trust_data);
     }
     encryptData(data, publicKeyStr) {
 		const publicKey = virgilCrypto.importPublicKey(publicKeyStr);
@@ -254,7 +268,7 @@ export default class ChooseFriends extends React.Component {
 	createRecoveryTrustData() {
 		const friends = this.state.friends;
 		var trustData = [];
-	    for(i=0 ; i<3 ; i++) {
+	    for(i=0 ; i<friends.length ; i++) {
 			var dataObject = {};
 			dataObject.user_public_key = friends[i].address;
 			trustData.push(dataObject);
@@ -298,12 +312,44 @@ export default class ChooseFriends extends React.Component {
 	changeRequestRecoveryStatus = async () => {
 		try {
 			await AsyncStorage.setItem('@RecoveryInitiated', "true");
+			await AsyncStorage.setItem('@Friends', JSON.stringify(this.state.friends));
 			Actions.postlogin();
 			Actions.recoveryrequests();
 		}
 		catch(error) {
 			Toast.showWithGravity(error, Toast.LONG, Toast.CENTER);
 		}
+	}
+
+	changeShamir(value){
+		if(this.state.friends.length ){
+			Alert.alert(
+			'Cannot change after adding friends.',
+			'',
+				[
+					{text: 'Continue', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+					{text: 'Reset', onPress: async () => {
+						try {
+								Actions.choosefriends();
+							} catch (error) {
+								console.log(error)
+					}
+				}
+			}
+				]
+			)
+		}
+
+		else{
+			if(value == "2/3"){
+				this.setState({shamirValue:value , maxDevices:3,minDevices:2});
+			}
+
+			else {
+				this.setState({shamirValue:value , maxDevices:5,minDevices:3});
+			}
+		}
+
 	}
 	onUnfocus() {
 		Keyboard.dismiss();
@@ -333,20 +379,35 @@ export default class ChooseFriends extends React.Component {
 			return (
 					<View style={styles.container}>
 						<StatusBar />
-						<AppStatusBar left={true} Back={Back} leftFunction={this.goBack} bColor={theme.white} elevation={true} center={true} text="Add Trusted Devices" textColor={theme.black} />
+						<AppStatusBar  bColor={theme.dark} elevation={true} center={true} text="Add Trusted Devices" textColor={theme.white} />
 						<ScrollView keyboardShouldPersistTaps="always" style={{flex: 1, width: '100%'}}>
 							<View style={{flex: 1, width: '100%', alignItems: 'center'}}>
 
 
 						{this.state.friendsAdded ? null : (
-							<View style={styles.friendHeadingFlex}>
-								<View style={styles.friendHeadingContainer}>
-									<Text style={styles.friendHeadingText}>Added Devices</Text>
+							<View>
+								<View style={{alignItems:'center', justifyContent:'center', paddingVertical:10}}>
+
+
+									<Picker
+									  selectedValue={this.state.shamirValue}
+									  style={{ height: 50, width: 150}}
+									  onValueChange={(itemValue, itemIndex) => this.changeShamir(itemValue)}>
+									  <Picker.Item label="Shamir 2/3" value="2/3" />
+									  <Picker.Item label="Shamir 3/5" value="3/5" />
+									</Picker>
 								</View>
-								<View style={styles.friendNumberContainer}>
-									<Text style={styles.friendNumberText}>{this.state.length}/3</Text>
+								<View style={styles.friendHeadingFlex}>
+									<View style={styles.friendHeadingContainer}>
+										<Text style={styles.friendHeadingText}>Added Devices</Text>
+									</View>
+
+									<View style={styles.friendNumberContainer}>
+										<Text style={styles.friendNumberText}>{this.state.length}/{this.state.maxDevices}</Text>
+									</View>
 								</View>
 							</View>
+
 						)}
 
 						{this.state.friendsAdded ? null : (
@@ -356,13 +417,12 @@ export default class ChooseFriends extends React.Component {
 									</View>
 									<View style={styles.emailInput}>
 										<TextInput
-											multiline={true}
-											numberOfLines={2}
-											value={this.state.address}
+											multiline={false}
+											value={this.state.address.length == 0 ? "@" : this.state.address}
 											style={styles.wordInput}
 											autoCapitalize='none'
 											returnKeyType="next"
-											onChangeText={(text) => this.setState({ address: text })}
+											onChangeText={(text) => this.setState({ address: text})}
 											maxLength={70}
 											underlineColorAndroid='transparent'
 										/>
@@ -390,7 +450,10 @@ export default class ChooseFriends extends React.Component {
 											{this.props.mode==="register" ? <Text>Confirm</Text> : <Text>Save</Text>}
 										</Button> : null}
 									</View>
+									{this.state.pickerEnabled ? <SharmirPicker status={this.state.pickerEnabled} changeCoin={this.changeCoin} /> : null}
 							</View>
+
+
 							</View>
 						</ScrollView>
 					</View>
@@ -405,7 +468,6 @@ const styles = StyleSheet.create({
 	    alignItems: 'center'
 	},
 	friendHeadingFlex: {
-		height: 80,
 		width: '90%',
 		justifyContent: 'flex-end',
 		flexDirection: 'row'

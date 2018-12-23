@@ -1,8 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, Platform, ActivityIndicator, ScrollView, TouchableOpacity, Dimensions, KeyboardAvoidingView, Clipboard, AsyncStorage } from 'react-native';
+import { StyleSheet,Text, View, Image, Platform, ActivityIndicator, ScrollView, TouchableOpacity, Dimensions, KeyboardAvoidingView, Clipboard, AsyncStorage } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import axios from 'axios';
 import Loader from '../../../common/loader';
+import Button from '../../../common/button';
 import { BarIndicator } from 'react-native-indicators';
 import Toast from 'react-native-simple-toast';
 import RequestItem from './requestitem';
@@ -14,7 +15,8 @@ const VirgilCrypto =require('virgil-crypto');
 const virgilCrypto = new VirgilCrypto.VirgilCrypto();
 
 var Back = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/lightback.png";
-
+var sad = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/sad.png";
+var guardian = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/new/gaurdian-man.png";
 var Unconfirmed = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/new/reject.png";
 var Confirmed = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/new/accept.png";
 var Protected = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/confirmed.png";
@@ -38,6 +40,11 @@ export default class PendingRequests extends React.Component {
 		this.setState({loaded: false})
 		this.getAccountInfo();
 	}
+
+	copyToClipboard = async (str) => {
+	  await Clipboard.setString(str);
+	  Toast.showWithGravity('Copied to Clipboard!', Toast.LONG, Toast.CENTER)
+	};
 	fetchRequests = async (account) => {
 		var data = {};
 		data.publicKey = account.publicKey;
@@ -52,7 +59,6 @@ export default class PendingRequests extends React.Component {
             .then(function (response) {
             	console.log(response);
             	if(response.data.status === "0" || response.data.recoveryData.length === 0) {
-            		Toast.showWithGravity("No Requests Found!", Toast.LONG, Toast.CENTER);
             		self.setState({ loaded: true, requestList: [] });
             	}
             	else {
@@ -72,8 +78,7 @@ export default class PendingRequests extends React.Component {
 		data.trustData;
 		for( i = 0; i < data.trustData.length; i++) {
 			decryptedTrustData[i] = this.decryptData(data.trustData[i].trust_data, account.privateKey);
-		}
-		console.log(decryptedTrustData);
+		};
 		this.checkRequests(decryptedTrustData, data.recoveryData, account.publicKey)
 	}
 	decryptData(encryptedData, privateKeyStr) {
@@ -90,18 +95,14 @@ export default class PendingRequests extends React.Component {
 				if(trustData[j].user_public_key === recoveryData[i].from_public_key) {
 					data = {};
 					data.user_public_key = publicKey;
+					data.username = trustData[j].username;
 					data.from_public_key = trustData[j].user_public_key;
 					data.new_public_key = recoveryData[i].new_public_key;
-					console.log("My Secret: ",trustData[j].secret);
-					console.log("PublicKey: ",recoveryData[i].new_public_key);
 					data.secret = this.encryptData(trustData[j].secret, recoveryData[i].new_public_key);
-					console.log(data.secret);
 					data.request_id = recoveryData[i].request_id;
 					data.logged_on = recoveryData[i].logged_on;
-					console.log(data);
 					requestList.push(data);
 				}
-				else {}
 			}
 		}
 		this.setState({loaded: true, requestList: requestList});
@@ -116,15 +117,15 @@ export default class PendingRequests extends React.Component {
 		try{
 			const value = await AsyncStorage.getItem('@UserData');
 			var guardian = await AsyncStorage.getItem('@Guardian');
-			this.setState({loaded: true})
 			var account = JSON.parse(value);
-			if(guardian === "true") {
 				this.setState({pendingRequestsTitle : "@"+account.username});
-			}
-			else {
-				this.setState({pendingRequestsTitle : "Recovery Requests"});
-			}
-			this.fetchRequests(account);
+
+
+
+			this.setState({activity: "Fetching Requests"}, () => {
+				requestAnimationFrame(()=>this.fetchRequests(account), 0);
+			})
+
 		}
 		catch(error) {
 			this.setState({loaded: true})
@@ -143,14 +144,31 @@ export default class PendingRequests extends React.Component {
 			return (
 				<View style={styles.container}>
 					<StatusBar bColor={theme.dark} />
-					{this.props.back ? <AppStatusBar bColor={theme.dark} left={true} Back={Back} leftFunction={this.goBack} center={true} text="Requests" textColor={theme.white} /> : <AppStatusBar bColor={theme.dark} center={true} text={this.state.pendingRequestsTitle} textColor={theme.white} />}
+					{this.props.back ? <AppStatusBar bColor={theme.dark} left={true} Back={Back} leftFunction={this.goBack} center={true} text={this.state.pendingRequestsTitle} textColor={theme.white} /> : <AppStatusBar bColor={theme.dark} center={true} text={this.state.pendingRequestsTitle} textColor={theme.white} />}
 					<ScrollView style={styles.scrollView}>
-					{/*}	<View style={styles.requestsContainer}>
+					{<View style={styles.requestsContainer}>
 							{this.state.requestList.map((value, i) => {
-				               return(<View style={{height: 141, width: '100%', alignItems: 'center'}} key={i}><RequestItem onCopy={this.writeToClipboard} from_public_key={value.from_public_key} user_public_key={value.user_public_key} secret={value.secret} date={value.logged_on} new_public_key={value.new_public_key} request_id={value.request_id} /><View style={styles.line} /></View>);
+				               return(<View style={{height: 141, width: '100%', alignItems: 'center'}} key={i}><RequestItem onCopy={this.writeToClipboard} from_public_key={value.from_public_key} user_name={value.username} user_public_key={value.user_public_key} secret={value.secret}  new_public_key={value.new_public_key} request_id={value.request_id} /><View style={styles.line} /></View>);
 				             })}
-						</View>*/}
-						<View style={styles.pendingRequestsContainer}>
+						</View>}
+
+
+						{this.state.requestList.length == 0 ?  (
+							<View style={{height: Dimensions.get('window').height-160, flex:1, padding:'10%',alignItems:'center', justifyContent:'center'}}>
+								<Image
+									style={{width:150,height:150, opacity:0.75}}
+									source={{uri: guardian}}
+								/>
+								<Text style={{fontSize:18, opacity:0.5, color:theme.dark, fontFamily:theme.font, marginTop:20}}>Oops, you dont have any request yet</Text>
+								<View style={styles.recoverButtonContainer}>
+								<Button bColor={theme.dark} onPress={() => this.copyToClipboard(this.state.pendingRequestsTitle.replace('@',''))}>
+									<Text>Copy Username</Text>
+								</Button>
+								</View>
+							</View>
+						): null}
+
+					{	/*<View style={styles.pendingRequestsContainer}>
 							<View style={styles.pendingRequestsTitlewrap}>
 								<Text style={styles.pendingRequestsTitle}> Pending Requests </Text>
 							</View>
@@ -173,7 +191,7 @@ export default class PendingRequests extends React.Component {
 												source={{uri: Unconfirmed}}
 											/>
 											<Text style={styles.rejectText}>Ignore</Text>
-										</View>	
+										</View>
 									</TouchableOpacity>
 									<TouchableOpacity style={styles.accept}>
 										<View style={styles.acceptIconWrapper}>
@@ -182,7 +200,7 @@ export default class PendingRequests extends React.Component {
 												source={{uri: Confirmed}}
 											/>
 											<Text style={styles.acceptText}>Accept</Text>
-										</View>	
+										</View>
 									</TouchableOpacity>
 								</View>
 							</View>
@@ -206,7 +224,7 @@ export default class PendingRequests extends React.Component {
 												source={{uri: Unconfirmed}}
 											/>
 											<Text style={styles.rejectText}>Ignore</Text>
-										</View>	
+										</View>
 									</TouchableOpacity>
 									<TouchableOpacity style={styles.accept}>
 										<View style={styles.acceptIconWrapper}>
@@ -215,7 +233,7 @@ export default class PendingRequests extends React.Component {
 												source={{uri: Confirmed}}
 											/>
 											<Text style={styles.acceptText}>Accept</Text>
-										</View>	
+										</View>
 									</TouchableOpacity>
 								</View>
 							</View>
@@ -239,7 +257,7 @@ export default class PendingRequests extends React.Component {
 												source={{uri: Unconfirmed}}
 											/>
 											<Text style={styles.rejectText}>Ignore</Text>
-										</View>	
+										</View>
 									</TouchableOpacity>
 									<TouchableOpacity style={styles.accept}>
 										<View style={styles.acceptIconWrapper}>
@@ -248,7 +266,7 @@ export default class PendingRequests extends React.Component {
 												source={{uri: Confirmed}}
 											/>
 											<Text style={styles.acceptText}>Accept</Text>
-										</View>	
+										</View>
 									</TouchableOpacity>
 								</View>
 							</View>
@@ -272,7 +290,7 @@ export default class PendingRequests extends React.Component {
 												source={{uri: Unconfirmed}}
 											/>
 											<Text style={styles.rejectText}>Ignore</Text>
-										</View>	
+										</View>
 									</TouchableOpacity>
 									<TouchableOpacity style={styles.accept}>
 										<View style={styles.acceptIconWrapper}>
@@ -281,7 +299,7 @@ export default class PendingRequests extends React.Component {
 												source={{uri: Confirmed}}
 											/>
 											<Text style={styles.acceptText}>Accept</Text>
-										</View>	
+										</View>
 									</TouchableOpacity>
 								</View>
 							</View>
@@ -304,7 +322,7 @@ export default class PendingRequests extends React.Component {
 									</View>
 								</View>
 							</View>
-						</View>
+						</View>*/}
 					</ScrollView>
 				</View>
 			);
@@ -405,7 +423,7 @@ const styles = StyleSheet.create({
 		alignItems:'center',
 	},
 	acceptText : {
-		fontFamily:theme.font	
+		fontFamily:theme.font
 	},
 	acceptIcon : {
 		width:25,
@@ -448,4 +466,11 @@ const styles = StyleSheet.create({
 		marginBottom:25,
 		color:theme.dark
 	},
+	recoverButtonContainer: {
+		position: 'absolute',
+		width: '100%',
+		alignItems: 'center',
+		bottom: 0,
+		marginBottom: 15
+	}
 });

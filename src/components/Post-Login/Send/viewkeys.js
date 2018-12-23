@@ -21,6 +21,7 @@ export default class Profile extends React.Component {
         }
     }
 	componentWillMount() {
+		alert("hi");
 		this.getCoinData();
 	}
 	goBack() {
@@ -28,9 +29,9 @@ export default class Profile extends React.Component {
 	}
 	getCoinData = async () => {
       try {
-            const value = await AsyncStorage.getItem('@BTC');
+            const value = await AsyncStorage.getItem('@CoinsData');
             var coinData = JSON.parse(value);
-            this.setState({ privateKey: coinData.privateKey, publicKey: coinData.publicKey, loaded: true })
+            this.setState({ privateKey: coinData[0].privateKey, publicKey: coinData[0].publicKey, loaded: true })
         }
       catch(error) {
             alert(error)
@@ -42,7 +43,7 @@ export default class Profile extends React.Component {
     };
 	render() {
 		if(!this.state.loaded) {
-            return(<View style={{flex:1, backgroundColor: theme.white}}><BarIndicator color={theme.dark} size={50} count={5} /></View>)     
+            return(<View style={{flex:1, backgroundColor: theme.white}}><BarIndicator color={theme.dark} size={50} count={5} /></View>)
         }
         else {
 			return (
@@ -103,7 +104,7 @@ const styles = StyleSheet.create({
 	},
 	nameFlex: {
 		flex: 0.22,
-		justifyContent: 'flex-end' 
+		justifyContent: 'flex-end'
 	},
 	nameText: {
 		fontFamily: theme.font,

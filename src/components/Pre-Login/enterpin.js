@@ -74,6 +74,16 @@ export default class EnterPin extends React.Component {
 								Actions.profile();
 								Actions.viewkeys();
 							}
+
+							else if (this.props.guardian == "true") {
+									Actions.guardiantabs();
+										Actions.pendingrequests();
+							}
+
+							else if(this.props.recovery == "true") {
+								Actions.postlogin();
+	            	Actions.recoveryrequests();
+							}
 							else if(this.props.mode == "changePin"){
 								this.storeData();
 								Actions.prelogin();
@@ -86,12 +96,12 @@ export default class EnterPin extends React.Component {
 
 						else {
 							wrongPinCount++;
-							if(wrongPinCount == 5){
-								Toast.showWithGravity('Game Over!!', Toast.LONG, Toast.CENTER);
+							if(wrongPinCount == 10){
+								Toast.showWithGravity('You are being logged out.', Toast.LONG, Toast.CENTER);
 								this.logout();
 							}
 							else{
-								Toast.showWithGravity('Attemt Left: '+ (10 - wrongPinCount), Toast.LONG, Toast.CENTER);
+								Toast.showWithGravity('Attempts Left: '+ (10 - wrongPinCount), Toast.LONG, Toast.CENTER);
 
 							}
 						}

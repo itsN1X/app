@@ -19,6 +19,7 @@ export default class RecoveryRequests extends React.Component {
 		this.state = {
 			loaded: false,
 			requestList: [],
+			friends:[],
 			oldPublicKey: "",
 			newPrivatekey: "",
 			ready: false,
@@ -37,7 +38,9 @@ export default class RecoveryRequests extends React.Component {
 		try{
 			const oldPublicKey = await AsyncStorage.getItem('@OldPublicKey');
 			const newPrivateKey = await AsyncStorage.getItem('@NewPrivateKey');
-			this.setState({oldPublicKey: oldPublicKey, newPrivateKey: newPrivateKey});
+			const friends = await AsyncStorage.getItem('@Friends');
+
+			this.setState({friends: JSON.parse(friends),oldPublicKey: oldPublicKey, newPrivateKey: newPrivateKey});
 			this.getRecoveryDetails(oldPublicKey);
 		}
 		catch(error) {
@@ -64,12 +67,11 @@ export default class RecoveryRequests extends React.Component {
 
     writeToClipboard = async (address) => {
       await Clipboard.setString(address);
-      Toast.showWithGravity('Copi to Clipboard!', Toast.LONG, Toast.CENTER)
+      Toast.showWithGravity('Copied to Clipboard!', Toast.LONG, Toast.CENTER)
     };
 	getRecoveryDetails = async (publicKey) => {
 		var data = {};
 		data.publicKey = publicKey;
-		console.log(data)
 		try {
     		var self = this;
             axios({
@@ -78,12 +80,31 @@ export default class RecoveryRequests extends React.Component {
                 data: data
             })
             .then(function (response) {
+								var approvals = 0;
                 if(response.data.flag === 143) {
-            		if(response.data.result[0].trust_status == 1 && response.data.result[1].trust_status == 1 && response.data.result[2].trust_status == 1) {
-			        	self.setState({loaded: true, requestList: response.data.result, ready: true})
+								var requestArr = response.data.result;
+								var friends = self.state.friends;
+								for(i=0 ; i < friends.length ; i++){
+									if(friends[i].address == requestArr[i].user_public_key){
+										requestArr[i].friendsHandle = friends[i].friendsHandle;
+									}
+								}
+
+							for(j=0 ; j < requestArr.length ; j++){
+								if(requestArr[j].trust_status == 1) {
+									approvals++;
+								}
+							}
+
+							if(requestArr.length == 3 && approvals == 2){
+									self.setState({loaded: true,requestList: requestArr, ready: true});
+							}
+
+							else if(requestArr.length == 5 &&  approvals == 3) {
+            		self.setState({loaded: true,requestList: requestArr, ready: true});
 			        }
 			        else {
-			        	self.setState({loaded: true, requestList: response.data.result, ready: false})
+			        	self.setState({loaded: true,requestList: requestArr, ready: false})
 			        }
             	}
             	else {
@@ -112,11 +133,11 @@ export default class RecoveryRequests extends React.Component {
 			return (
 				<View style={styles.container}>
 					<StatusBar bColor={theme.white} />
-					<AppStatusBar bColor={theme.white} center={true} text="Recovery" textColor={theme.dark} />
+					<AppStatusBar bColor={theme.dark} center={true} text="Recovery" textColor={theme.white} />
 					<ScrollView style={styles.scrollView}>
 						<View style={styles.requestsContainer}>
 							{this.state.requestList.map((value, i) => {
-			                      return(<RecoveryRequestItem key={i} id={i} onCopy={this.writeToClipboard} user_public_key={value.user_public_key} status={value.trust_status} />);
+			                      return(<RecoveryRequestItem key={i} id={i} onCopy={this.writeToClipboard} user_public_key={value.friendsHandle} status={value.trust_status} />);
 							})}
 						</View>
 						{this.state.ready ? <View style={{height: 100, width: '100%'}}></View> : null}

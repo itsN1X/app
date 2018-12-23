@@ -250,6 +250,7 @@ const RouterComponent = () => {
 					<Scene key="exchange" component={Exchange} hideNavBar icon={ExchangeIcon} panHandlers={null} />
 					<Stack key="keyrecovery" hideNavBar icon={RecoveryIcon} panHandlers={null}>
 						<Scene key="initiaterecovery" component={InitiateRecovery} panHandlers={null} hideNavBar />
+						<Scene key="pendingrequests" component={PendingRequests} back={true} panHandlers={null} hideNavBar />
 						<Scene key="enteremail" component={EnterEmail} panHandlers={null} hideNavBar />
 						<Scene key="enterotp" component={EnterOTP} panHandlers={null} hideNavBar />
 						<Scene key="choosefriends" component={ChooseFriends} panHandlers={null} hideNavBar />
@@ -257,7 +258,7 @@ const RouterComponent = () => {
 					<Stack key="profile" hideNavBar icon={SettingsIcon} panHandlers={null}>
 						<Scene key="profilemain" component={Profile} panHandlers={null} hideNavBar/>
 						<Scene key="viewkeys" component={ViewKeys} panHandlers={null} hideNavBar />
-						<Scene key="pendingrequests" component={PendingRequests} back={true} panHandlers={null} hideNavBar />
+
 						<Scene key="backupphrase" component={BackupPhrase} hideNavBar panHandlers={null} />
 					</Stack>
 				</Scene>

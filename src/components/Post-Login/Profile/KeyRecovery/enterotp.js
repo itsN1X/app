@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, ActivityIndicator, TouchableOpacity, ScrollView, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Dimensions, TextInput, AsyncStorage } from 'react-native';
+import { StyleSheet, Text, BackHandler,View, Image, ActivityIndicator, TouchableOpacity, ScrollView, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Dimensions, TextInput, AsyncStorage } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import axios from 'axios';
 import Toast from 'react-native-simple-toast';
@@ -8,6 +8,7 @@ import theme from '../../../common/theme';
 import StatusBar from '../../../common/statusbar';
 import AppStatusBar from '../../../common/appstatusbar';
 import Button from '../../../common/button';
+import TimerCountdown from 'react-native-timer-countdown';
 
 var Back = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/lightback.png";
 
@@ -31,6 +32,8 @@ export default class EnterOTP extends React.Component {
 			this.setState({ email: this.props.email, session_id: this.props.session_id, loaded: true })
 		}
 	}
+
+
 	getUserPublicKey = async () => {
 		try {
 		    var data = await AsyncStorage.getItem('@UserData');
@@ -41,6 +44,17 @@ export default class EnterOTP extends React.Component {
 		    console.log(error)
 		}
 	}
+
+	componentDidMount() {
+				BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+		}
+		componentWillUnmount() {
+				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+		}
+		handleBackButton = () =>  {
+			Actions.popTo('enteremail');
+		 return true;
+		}
 	goBack() {
 		Actions.pop();
 	}
@@ -139,9 +153,13 @@ export default class EnterOTP extends React.Component {
 							<View style={styles.enterEmailHeading}>
 								<Text style={styles.enterEmailText}>Enter Verification Code</Text>
 							</View>
-							<View style={styles.enterEmailHeading}>
-								<Text style={styles.otpText}>{this.props.otp}</Text>
-							</View>
+							<TimerCountdown
+			            initialSecondsRemaining={2000*60}
+			            onTick={secondsRemaining => console.log('tick', secondsRemaining)}
+			            onTimeElapsed={() => Actions.pop()}
+			            allowFontScaling={true}
+			            style={{ fontSize: 17 }}
+			        />
 							<View style={styles.emailInput}>
 								<TextInput
 									value={this.state.otp}

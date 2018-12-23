@@ -47,7 +47,7 @@ export default class WalletItem extends React.Component {
 							<Image source={{uri: this.state.Icon}} style={styles.coinIcon} />
 						</View>
 						<View style={styles.coinNameContainer}>
-							<Text style={[styles.coinNameText, {color: textColor}]}>{this.props.name.toUpperCase()}</Text>
+							<Text style={[styles.coinNameText, {color: textColor}]}>{this.props.name == "Bitcoin" ? this.props.name.toUpperCase() : this.props.name.toUpperCase() + " (coming soon)"}</Text>
 						</View>
 					</View>
 					<View style={styles.lowerFlex}>

@@ -87,8 +87,8 @@ export default class Profile extends React.Component {
 
 	promptUserForLogout() {
 		Alert.alert(
-	  'Are your sure to logout?',
-	  '',
+	  'Unpair Wallet',
+	  'Are your sure you want to unpair your device?',
 		  [
 		    {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
 		    {text: 'OK', onPress: async () => {
@@ -202,25 +202,6 @@ export default class Profile extends React.Component {
 									</View>
 								</View>
 							</TouchableOpacity>
-							<View style={styles.greyline} />
-
-							{this.state.recoveryRequests === "false" ? null : (
-								<TouchableOpacity style={styles.otherTabFlex} onPress={this.gotoRequests}>
-								<View style={styles.otherTabContainer}>
-									<View style={styles.tabHeadingFlex}>
-										<Text style={styles.tabheadingText}>Requests for Key Recovery</Text>
-									</View>
-									<View style={styles.tabActionFlex}>
-										<View style={styles.tabAction}>
-											<Text style={styles.tabActionText}></Text>
-										</View>
-										<View style={styles.tabActionIconContainer}>
-											<Image style={styles.tabActionIcon} source={{uri: Next}} />
-										</View>
-									</View>
-								</View>
-							</TouchableOpacity>
-							)}
 							<View style={styles.greyline} />
 							<TouchableOpacity style={styles.otherTabFlex} onPress={this.changePin}>
 								<View style={styles.otherTabContainer}>

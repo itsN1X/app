@@ -23,7 +23,9 @@ export default class Wallets extends React.Component {
 			loaded: false,
 			activity: "",
 			asset_data: "",
-			coinData: ""
+			coinData: "",
+			balance:"",
+			newData:[]
 		};
 		this.onWalletOpen = this.onWalletOpen.bind(this);
 		this.closeDrawer = this.closeDrawer.bind(this);
@@ -77,7 +79,6 @@ export default class Wallets extends React.Component {
             	}
             	else {
 	            	if(value === 'LoggedIn' || this.props.loggedIn) {
-									this.fetchPrices();
 
 	            		if(!this.props.wallet_id) {
 	            			if(!wallet_id) {
@@ -131,7 +132,7 @@ export default class Wallets extends React.Component {
                 	Actions.initiatewallets({wallet_id: wallet_id});
 							}
 							if(response.data.result.length > 0){
-								self.decryptData(response.data.result, user_data)
+								self.decryptData(response.data.result, user_data , data.wallet_id)
 							}
             })
             .catch(function (error) {
@@ -143,20 +144,47 @@ export default class Wallets extends React.Component {
             alert("Network Error")
         }
     }
-    decryptData(asset_data, user_data) {
+    decryptData(asset_data, user_data,wallet_id) {
 			var coinsData = [];
     	var user_data = JSON.parse(user_data);
 			var privateKey = virgilCrypto.importPrivateKey(user_data.privateKey);
 			for(i =0 ; i < asset_data.length; i++){
+				var smartData = {};
 				const decryptedData = virgilCrypto.decrypt(asset_data[i].asset_data, privateKey);
         const decryptedMessage = decryptedData.toString('utf8');
 				coinsData.push(JSON.parse(decryptedMessage));
 			}
-
-
+				this.fetchBalances(coinsData,wallet_id);
 				this.setState({decryptedCoinsData:JSON.stringify(coinsData)});
         this.saveData(JSON.stringify(coinsData));
     }
+
+
+	fetchBalances(coinsData,wallet_id){
+		var user = {};
+		user.wallet_id = wallet_id;
+		user.addresses = [coinsData[0].address];
+		try {
+			var self = this;
+			axios({
+					method: 'post',
+					url: 'http://206.189.137.43:4013/get_user_data',
+					data:user
+				})
+				.then(function (response) {
+					 self.setState({newData : response.data.assetData});
+				})
+				.catch(function (error) {
+				});
+		}
+		catch(error) {
+			alert(error);
+		}
+	}
+
+
+
+
 
 	fetchPrices(){
 			try {
@@ -222,6 +250,17 @@ export default class Wallets extends React.Component {
   		BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
   		Actions.mainscreen({ walleticon: walleticon, walletname: walletname, walletsymbol: walletsymbol, walletvalue: walletvalue, walletamount: walletamount })
   	}
+
+		onReceiveOpen(address){
+			BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+			Actions.recieve({ address: address});
+		}
+
+		onSendOpen(address,privateKey,balance,utxo){
+			BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+			Actions.send({ utxo: utxo, fromAddress: address, privateKey: privateKey,balance });
+		}
+
 	render () {
 		if(!this.state.loaded) {
             return(<Loader activity={this.state.activity} />);
@@ -245,27 +284,30 @@ export default class Wallets extends React.Component {
 			        mainOverlay: { opacity: ratio / 1.5 },
 			      })}
 			      onClose={() => this.closeDrawer()}>
-					<View style={styles.container}>
-						<StatusBar bColor={theme.dark} />
-						<AppStatusBar bColor={theme.dark} center={true} text="Wallets" textColor={theme.white} />
-						<View style={{flex: 1, width: '100%'}} scrollEventThrottle={16}>
-						<View>
-							<Text style={{fontSize:24,}}>Wallets</Text>
-						</View>
-							<View style={styles.mainContainer}>
-								<View style={{height: 3}} />
-								{this.state.coinData.map((value, i) => {
-			                         return(<WalletCoinItem key={value.asset_id} symbol={value.asset_symbol} value={value.asset_value} amount={1.23} lighticon={value.asset_icon_light} icon={value.asset_icon_dark} name={value.asset_name} currency={this.state.currency} onWalletOpen={this.onWalletOpen} />);
-			                    })}
-							<View style={{height: 3}} />
-							</View>
-						</View>
-					</View>
+						<View style={styles.container}>
+												<StatusBar bColor={theme.dark} />
+												<AppStatusBar bColor={theme.dark} center={true} text="Wallets" textColor={theme.white} />
+												<View style={{flex: 1, width: '100%'}} scrollEventThrottle={16}>
+												<ScrollView style={{flex: 1, width: '100%'}}>
+													<View style={styles.mainContainer}>
+														<View style={{height: 3}} />
+														{this.state.newData.map((value, i) => {
+									                         return(<WalletCoinItem key={value.asset_id} symbol={value.asset_symbol} value={value.asset_value } amount={value.asset_balance || 0} lighticon={value.asset_icon_light} icon={value.asset_icon_dark} name={value.asset_name} currency={this.state.currency} onWalletOpen={this.onWalletOpen} />);
+									                    })}
+													<View style={{height: 3}} />
+													</View>
+												</ScrollView>
+												</View>
+											</View>
 				</Drawer>
 			);
 		}
 	}
 }
+//
+// {this.state.coinData.map((value, i) => {
+// 							 return(<WalletCoinItem key={value.asset_id} symbol={value.asset_symbol} value={value.asset_value} amount={1.23} lighticon={value.asset_icon_light} icon={value.asset_icon_dark} name={value.asset_name} currency={this.state.currency} onWalletOpen={this.onWalletOpen} />);
+// 					})}
 const drawerStyles = {
   drawer: { shadowColor: '#000000', shadowOpacity: 0.8, shadowRadius: 3},
   main: {paddingLeft: 3},

@@ -9,7 +9,7 @@ import Button from '../../../common/button';
 import Loader from '../../../common/loader';
 
 SettingRecovery = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/photo633.jpg";
-
+const pending = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/new/request.png";
 export default class InitiateRecovery extends React.Component {
 	constructor(props) {
 		super(props);
@@ -30,7 +30,7 @@ export default class InitiateRecovery extends React.Component {
 		handleBackButton = () =>  {
 			Actions.postlogintabs();
 			Actions.wallets();
-				return true;
+			return true;
 		}
 	componentWillMount() {
 		this.checkRecoveryStatus();
@@ -73,6 +73,11 @@ export default class InitiateRecovery extends React.Component {
 			return true;
 		}
 	}
+
+	goToPendingRequests(){
+		Actions.pendingrequests();
+	}
+
 	render() {
 		var buttonText;
 		var infoText;
@@ -85,7 +90,7 @@ export default class InitiateRecovery extends React.Component {
 				buttonText = "Get Started";
 			}
 			else if(this.state.Status === "1") {
-				infoText = "Continue to complete youR Key Recovery";
+				infoText = "Continue to complete your Key Recovery";
 				buttonText = "Continue Recovery";
 			}
 			else if(this.state.Status === "2"){
@@ -93,10 +98,12 @@ export default class InitiateRecovery extends React.Component {
 				buttonText = "Done";
 			}
 		}
+
+
 		return (
 			<View style={styles.container}>
 				<StatusBar bColor={theme.dark} />
-				<AppStatusBar bColor={theme.dark} center={true} text="Recovery" textColor={theme.white} /><View style={styles.contentContainer}>
+				<AppStatusBar bColor={theme.dark} right={true} Forward={pending} rightFunction={this.goToPendingRequests}  center={true} text="Recovery" textColor={theme.white} /><View style={styles.contentContainer}>
 					<Image style={styles.centerImage} source={{uri: SettingRecovery}} />
 					<View>
 						<Text style={styles.centerText}>{infoText}</Text>

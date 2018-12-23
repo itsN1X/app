@@ -25,7 +25,7 @@ export default class WalletCoinItem extends React.Component {
 							</View>
 							<View style={styles.coinAmountContainer}>
 								<Text style={styles.coinAmountText}>{this.props.amount}</Text>
-								<Text style={styles.coinValueText}>{"$"+this.props.value}</Text>
+								<Text style={styles.coinValueText}>${((this.props.value * (this.props.amount*100000000))/100000000).toFixed(3)}</Text>
 							</View>
 						</View>
 					</View>

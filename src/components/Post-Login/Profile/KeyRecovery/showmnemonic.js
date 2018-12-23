@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Image, ActivityIndicator, TouchableOpacity, Dim
 import { Actions } from 'react-native-router-flux';
 import { BarIndicator } from 'react-native-indicators';
 import Toast from 'react-native-simple-toast';
+import bip39 from 'react-native-bip39';
 import SeedItem from '../../../Pre-Login/seeditem';
 import StatusBar from '../../../common/statusbar';
 import AppStatusBar from '../../../common/appstatusbar';
@@ -71,21 +72,36 @@ export default class ShowMnemonic extends React.Component {
 	}
 	recoverMnemonic() {
 		const shares = this.getShares();
-		console.log(shares)
 		const cryptr = new Cryptr('Hello');
   		var comb = secrets.combine(shares);
   		var mnemonicstr = cryptr.decrypt(comb);
-  		mnemonic = mnemonicstr.split(" ",12);
-  		this.setState({mnemonicstr: mnemonicstr, mnemonic: mnemonic, loaded: true});
+			mnemonic = mnemonicstr.split(" ",12);
+			if(bip39.validateMnemonic(mnemonicstr)){
+				this.setState({mnemonicstr: mnemonicstr, mnemonic: mnemonic, loaded: true,validateMnemonic:true});
+			}
+
+			else{
+				this.setState({mnemonic: mnemonic,loaded: true,validateMnemonic:true});
+				Toast.showWithGravity('Sorry, Not a valid Mnemonic!', Toast.LONG, Toast.CENTER);
+			}
 			// this.updateRequestStatus();
 	}
 	getShares() {
 		var shares = [];
-		console.log(this.props.data);
-		console.log(this.props.privateKey);
-		shares[0] = this.decryptData(this.props.data[0].trust_data, this.props.privateKey);
-		shares[1] = this.decryptData(this.props.data[1].trust_data, this.props.privateKey);
-		shares[2] = this.decryptData(this.props.data[2].trust_data, this.props.privateKey);
+
+		if(this.props.data.length == 5){
+			for(i =0 ; i < 3; i++){
+				var decryptedData = this.decryptData(this.props.data[i].trust_data, this.props.privateKey);
+				shares.push(decryptedData);
+			}
+		}
+
+		else{
+			for(j =0 ; j< 2; j++){
+				var decryptedData = this.decryptData(this.props.data[j].trust_data, this.props.privateKey);
+				shares.push(decryptedData);
+			}
+		}
 		return shares;
 	}
 	logout = async () => {
@@ -99,7 +115,6 @@ export default class ShowMnemonic extends React.Component {
 		  }
 	}
 	decryptData(encryptedData, privateKeyStr) {
-		console.log("hello",privateKeyStr)
 		const privateKey = virgilCrypto.importPrivateKey(privateKeyStr);
 		const decryptedDataStr = virgilCrypto.decrypt(encryptedData, privateKey);
 		var decryptedData =  decryptedDataStr.toString('utf8');
@@ -124,7 +139,7 @@ export default class ShowMnemonic extends React.Component {
 						<View style={styles.seedFlex}>
 							<View style={styles.seedContainer}>
 								<View style={styles.seed}>
-									{mnemonic.map((value, i) => {
+									{this.state.validateMnemonic && mnemonic.map((value, i) => {
 				                         return(<SeedItem key={i} index={i + 1} item={value}/>);
 				                     })}
 								</View>

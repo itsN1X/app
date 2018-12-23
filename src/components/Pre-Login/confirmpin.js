@@ -47,7 +47,7 @@ export default class ConfirmPin extends React.Component {
     }
 
     else {
-      Toast.showWithGravity('Pin does not match.', Toast.LONG, Toast.CENTER)
+      Toast.showWithGravity("PINs don't match", Toast.LONG, Toast.CENTER)
     }
 
 	}

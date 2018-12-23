@@ -42,9 +42,9 @@ export default class RequestItem extends React.Component {
 		return (
 				<View style={styles.requestItem}>
 					<View style={styles.upperFlex}>
-						<Text style={styles.addressText}>{this.props.from_public_key}</Text>
+						<Text style={styles.addressText}>@{this.props.user_name}</Text>
 						<View style={styles.copyIconContainer}>
-							<TouchableOpacity onPress={() => this.copyToClipboard(this.props.from_public_key)}>
+							<TouchableOpacity onPress={() => this.copyToClipboard(this.props.user_name)}>
 								<Image style={styles.copyIcon} source={{uri: Copy}} />
 							</TouchableOpacity>
 						</View>
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
 	addressText: {
 		fontFamily: theme.Lato,
 		fontWeight: '300',
-		fontSize: 14,
+		fontSize: 20,
 		maxWidth: '80%'
 	},
 	copyIconContainer: {
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
 		width: 18,
 		height: 18
 	},
-	lowerFlex: { 
+	lowerFlex: {
 		marginTop: 15,
 		flex: 0.5,
 		width: '100%',

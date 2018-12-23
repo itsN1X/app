@@ -28,10 +28,10 @@ export default class RecoveryRequestItem extends React.Component {
 		return (
 			<View style={styles.requestItem}>
 				<View style={styles.headingContainer}>
-					<Text style={styles.headingText}>Friend {this.props.id + 1}</Text>
+					<Text style={styles.headingText}>Trusted Device {this.props.id + 1}</Text>
 				</View>
 				<View style={styles.friendAddressContainer}>
-					<Text style={styles.friendAddressText}>{this.props.user_public_key}</Text>
+					<Text style={styles.friendAddressText}>@{this.props.user_public_key}</Text>
 					<View style={styles.copyIconContainer}>
 						<TouchableOpacity onPress={() => this.copyToClipboard(this.props.user_public_key)}>
 							<Image style={styles.copyIcon} source={{uri: Copy}} />
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
 	headingContainer: {
 		height: 30,
 		width: '100%',
-		justifyContent: 'flex-end' 
+		justifyContent: 'flex-end'
 	},
 	friendAddressContainer: {
 		height: 60,
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
 		height: 40,
 		width: '100%',
 		flexDirection: 'row',
-		alignItems: 'center' 
+		alignItems: 'center'
 	},
 	statusIcon: {
 		width: 18,

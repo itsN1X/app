@@ -52,7 +52,7 @@ export default class BackupPhrase extends React.Component {
 
 	writeToClipboard = async () => {
 	  await Clipboard.setString(mnemonicstr);
-	  Toast.showWithGravity('Copie to Clipboard!', Toast.LONG, Toast.CENTER)
+	  Toast.showWithGravity('Copied to Clipboard!', Toast.LONG, Toast.CENTER)
 	};
 	goBack() {
 		Actions.pop();

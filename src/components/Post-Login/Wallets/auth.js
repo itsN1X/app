@@ -32,6 +32,7 @@ export default class Auth extends React.Component {
             const value = await AsyncStorage.getItem('@AccountStatus');
 						const changePin = await AsyncStorage.getItem('@ChangePin');
 						const recovery = await AsyncStorage.getItem('@RecoveryInitiated');
+						var guardian = await AsyncStorage.getItem('@Guardian');
 
 						if(changePin == "true") {
 							Actions.createpin({mode : "changePin"});
@@ -41,8 +42,13 @@ export default class Auth extends React.Component {
 
 							if(recovery === "true") {
 								Actions.postlogin();
-								Actions.enterpin();
+								Actions.enterpin({recovery : "true"});
 
+							}
+
+							else if(guardian == "true"){
+								Actions.postlogin();
+								Actions.enterpin({guardian:"true"});
 							}
 
 						else if(value == 'LoggedIn'){
