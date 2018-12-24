@@ -1,16 +1,20 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, ActivityIndicator, TouchableOpacity, ScrollView, Dimensions, BackHandler, AsyncStorage } from 'react-native';
+import { StyleSheet, Alert,Text,NetInfo, View, Image,Platform, ActivityIndicator, TouchableOpacity, ScrollView, Dimensions, BackHandler, AsyncStorage } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { BarIndicator, WaveIndicator } from 'react-native-indicators';
 import axios from 'axios';
 import Drawer from 'react-native-drawer';
+import Button from '../../common/button';
 import StatusBar from '../../common/statusbar';
 import AppStatusBar from '../../common/appstatusbar';
+import Toast from 'react-native-simple-toast';
 import theme from '../../common/theme';
 import Loader from '../../common/loader';
 import Menu from '../../../../images/menu.png';
 import User from '../../../../images/user.png';
 import WalletCoinItem from './walletcoinitem';
+
+var icon = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/internetConnectivity.png";
 
 export default class Auth extends React.Component {
 	constructor(props) {
@@ -23,9 +27,35 @@ export default class Auth extends React.Component {
 		};
 	}
 	componentWillMount() {
-		this.setState({activity: "Authenticating User"}, () => {
-			requestAnimationFrame(()=>this.authenticateUser(), 0);
-		})
+
+		NetInfo.isConnected.fetch().then(isConnected => {
+     if(isConnected){
+				 this.setState({activity: "Authenticating User"}, () => {
+		 			requestAnimationFrame(()=>this.authenticateUser(), 0);
+		 		})
+		 }
+
+		 else{
+			 this.setState({loaded:true});
+			 Alert.alert(
+			 'Internet connection required',
+			 'You need to have an internet connection to access Coinsafe.',
+				 [
+					 {text: 'Try Again', onPress: async () => {
+						 try {
+								 Actions.auth();
+							 } catch (error) {
+								 console.log(error)
+							 }
+				 }
+			 }
+				 ]
+			 )
+
+		 }
+
+		});
+
 	}
 	authenticateUser = async () => {
       try {
@@ -77,28 +107,9 @@ export default class Auth extends React.Component {
         }
         else {
 			return (
-					<View style={styles.container}>
-						<StatusBar bColor={theme.dark} />
-						<AppStatusBar bColor={theme.dark} center={true} text="Wallets" textColor={theme.white} />
-						<View style={styles.totalBalanceContainer}>
-							<Text style={styles.totalBalanceText}>$ 26,052.34</Text>
-						</View>
-						<ScrollView style={{flex: 1, width: '100%'}}>
-							<View style={styles.mainContainer}>
-								<View style={{height: 3}} />
-								<WalletCoinItem lighticon="https://s3.ap-south-1.amazonaws.com/maxwallet-images/Group+378.png" icon="https://s3.ap-south-1.amazonaws.com/maxwallet-images/Group+380.png" name="Bitcoin" value="5,78,168.98" amount="1.5624" symbol="BTC" onWalletOpen={this.onWalletOpen} />
-								<View style={{height: 3}} />
-								<WalletCoinItem lighticon="https://s3.ap-south-1.amazonaws.com/maxwallet-images/Group+377.png" icon="https://s3.ap-south-1.amazonaws.com/maxwallet-images/Group+379.png" name="Ethereum" value="45,400.98" amount="1456.2" symbol="ETH" onWalletOpen={this.onWalletOpen} />
-								<View style={{height: 3}} />
-								<WalletCoinItem lighticon="https://s3.ap-south-1.amazonaws.com/maxwallet-images/light_icons/lmonerol.png" icon="https://s3.ap-south-1.amazonaws.com/maxwallet-images/monero.png" name="Monero" value="13,903.13" amount="12.4523" symbol="XMR" onWalletOpen={this.onWalletOpen} />
-								<View style={{height: 3}} />
-								<WalletCoinItem lighticon="https://s3.ap-south-1.amazonaws.com/maxwallet-images/gusd_light.png" icon="https://s3.ap-south-1.amazonaws.com/maxwallet-images/gusd_dark.png" name="Gemini Dollar" value="13,903.13" amount="13.556" symbol="GUSD" onWalletOpen={this.onWalletOpen} />
-								<View style={{height: 3}} />
-								<WalletCoinItem lighticon="https://s3.ap-south-1.amazonaws.com/maxwallet-images/dai_light.png" icon="https://s3.ap-south-1.amazonaws.com/maxwallet-images/dai_dark.png" name="Dai" value="5,78,168.98" amount="12.4523" symbol="DAI" onWalletOpen={this.onWalletOpen} />
-								<View style={{height: 3}} />
-							</View>
-						</ScrollView>
-					</View>
+
+							<Text></Text>
+
 			);
 		}
 	}
@@ -111,27 +122,29 @@ const drawerStyles = {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		width: '100%',
 	    backgroundColor: theme.white,
-	    alignItems: 'center'
 	},
-	mainContainer: {
+	contentContainer: {
 		flex: 1,
 		width: '100%',
-		marginTop: 6
+		justifyContent: 'center',
+	    alignItems: 'center'
 	},
-	totalBalanceContainer: {
-		height: 50,
-		width: '100%',
-		backgroundColor: theme.dark,
-		alignItems: 'center',
-		justifyContent: 'flex-start',
-		borderBottomRightRadius: 25,
-		borderBottomLeftRadius: 25,
+	centerImage: {
+		width: 150,
+		height: 150
 	},
-	totalBalanceText: {
+	centerText: {
 		fontFamily: theme.font500,
-		fontSize: 22,
-		color: theme.white
+		fontWeight: Platform.OS === 'ios' ? '500' : '400',
+		fontSize: 16,
+		textAlign: 'center',
+		color: "red",
+		maxWidth: '65%',
+		marginTop: 20
+	},
+	buttonContainer: {
+		width: '100%',
+		alignItems: 'center'
 	}
 });

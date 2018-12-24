@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Image, ActivityIndicator, TouchableOpacity, Scr
 import BitcoinDark from '../../../../images/coins/dark/bitcoin.png';
 import SelectedTick from '../../../../images/tick-inside-circle-light.png';
 import theme from '../../common/theme';
+import Toast from 'react-native-simple-toast';
 
 export default class WalletItem extends React.Component {
 	constructor(props) {
@@ -21,12 +22,19 @@ export default class WalletItem extends React.Component {
 		}
 	}
 	selectWallet() {
-		if(this.state.selected) {
-       		this.setState({ selected: false, Icon: this.props.dark });
-       	}
-       	else {
-       		this.setState({ selected: true, Icon: this.props.light })
-       	}
+		if(this.props.name == "Bitcoin"){
+			if(this.state.selected) {
+	       		this.setState({ selected: false, Icon: this.props.dark });
+	       	}
+	       	else {
+	       		this.setState({ selected: true, Icon: this.props.light })
+	     }
+		}
+
+		else {
+			Toast.showWithGravity('Coming soon', Toast.LONG, Toast.CENTER);
+		}
+
 	}
 	render () {
 		let bgColor;

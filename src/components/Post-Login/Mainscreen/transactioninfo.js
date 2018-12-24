@@ -36,8 +36,9 @@ export default class TransactionInfo extends Component {
     componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
     }
-    handleBackButton() {
-        this.goBack;
+    handleBackButton = () =>  {
+      Actions.popTo("mainscreen");
+     return true;
     }
     componentWillMount() {
     	this.getDetails();
@@ -57,12 +58,16 @@ export default class TransactionInfo extends Component {
                 var status;
                 var icon;
                 const confirmations = response.data.result.confirmations;
-                if(confirmations >= 1) {
-                	status = "Confirmed",
+                if(confirmations == 1){
+                  status = "Confirmation",
+                	icon = Confirmed
+                }
+                else if(confirmations >= 2) {
+                	status = "Confirmations",
                 	icon = Confirmed
                 }
                 else {
-					status = "Unconfirmed",
+					        status = "Confirmation",
                 	icon = Unconfirmed
                 }
                 self.setState({ confirmations: confirmations, icon: icon, status: status, id: self.props.id, amount: self.props.amount, fee: self.props.fee, total: self.props.finalAmount, loaded: true })
@@ -113,20 +118,13 @@ export default class TransactionInfo extends Component {
 	                        </View>
 	                    </View>
 	                    <View style={[styles.lastCard, {marginBottom: 14}]}>
-	                    	<View style={styles.dateFlex}>
-		                        <View style={styles.contentHeading}>
-		                            <Text style={styles.contentHeadingText}>Date / Time</Text>
-		                        </View>
-		                        <View style={styles.contentTextContainer}>
-		                            <Text style={styles.contentText}>{this.state.date}</Text>
-		                        </View>
-		                    </View>
+
 		                    <View style={styles.statusFlex}>
 		                        <View style={styles.contentHeading}>
 		                            <Text style={styles.contentHeadingText}>Transaction Status</Text>
 		                        </View>
 		                        <View style={styles.contentTextContainer}>
-		                            <Text style={styles.contentText}>{this.state.status} {this.state.confirmations}</Text>
+		                            <Text style={styles.contentText}>{this.state.confirmations} {this.state.status} </Text>
 		                        </View>
 		                    </View>
 	                    </View>

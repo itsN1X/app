@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, ActivityIndicator, TouchableOpacity, ScrollView, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Dimensions, TextInput, AsyncStorage, Platform } from 'react-native';
+import { StyleSheet, BackHandler,Text, View, Image, ActivityIndicator, TouchableOpacity, ScrollView, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Dimensions, TextInput, AsyncStorage, Platform } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import Toast from 'react-native-simple-toast';
 import axios from 'axios';
@@ -27,13 +27,34 @@ export default class EnterEmail extends React.Component {
 	}
 	goBack() {
 		if(this.props.mode==="verify") {
-			Actions.popTo('restore');
+			Actions.firstscreen();
 		}
 		else if(this.props.mode==="register") {
-			Actions.pop();
+			Actions.postlogintabs();
+			Actions.initiaterecovery();
 		}
 		else {}
 	}
+
+	componentDidMount() {
+				BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+		}
+		componentWillUnmount() {
+				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+		}
+		handleBackButton = () =>  {
+			if(this.props.mode==="verify") {
+  			Actions.firstscreen();
+  		}
+  		else if(this.props.mode==="register") {
+				Actions.postlogintabs();
+  			Actions.initiaterecovery();
+  		}
+  		else {}
+		 return true;
+		}
+
+
 
 
 	onUnfocus() {
@@ -133,7 +154,7 @@ export default class EnterEmail extends React.Component {
 			<TouchableWithoutFeedback onPress={ this.onUnfocus }>
 				<View style={styles.container}>
 					<StatusBar bColor={theme.dark} />
-					<AppStatusBar bColor={theme.dark} left={true} Back={Back} leftFunction={this.goBack} center={true} text="Setup Recovery" textColor={theme.white} />
+					<AppStatusBar bColor={theme.dark} left={true} Back={Back} leftFunction={this.goBack} center={true} text={this.props.mode == "verify" ? "Key Recovery" : "Setup Recovery"} textColor={theme.white} />
 					<View style={styles.upperFlex}>
 						<View style={styles.emailContainer}>
 							<View style={styles.enterEmailHeading}>
@@ -150,6 +171,12 @@ export default class EnterEmail extends React.Component {
 									underlineColorAndroid='transparent'
 								/>
 							</View>
+
+							{this.props.mode == "verify" && 	<View style={styles.forgottenButtonContainer}>
+									<TouchableOpacity onPress={() => Actions.restore()}>
+										<Text style={styles.forgottenText}>Restore using Mnemonic</Text>
+									</TouchableOpacity>
+								</View>}
 						</View>
 					</View>
 					<View style={styles.lowerFlex}>
@@ -169,6 +196,20 @@ const styles = StyleSheet.create({
 		height: '100%',
 	    backgroundColor: theme.white,
 	    alignItems: 'center'
+	},
+	forgottenButtonContainer: {
+		position: 'absolute',
+		top: 100,
+		marginBottom: 10,
+	  	width: '100%',
+	  	justifyContent: 'flex-end',
+	  	alignItems: 'center',
+	},
+	forgottenText: {
+		fontFamily: theme.font,
+		fontSize: 16,
+		color: theme.dark,
+		textDecorationLine: 'underline'
 	},
 	upperFlex: {
 		flex: 0.6,

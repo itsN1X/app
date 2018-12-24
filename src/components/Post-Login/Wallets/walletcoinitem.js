@@ -16,7 +16,7 @@ export default class WalletCoinItem extends React.Component {
 	render () {
 		return (
 			<View style={styles.walletItemContainer}>
-				<TouchableOpacity onPress={() => this.onWalletPress(this.props.lighticon, this.props.name, this.props.symbol, this.props.value, this.props.amount)} style={styles.walletItem}>
+				<TouchableOpacity onPress={() => this.onWalletPress(this.props.lighticon, this.props.name, this.props.symbol, this.props.value, this.props.amount)} style={this.props.symbol === "BTC" ? styles.walletItem : styles.walletNonItem}>
 					<View style={styles.contentContainer}>
 						<View style={styles.upperContentFlex}>
 							<View style={styles.coinImageContainer}>
@@ -40,12 +40,22 @@ const styles = StyleSheet.create({
 		width: '100%',
 		alignItems: 'center'
 	},
+	walletNonItem: {
+		height: 80,
+		width: '90%',
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: theme.white,
+		borderRadius: 10,
+		borderBottomColor: theme.darkgrey,
+		marginVertical:5
+	},
 	walletItem: {
 		height: 80,
 		width: '90%',
 		justifyContent: 'center',
 		alignItems: 'center',
-		backgroundColor: theme.grey,
+		backgroundColor: theme.lightgrey,
 		borderRadius: 10,
 		borderBottomColor: theme.darkgrey,
 		marginVertical:5

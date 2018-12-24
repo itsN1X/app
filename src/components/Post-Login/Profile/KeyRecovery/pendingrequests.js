@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet,Text, View, Image, Platform, ActivityIndicator, ScrollView, TouchableOpacity, Dimensions, KeyboardAvoidingView, Clipboard, AsyncStorage } from 'react-native';
+import { StyleSheet,Text, BackHandler,View, Image, Platform, ActivityIndicator, ScrollView, TouchableOpacity, Dimensions, KeyboardAvoidingView, Clipboard, AsyncStorage } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import axios from 'axios';
 import Loader from '../../../common/loader';
@@ -21,18 +21,50 @@ var Unconfirmed = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/new/reje
 var Confirmed = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/new/accept.png";
 var Protected = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/confirmed.png";
 
+var pendindRequestsCount = 0;
 export default class PendingRequests extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			loaded: false,
 			pendingRequestsTitle: "",
-			requestList: []
+			requestList: [],
+			guardianStatus:"false"
 		};
 	}
 	goBack() {
 		Actions.pop();
 	}
+
+
+	componentDidMount() {
+				BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+		}
+		componentWillUnmount() {
+			pendindRequestsCount = null;
+				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+		}
+		handleBackButton = () =>  {
+			pendindRequestsCount = pendindRequestsCount + 1;
+			if(this.state.guardianStatus == "true"){
+				if(pendindRequestsCount === 1) {
+					Toast.showWithGravity('Press again to EXIT', Toast.LONG, Toast.BOTTOM)
+				}
+				else if(pendindRequestsCount > 1){
+					pendindRequestsCount = null;
+					BackHandler.exitApp();
+				}
+			}
+
+				else {
+					Actions.pop();
+				}
+					return true;
+
+		}
+
+
+
 	componentWillMount() {
 		this.getAccountInfo();
 	}
@@ -115,10 +147,16 @@ export default class PendingRequests extends React.Component {
 	}
 	getAccountInfo = async () => {
 		try{
+			pendindRequestsCount = 0;
 			const value = await AsyncStorage.getItem('@UserData');
 			var guardian = await AsyncStorage.getItem('@Guardian');
+
+			if(guardian == "true"){
+			  this.setState({guardianStatus : "true"});
+			}
+
 			var account = JSON.parse(value);
-				this.setState({pendingRequestsTitle : "@"+account.username});
+				this.setState({pendingRequestsTitle : "@"+account.username });
 
 
 
@@ -159,7 +197,7 @@ export default class PendingRequests extends React.Component {
 									style={{width:150,height:150, opacity:0.75}}
 									source={{uri: guardian}}
 								/>
-								<Text style={{fontSize:18, opacity:0.5, color:theme.dark, fontFamily:theme.font, marginTop:20}}>Oops, you dont have any request yet</Text>
+								<Text style={{fontSize:18, opacity:0.5, color:theme.dark, fontFamily:theme.font, marginTop:20}}>Share your username to become a trusted device.</Text>
 								<View style={styles.recoverButtonContainer}>
 								<Button bColor={theme.dark} onPress={() => this.copyToClipboard(this.state.pendingRequestsTitle.replace('@',''))}>
 									<Text>Copy Username</Text>

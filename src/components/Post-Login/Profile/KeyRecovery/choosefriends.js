@@ -330,7 +330,14 @@ export default class ChooseFriends extends React.Component {
 					{text: 'Continue', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
 					{text: 'Reset', onPress: async () => {
 						try {
-								Actions.choosefriends();
+								if(this.props.mode == "register"){
+										Actions.choosefriends({mode: this.props.mode});
+								}
+								else{
+										Actions.choosefriends(	{mode: this.props.mode, old_public_key:this.props.old_public_key, wallet_id: this.props.wallet_id});
+
+								}
+
 							} catch (error) {
 								console.log(error)
 					}
@@ -383,11 +390,9 @@ export default class ChooseFriends extends React.Component {
 						<ScrollView keyboardShouldPersistTaps="always" style={{flex: 1, width: '100%'}}>
 							<View style={{flex: 1, width: '100%', alignItems: 'center'}}>
 
-
 						{this.state.friendsAdded ? null : (
 							<View>
 								<View style={{alignItems:'center', justifyContent:'center', paddingVertical:10}}>
-
 
 									<Picker
 									  selectedValue={this.state.shamirValue}
@@ -437,6 +442,8 @@ export default class ChooseFriends extends React.Component {
 	 						 </TouchableOpacity>
 	 					 </View>
 						)}
+
+
 							<View style={[styles.friendsContainer, {minHeight: sectionHeight}]}>
 									<View style={styles.friendsAddedHeadingContainer}>
 										<Text style={styles.friendsAddedHeadingText}>Devices Added for Recovery</Text>
@@ -445,18 +452,18 @@ export default class ChooseFriends extends React.Component {
 				                         return(<FriendItem key={value.id} address={value.friendsHandle} id={value.id} onCopy={this.writeToClipboard} />);
 									})}
 
-									<View style={styles.saveButtonContainer}>
-										{this.state.friendsAdded ? <Button bColor = {theme.dark} onPress={this.onSavePress}>
-											{this.props.mode==="register" ? <Text>Confirm</Text> : <Text>Save</Text>}
-										</Button> : null}
-									</View>
-									{this.state.pickerEnabled ? <SharmirPicker status={this.state.pickerEnabled} changeCoin={this.changeCoin} /> : null}
 							</View>
-
-
 							</View>
 						</ScrollView>
+						<View style={styles.saveButtonContainer}>
+							{this.state.friendsAdded ? <Button bColor = {theme.dark} onPress={this.onSavePress}>
+								{this.props.mode==="register" ? <Text>Confirm</Text> : <Text>Save</Text>}
+							</Button> : null}
+						</View>
 					</View>
+
+
+
 			);
 		}
 	}
@@ -546,7 +553,7 @@ const styles = StyleSheet.create({
 	},
 	friendsContainer: {
 		width: '100%',
-		minHeight: 400,
+		height: 800,
 		backgroundColor: theme.grey,
 		alignItems: 'center',
 	},
@@ -577,6 +584,8 @@ const styles = StyleSheet.create({
 		opacity: 0.6
 	},
 	saveButtonContainer: {
+		position:'absolute',
+		bottom:0,
 		height: 120,
 		width: '100%',
 		alignItems: 'center',

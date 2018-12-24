@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, ActivityIndicator, TouchableOpacity, ScrollView, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Dimensions, TextInput, AsyncStorage } from 'react-native';
+import { StyleSheet, Text, BackHandler,View, Image, ActivityIndicator, TouchableOpacity, ScrollView, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Dimensions, TextInput, AsyncStorage } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import bip39 from 'react-native-bip39';
 import Toast from 'react-native-simple-toast';
@@ -47,6 +47,19 @@ export default class Verification extends React.Component {
 		}
 
 	}
+
+	componentDidMount() {
+				BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+		}
+		componentWillUnmount() {
+				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+		}
+		handleBackButton = () =>  {
+		 Actions.pop();
+		 return true;
+		}
+
+
 	onUnfocus() {
 		Keyboard.dismiss();
 	}

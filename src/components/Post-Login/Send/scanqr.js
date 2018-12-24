@@ -21,17 +21,18 @@ export default class ScanQR extends React.Component {
 		console.log("Update");
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
 	}
-	componentDidMount() {
-		console.log("Mount");
-        BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
-    }
-    componentWillUnmount() {
-    	console.log("UnMount")
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
-    }
-    handleBackButton() {
-        this.goBack();
-    }
+
+		componentDidMount() {
+					BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+			}
+			componentWillUnmount() {
+					BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+			}
+			handleBackButton = () =>  {
+			 Actions.pop();
+			 return true;
+			}
+
 	onSuccess(e) {
 		 Actions.pop()
 			requestAnimationFrame(() => {
@@ -43,6 +44,7 @@ export default class ScanQR extends React.Component {
   	goBack() {
 		Actions.pop();
 	}
+
 	render() {
 		return (
 			<View style={styles.container}>
@@ -131,7 +133,7 @@ const styles = StyleSheet.create({
 	  backgroundColor: scanBarColor
 	},
 	cancelButtonContainer: {
-		position: 'absolute', 
+		position: 'absolute',
 		left: 30,
 		top: 30
 	},
@@ -159,6 +161,6 @@ const styles = StyleSheet.create({
 		textAlign: "right",
 		fontFamily: theme.font,
 		fontSize: 18,
-		color: theme.white 
+		color: theme.white
 	}
 });

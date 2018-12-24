@@ -155,8 +155,6 @@ export default class InitiateWallets extends React.Component {
 			"request_arr": requestArr
 		};
 
-		// console.error(user);
-
 		this.sendCoinsData(user);
 		if(this.props.updateGuardian == 'yes'){
 			this.updateGuardianStatus();

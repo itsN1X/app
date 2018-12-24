@@ -15,7 +15,7 @@ import WalletCoinItem from './walletcoinitem';
 import SideBar from '../Sidedrawer/drawercontent';
 const VirgilCrypto =require('virgil-crypto');
 const virgilCrypto = new VirgilCrypto.VirgilCrypto();
-var backCount = 0;
+var walletCount = 0;
 export default class Wallets extends React.Component {
 	constructor(props) {
 		super(props);
@@ -47,18 +47,19 @@ export default class Wallets extends React.Component {
 				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
 		}
 		handleBackButton = () =>  {
-			backCount = backCount + 1;
-			if(backCount === 1) {
+			walletCount = walletCount + 1;
+			if(walletCount === 1) {
 				Toast.showWithGravity('Press again to EXIT', Toast.LONG, Toast.BOTTOM)
 			}
-			else {
-				backCount = 0;
+			else if(walletCount > 1) {
+				walletCount = null;
 				BackHandler.exitApp();
 			}
 				return true;
 		}
 	authenticateUser = async () => {
       try {
+				 		walletCount = 0;
             const value = await AsyncStorage.getItem('@AccountStatus');
             const recovery = await AsyncStorage.getItem('@RecoveryInitiated');
             var wallet_id = await AsyncStorage.getItem('@WalletID');

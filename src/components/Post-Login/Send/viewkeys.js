@@ -21,7 +21,6 @@ export default class Profile extends React.Component {
         }
     }
 	componentWillMount() {
-		alert("hi");
 		this.getCoinData();
 	}
 	goBack() {

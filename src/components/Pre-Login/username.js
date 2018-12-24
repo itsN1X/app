@@ -38,9 +38,21 @@ export default class Username extends React.Component {
 	checkUserName(){
 		let details = {};
 		let username = this.state.username.replace('@','');
-		details.user_name = username;
-		details.status = "0";
-		this.fetchUsernameDetails(details);
+		username = username.trim();
+
+		if(username.includes("@") || username.includes(" ")){
+		Toast.showWithGravity("Enter a valid username", Toast.LONG, Toast.CENTER);
+		}
+
+		else {
+			username = username.replace(/ +/g, "");
+			username = username.replace('@','');
+			username = username.toLowerCase();
+			details.user_name = username;
+			details.status = "0";
+			this.fetchUsernameDetails(details);
+		}
+
 	}
 
 	fetchUsernameDetails = async (details) => {
@@ -96,6 +108,7 @@ export default class Username extends React.Component {
 		    			<TextInput
 		    				style={styles.pinInput}
 		    				autoFocus = {true}
+								maxLength={34}
 		    				keyboardAppearance="dark"
 		    				value={this.state.username.length == 0 ? "@" : this.state.username}
 		    				placeholderTextColor="rgba(255,255,255,0.15)"

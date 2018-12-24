@@ -39,7 +39,7 @@ export default class ConfirmPin extends React.Component {
     if(pin == this.state.confirmPin){
 			this.encryptDataOnPin(pin);
 			if(this.props.mode == "restore"){
-				Actions.restore();
+				Actions.enteremail({mode:"verify"});
 			}
 			else {
 				this.generateKeyPair();
@@ -88,10 +88,15 @@ export default class ConfirmPin extends React.Component {
       promise.then((result)=>{
 				if(this.props.mode === "changePin") {
 					this.updateChangePinStatus();
-					Actions.postlogintabs();
-					Actions.profile();
+
+						Actions.postlogintabs();
+						Actions.profile();
+					
+
 
 				}
+
+
 				else if(this.props.mode === "guardian") {
 					Actions.walletaddress({username : this.props.username});
 				}

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text, View, Image, ActivityIndicator, TouchableOpacity, ScrollView, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Dimensions, TextInput, AsyncStorage, Clipboard } from 'react-native';
+import { StyleSheet, Text,BackHandler, View, Image, ActivityIndicator, TouchableOpacity, ScrollView, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Dimensions, TextInput, AsyncStorage, Clipboard } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { BarIndicator } from 'react-native-indicators';
 import Toast from 'react-native-simple-toast';
@@ -36,6 +36,22 @@ export default class TransactionSuccess extends Component {
                   Actions.refresh()
             }, 0)
     }
+
+		componentDidMount() {
+					BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+			}
+			componentWillUnmount() {
+					BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+			}
+			handleBackButton = () =>  {
+				Actions.popTo('mainscreen')
+						requestAnimationFrame(() => {
+									Actions.refresh()
+						}, 0)
+			 return true;
+			}
+
+
 	componentWillMount() {
         this.getDetails();
         this.setState({id: this.props.id})
@@ -68,7 +84,7 @@ export default class TransactionSuccess extends Component {
     }
 	render() {
         if(!this.state.loaded) {
-            return(<View style={{flex:1, backgroundColor: theme.white}}><BarIndicator color={theme.dark} size={50} count={5} /></View>)     
+            return(<View style={{flex:1, backgroundColor: theme.white}}><BarIndicator color={theme.dark} size={50} count={5} /></View>)
         }
         else {
     		return (
@@ -149,7 +165,7 @@ const styles = StyleSheet.create({
     },
     sentText: {
         position: 'absolute',
-        bottom: 60, 
+        bottom: 60,
         fontFamily: theme.font,
         color: theme.white,
         fontSize: 24

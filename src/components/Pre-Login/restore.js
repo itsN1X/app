@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, ActivityIndicator, TouchableOpacity, ScrollView, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Dimensions, TextInput, AsyncStorage } from 'react-native';
+import { StyleSheet,BackHandler, Text, View, Image, ActivityIndicator, TouchableOpacity, ScrollView, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Dimensions, TextInput, AsyncStorage } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { BarIndicator } from 'react-native-indicators';
 import axios from 'axios';
@@ -33,6 +33,17 @@ export default class Restore extends React.Component {
 	componentWillMount() {
 		this.setState({loaded: true});
 	}
+
+	componentDidMount() {
+				BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+		}
+		componentWillUnmount() {
+				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+		}
+		handleBackButton = () =>  {
+		 Actions.pop();
+		 return true;
+		}
 	generateKeyPair() {
 		const virgilCrypto = new VirgilCrypto();
 		let account = {};
@@ -153,11 +164,6 @@ export default class Restore extends React.Component {
 								 />
 								</View>
 							</KeyboardAvoidingView>
-							<View style={styles.forgottenButtonContainer}>
-								<TouchableOpacity onPress={this.verifyEmail}>
-									<Text style={styles.forgottenText}>Recover Forgotten Seed</Text>
-								</TouchableOpacity>
-							</View>
 							<View style={styles.nextButtonContainer}>
 								<Button bColor = {theme.dark} onPress={this.onConfirm}>
 									<Text style={styles.nextText}>Restore Wallet</Text>

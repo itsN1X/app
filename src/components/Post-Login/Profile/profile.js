@@ -67,6 +67,8 @@ export default class Profile extends React.Component {
 	changePin() {
 		Actions.postlogin();
 		Actions.enterpin({mode : "changePin"});
+
+
 	}
 
 	gotoRequests() {
@@ -87,8 +89,8 @@ export default class Profile extends React.Component {
 
 	promptUserForLogout() {
 		Alert.alert(
-	  'Unpair Wallet',
-	  'Are your sure you want to unpair your device?',
+	  'Log out from Coinsafe',
+	  'You will have to enter your backup phrase to access your wallet again.',
 		  [
 		    {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
 		    {text: 'OK', onPress: async () => {
@@ -221,23 +223,7 @@ export default class Profile extends React.Component {
 
 							<View style={styles.greyline} />
 
-							{this.state.changeCurrency === "false" ? null : (
-								<TouchableOpacity style={styles.otherTabFlex} onPress={this.enablePicker}>
-									<View style={styles.otherTabContainer}>
-										<View style={styles.tabHeadingFlex}>
-											<Text style={styles.tabheadingText}>Change Currency</Text>
-										</View>
-										<View style={styles.tabActionFlex}>
-											<View style={styles.tabAction}>
-												<Text style={styles.tabActionText}>{this.state.currency}</Text>
-											</View>
-											<View style={styles.tabActionIconContainer}>
-												<Image style={styles.tabActionIcon} source={{uri: Next}} />
-											</View>
-										</View>
-									</View>
-								</TouchableOpacity>
-							)}
+
 							<View style={styles.greyline} />
 							<TouchableOpacity style={styles.otherTabFlex} onPress={this.promptUserForLogout}>
 								<View style={styles.otherTabContainer}>

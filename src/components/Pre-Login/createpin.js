@@ -40,7 +40,7 @@ export default class CreatePin extends React.Component {
 		let len = this.state.pinCode;
 		let Mode = this.props.mode;
 		if (len.length == 4) {
-			Actions.confirmpin({pinCode : len , mode : Mode, username : this.props.username});
+			Actions.confirmpin({pinCode : len , mode : Mode,guardianStatus:this.props.guardianStatus, username : this.props.username});
 		}
 	}
 

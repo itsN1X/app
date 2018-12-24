@@ -89,19 +89,14 @@ export default class ShowMnemonic extends React.Component {
 	getShares() {
 		var shares = [];
 
-		if(this.props.data.length == 5){
-			for(i =0 ; i < 3; i++){
-				var decryptedData = this.decryptData(this.props.data[i].trust_data, this.props.privateKey);
-				shares.push(decryptedData);
-			}
-		}
 
-		else{
-			for(j =0 ; j< 2; j++){
-				var decryptedData = this.decryptData(this.props.data[j].trust_data, this.props.privateKey);
-				shares.push(decryptedData);
+			for(i =0 ; i < this.props.data.length; i++){
+				if(this.props.data[i].trust_status == 1){
+					var decryptedData = this.decryptData(this.props.data[i].trust_data, this.props.privateKey);
+					shares.push(decryptedData);
+				}
 			}
-		}
+
 		return shares;
 	}
 	logout = async () => {

@@ -42,7 +42,7 @@ export default class Recieve extends React.Component {
 				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
 		}
 		handleBackButton = () =>  {
-		 Actions.pop();
+		 Actions.popTo("mainscreen");
 		 return true;
 		}
 
@@ -53,28 +53,29 @@ export default class Recieve extends React.Component {
 	render() {
 		return (
 			<View style={styles.container}>
-				{this.state.loaded ? null :<View style={{zIndex: 999, position: 'absolute',width: '100%', height: '100%', backgroundColor: theme.white}}><Loader activity="Generating Address" /></View>}
+
+
+				{this.state.loaded ?
+					 <View style={styles.lowerFlex}>
+					<View style={styles.QRCodeFlex}>
+						<QRCode
+				          value={this.state.address}
+				          size={200}
+				        />
+					</View>
+				</View> :<View style={{zIndex: 999, position: 'absolute',width: '100%', height: '100%', backgroundColor: theme.white}}><Loader activity="Generating Address" /></View>}
+
 				<StatusBar bColor={theme.grey} />
-				<AppStatusBar bColor={theme.grey} left={true} Back={Back} leftFunction={this.goBack} center={true} text="Receive" />
+
 				<View style={styles.upperFlex}>
 					<View style={styles.addressHeadingFlex}>
 						<Text style={styles.addressHeadingText}>Address</Text>
 					</View>
 					<View style={styles.addressContainer}>
-						<Text style={styles.addressText}>{this.state.address}</Text>
+						<Text style={styles.addressText} onPress={this.writeToClipboard}>{this.state.address}</Text>
 						<TouchableOpacity onPress={this.writeToClipboard} style={styles.copyWrapper}>
 							<Image style={styles.copyIcon} source={{uri: Copy}} />
 						</TouchableOpacity>
-					</View>
-				</View>
-				<View style={styles.lowerFlex}>
-					<View style={styles.QRCodeFlex}>
-						<QRCode
-				          value={this.state.address}
-				          size={250}
-				          bgColor='black'
-				          fgColor='white'
-				        />
 					</View>
 				</View>
 			</View>
@@ -129,8 +130,8 @@ const styles = StyleSheet.create({
 	addressText: {
 		fontFamily: theme.Lato,
 		fontWeight: '300',
-		fontSize: 16,
-		color: theme.black,
+		fontSize: 15,
+		color: theme.black
 	},
 	lowerFlex: {
 		flex: 1,

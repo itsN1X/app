@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, ActivityIndicator, TouchableOpacity, ScrollView, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Dimensions, TextInput, AsyncStorage, Platform } from 'react-native';
+import { StyleSheet, Text, BackHandler,View, Image, ActivityIndicator, TouchableOpacity, ScrollView, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Dimensions, TextInput, AsyncStorage, Platform } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import theme from '../common/theme';
 import StatusBar from '../common/statusbar';
@@ -21,6 +21,22 @@ export default class GetStarted extends React.Component {
 	componentWillMount() {
 		this.getWalletId();
 	}
+
+	componentDidMount() {
+				BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+		}
+		componentWillUnmount() {
+				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+		}
+		handleBackButton = () =>  {
+			Actions.guardiantabs();
+			Actions.pendingrequests();
+		return true;
+
+		}
+
+
+
 	getWalletId = async () => {
 		try {
 			var wallet_id = await AsyncStorage.getItem('@WalletID');

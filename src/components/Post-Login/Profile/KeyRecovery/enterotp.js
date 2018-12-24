@@ -8,7 +8,7 @@ import theme from '../../../common/theme';
 import StatusBar from '../../../common/statusbar';
 import AppStatusBar from '../../../common/appstatusbar';
 import Button from '../../../common/button';
-import TimerCountdown from 'react-native-timer-countdown';
+import CountDown from 'react-native-countdown-component';
 
 var Back = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/lightback.png";
 
@@ -20,7 +20,8 @@ export default class EnterOTP extends React.Component {
 			email: "",
 			public_key: "",
 			otp: "",
-			wallet_id: ""
+			wallet_id: "",
+			otpActive:true
 		};
 		this.authenticateOTP = this.authenticateOTP.bind(this);
 	}
@@ -32,6 +33,12 @@ export default class EnterOTP extends React.Component {
 			this.setState({ email: this.props.email, session_id: this.props.session_id, loaded: true })
 		}
 	}
+
+
+
+
+
+
 
 
 	getUserPublicKey = async () => {
@@ -59,6 +66,7 @@ export default class EnterOTP extends React.Component {
 		Actions.pop();
 	}
 	authenticateOTP() {
+		this.setState({otpActive:false});
 		if(this.props.mode==="verify") {
 			this.authenticateVerifyOTP();
 		}
@@ -147,19 +155,26 @@ export default class EnterOTP extends React.Component {
 			return (
 				<View style={styles.container}>
 					<StatusBar bColor={theme.dark} />
-					<AppStatusBar bColor={theme.dark} left={true} Back={Back} leftFunction={this.goBack} center={true} text="Set Up Recovery" textColor={theme.white} />
+					<AppStatusBar bColor={theme.dark} left={true} Back={Back} leftFunction={this.goBack} center={true} text={this.props.mode == "verify" ? "Key Recovery" : "Setup Recovery"} textColor={theme.white} />
 					<View style={styles.upperFlex}>
+					<CountDown
+							until={300}
+							digitTxtColor={theme.dark}
+							 onFinish={() => this.state.otpActive ? Actions.enteremail({mode : this.props.mode}) :null}
+							 timeToShow={['M', 'S']}
+
+								digitBgColor={'#fff'}
+								 labelS={''}
+								 labelM={''}
+							 //on Press call
+							 size={20}
+				 />
 						<View style={styles.emailContainer}>
 							<View style={styles.enterEmailHeading}>
 								<Text style={styles.enterEmailText}>Enter Verification Code</Text>
 							</View>
-							<TimerCountdown
-			            initialSecondsRemaining={2000*60}
-			            onTick={secondsRemaining => console.log('tick', secondsRemaining)}
-			            onTimeElapsed={() => Actions.pop()}
-			            allowFontScaling={true}
-			            style={{ fontSize: 17 }}
-			        />
+
+
 							<View style={styles.emailInput}>
 								<TextInput
 									value={this.state.otp}

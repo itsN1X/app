@@ -7,11 +7,11 @@ import StatusBar from '../common/statusbar';
 import AppStatusBar from '../common/appstatusbar';
 import theme from '../common/theme';
 import Loader from '../common/loader';
-var backCount = 0 ;
 var Copy = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/copy.png";
 export default class GuardianProfile extends React.Component {
 
 		componentDidMount() {
+			var backCount = 0 ;
 			BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
 			}
 			componentWillUnmount() {
@@ -25,8 +25,9 @@ export default class GuardianProfile extends React.Component {
 				else {
 					backCount = 0;
 					BackHandler.exitApp();
-				}
 					return true;
+				}
+
 			}
 	render() {
 		return(

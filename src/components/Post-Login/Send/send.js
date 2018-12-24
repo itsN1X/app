@@ -160,18 +160,15 @@ export default class Send extends React.Component {
 		if(!bitcoin.Address.isValid(to)) {
 			Toast.showWithGravity('Enter a valid address', Toast.LONG, Toast.CENTER);
 		}
-			// var total = amountBTC+feesBTC;
-			// var balance = this.state.balance;
-			// var diff = amountBTC-balance;
-			// if(amount-fees < 0 ) {
-			// 	Toast.showWithGravity('Amount should be greater than fee', Toast.LONG, Toast.CENTER);
-			// 	return true;
-			// }
-			// if(total > balance) {
-			// 	console.log("Invalid Amount")
-			// 	Toast.showWithGravity('Invalid Amount', Toast.LONG, Toast.CENTER);
-			// 	return true;
-			// }
+
+		else if(!amount){
+			Toast.showWithGravity('Enter a valid amount', Toast.LONG, Toast.CENTER);
+		}
+
+		else if(amount == 1000 || (amount > 1000 && amount < 3000)){
+				Toast.showWithGravity('Enter a valid amount', Toast.LONG, Toast.CENTER);
+		}
+			
 			else {
 				this.setState({loaded: false, activity: "Signing Transaction"}, () => {
 					requestAnimationFrame(() => this.signTransaction(utxo, amount, from, privateKey,to), 0)
@@ -180,8 +177,12 @@ export default class Send extends React.Component {
 
 	}
 	signTransaction(utxo, amount, from, privateKey, to) {
+
 		var transaction = new bitcoin.Transaction();
+
 		transaction.from(utxo).to(to, amount).change(from);
+
+
 		let size = transaction._estimateSize();
 
 		let fees = (size * 1000)/1000;
@@ -191,6 +192,11 @@ export default class Send extends React.Component {
 
 		if((amount + estimatedFees) > balance){
 			Toast.showWithGravity('Amount should not be greater than balance', Toast.LONG, Toast.CENTER);
+			this.setState({loaded:true});
+		}
+
+		else if(amount <= estimatedFees ){
+			Toast.showWithGravity('Amount should be greater than fee', Toast.LONG, Toast.CENTER);
 			this.setState({loaded:true});
 		}
 
@@ -223,7 +229,7 @@ export default class Send extends React.Component {
             })
             .then(function (response) {
 								if(response.data.flag == 144){
-									Toast.showWithGravity(response.data.log, Toast.LONG, Toast.CENTER);
+									Toast.showWithGravity("Internet connection not working", Toast.LONG, Toast.CENTER);
 								}
 								else{
 									Actions.transactionsuccess({id: response.data.result})
