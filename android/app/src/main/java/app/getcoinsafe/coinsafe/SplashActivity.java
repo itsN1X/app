@@ -1,4 +1,4 @@
-package com.coinsafe;
+package app.getcoinsafe.coinsafe;
 
 
 import android.content.Intent;

@@ -98,7 +98,7 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
-        applicationId "com.coinsafe"
+        applicationId "app.getcoinsafe.coinsafe"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -153,6 +153,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-randombytes')
     implementation project(':react-native-splash-screen')
     implementation project(':react-native-udp')
     implementation project(':react-native-tcp')

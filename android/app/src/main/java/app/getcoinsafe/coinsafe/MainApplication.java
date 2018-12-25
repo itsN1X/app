@@ -1,12 +1,12 @@
-package com.coinsafe;
+package app.getcoinsafe.coinsafe;
 
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.bitgo.randombytes.RandomBytesPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.tradle.react.UdpSocketsModule;
 import com.peel.react.TcpSocketsModule;
-import com.bitgo.randombytes.RandomBytesPackage;
 import com.peel.react.rnos.RNOSModule;
 import com.oblador.keychain.KeychainPackage;
 import org.reactnative.camera.RNCameraPackage;
@@ -17,6 +17,8 @@ import com.facebook.soloader.SoLoader;
 
 import java.util.Arrays;
 import java.util.List;
+
+import app.getcoinsafe.coinsafe.BuildConfig;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -30,10 +32,10 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RandomBytesPackage(),
             new SplashScreenReactPackage(),
             new UdpSocketsModule(),
             new TcpSocketsModule(),
-            new RandomBytesPackage(),
             new RNOSModule(),
             new KeychainPackage(),
             new RNCameraPackage()
