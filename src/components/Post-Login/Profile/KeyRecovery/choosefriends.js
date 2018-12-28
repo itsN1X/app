@@ -174,7 +174,7 @@ export default class ChooseFriends extends React.Component {
             		self.pushFriendData();
             	}
             	else {
-            		Toast.showWithGravity(response.data.log, Toast.LONG, Toast.TOP, Toast.CENTER);
+            		Toast.showWithGravity(response.data.log, Toast.LONG, Toast.CENTER);
             		return true;
             	}
             })
