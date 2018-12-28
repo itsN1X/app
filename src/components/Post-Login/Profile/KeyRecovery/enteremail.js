@@ -19,6 +19,7 @@ export default class EnterEmail extends React.Component {
 		};
 		this.getOTP = this.getOTP.bind(this);
 		this.goBack = this.goBack.bind(this);
+		this.goToRestore= this.goToRestore.bind(this);
 		this.registerEmail = this.registerEmail.bind(this);
 		this.verifyEmail = this.verifyEmail.bind(this);
 	}
@@ -118,6 +119,10 @@ export default class EnterEmail extends React.Component {
         }
 	}
 
+	goToRestore(){
+		Actions.restore();
+	}
+
 
 	registerEmail() {
 		var self = this;
@@ -172,11 +177,7 @@ export default class EnterEmail extends React.Component {
 								/>
 							</View>
 
-							{this.props.mode == "verify" && 	<View style={styles.forgottenButtonContainer}>
-									<TouchableOpacity onPress={() => Actions.restore()}>
-										<Text style={styles.forgottenText}>Restore using Mnemonic</Text>
-									</TouchableOpacity>
-								</View>}
+
 						</View>
 					</View>
 					<View style={styles.lowerFlex}>
@@ -184,6 +185,16 @@ export default class EnterEmail extends React.Component {
 							<Button bColor = {theme.dark} onPress={this.getOTP}>
 								<Text style={styles.nextText}>Send Verification Code</Text>
 							</Button>
+
+
+						{this.props.mode == "verify" && <View style={{paddingTop:10, width:'100%',  justifyContent: 'center',
+							alignItems: 'center',  backgroundColor:'#fff'}}>
+						<Button bColor = {theme.dark} onPress={this.goToRestore}>
+							<Text style={{color:'grey'}}>Restore Using Mnemonic Instead</Text>
+						</Button>
+						</View> }
+
+
 						</KeyboardAvoidingView>
 					</View>
 				</View>
@@ -223,7 +234,7 @@ const styles = StyleSheet.create({
 	},
 	enterEmailHeading: {
 		flex: 0.3,
-		alignItems: 'flex-start',
+		alignItems: 'center',
 		justifyContent: 'center'
 	},
 	enterEmailText: {
@@ -247,6 +258,10 @@ const styles = StyleSheet.create({
 		fontSize: 18,
 		letterSpacing: 1,
 		color: theme.dark,
+	},
+
+	recoverUsingMnemonic:{
+
 	},
 	lowerFlex: {
 		flex: 0.4,

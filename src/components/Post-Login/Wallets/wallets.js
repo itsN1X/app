@@ -137,7 +137,8 @@ export default class Wallets extends React.Component {
 							}
             })
             .catch(function (error) {
-                console.log(error);
+                Toast.showWithGravity("Internet connection required!", Toast.LONG, Toast.CENTER);
+								self.setState({loaded:true});
             });
         }
         catch(error) {
@@ -176,6 +177,7 @@ export default class Wallets extends React.Component {
 					 self.setState({newData : response.data.assetData});
 				})
 				.catch(function (error) {
+					Toast.showWithGravity("Internet connection required!", Toast.LONG, Toast.CENTER);
 				});
 		}
 		catch(error) {

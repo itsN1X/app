@@ -5,6 +5,7 @@ import ElevatedView from 'react-native-elevated-view';
 import Drawer from 'react-native-drawer';
 import axios from 'axios';
 import SideBar from '../Sidedrawer/drawercontent';
+import Toast from 'react-native-simple-toast';
 import theme from '../../common/theme';
 import NoFunds from './nofunds';
 import Loader from '../../common/loader';
@@ -54,7 +55,8 @@ export default class Main extends Component {
           BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
       }
       handleBackButton = () =>  {
-       Actions.pop();
+        Actions.postlogintabs();
+        Actions.wallets();
        return true;
       }
     onRefresh() {
@@ -67,16 +69,7 @@ export default class Main extends Component {
         this.getCoinData();
         this.setState({rotated: !this.state.rotated});
     }
-    componentDidMount() {
-        BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
-    }
-    componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
-    }
-    handleBackButton() {
-        this.goBack();
 
-    }
     componentWillMount() {
         this.spinValue = new Animated.Value(0);
         this.setState({activity: "Fetching Asset Details"}, () => {
@@ -137,7 +130,7 @@ export default class Main extends Component {
 
             })
             .catch(function (error) {
-                console.log(error);
+              Toast.showWithGravity("Internet connection required!", Toast.LONG, Toast.CENTER);
             });
         }
         catch(error) {

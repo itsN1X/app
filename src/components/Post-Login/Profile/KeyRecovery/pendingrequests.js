@@ -98,7 +98,8 @@ export default class PendingRequests extends React.Component {
             	}
             })
             .catch(function (error) {
-                console.log(error);
+							Toast.showWithGravity("Internet connection required!", Toast.LONG, Toast.CENTER);
+							Actions.pop();
             });
         }
         catch(error) {

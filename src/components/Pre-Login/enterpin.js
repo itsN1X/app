@@ -11,6 +11,7 @@ import Background from '../../../images/background.png';
 const Cryptr = require('cryptr');
 
 let wrongPinCount = 0;
+let enterPinCount = 0;
 
 export default class EnterPin extends React.Component {
 	constructor(props) {
@@ -25,6 +26,14 @@ export default class EnterPin extends React.Component {
 		this.getPinLength = this.getPinLength.bind(this);
 	}
 
+	componentWillMount(){
+		this.updateCountFirst();
+	}
+
+	updateCountFirst(){
+		enterPinCount = 0;
+	}
+
 	componentDidMount() {
 				BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
 		}
@@ -32,7 +41,22 @@ export default class EnterPin extends React.Component {
 				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
 		}
 		handleBackButton = () =>  {
-			Actions.profile();
+			if(this.props.loggedIn == "true"){
+				enterPinCount = enterPinCount + 1;
+				if(enterPinCount === 1) {
+					Toast.showWithGravity('Press again to EXIT', Toast.LONG, Toast.BOTTOM)
+				}
+				else if(enterPinCount > 1) {
+					enterPinCount = null;
+					BackHandler.exitApp();
+				}
+			}
+
+			else {
+				Actions.profile();
+			}
+
+
 		 return true;
 		}
 
@@ -89,7 +113,7 @@ export default class EnterPin extends React.Component {
 
 									Actions.prelogin();
 										Actions.createpin();
-							
+
 
 							}
 							else{

@@ -1,4 +1,4 @@
-package app.getcoinsafe.coinsafe;
+package app.getcoinsafe.android;
 
 import android.os.Bundle;
 

@@ -108,6 +108,7 @@ export default class Verification extends React.Component {
 
 		    })
 		    .catch(function (error) {
+					Toast.showWithGravity("Internet connection required!", Toast.LONG, Toast.CENTER);
 		    });
 		}
 		catch(error) {

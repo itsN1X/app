@@ -168,7 +168,7 @@ export default class Send extends React.Component {
 		else if(amount == 1000 || (amount > 1000 && amount < 3000)){
 				Toast.showWithGravity('Enter a valid amount', Toast.LONG, Toast.CENTER);
 		}
-			
+
 			else {
 				this.setState({loaded: false, activity: "Signing Transaction"}, () => {
 					requestAnimationFrame(() => this.signTransaction(utxo, amount, from, privateKey,to), 0)
@@ -229,14 +229,16 @@ export default class Send extends React.Component {
             })
             .then(function (response) {
 								if(response.data.flag == 144){
-									Toast.showWithGravity("Internet connection not working", Toast.LONG, Toast.CENTER);
+									Toast.showWithGravity("There is some problem from our end.", Toast.LONG, Toast.CENTER);
+									Actions.popTo("mainscreen");
 								}
 								else{
 									Actions.transactionsuccess({id: response.data.result})
 								}
             })
             .catch(function (error) {
-                console.log(error);
+							Toast.showWithGravity("Internet connection required!", Toast.LONG, Toast.CENTER);
+						  Actions.pop();
             });
         }
         catch(error) {

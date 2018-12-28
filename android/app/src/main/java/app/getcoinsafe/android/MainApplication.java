@@ -1,4 +1,4 @@
-package app.getcoinsafe.coinsafe;
+package app.getcoinsafe.android;
 
 import android.app.Application;
 
@@ -18,7 +18,7 @@ import com.facebook.soloader.SoLoader;
 import java.util.Arrays;
 import java.util.List;
 
-import app.getcoinsafe.coinsafe.BuildConfig;
+import app.getcoinsafe.android.BuildConfig;
 
 public class MainApplication extends Application implements ReactApplication {
 

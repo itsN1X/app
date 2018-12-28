@@ -16,7 +16,7 @@ export default class WalletCoinItem extends React.Component {
 	render () {
 		return (
 			<View style={styles.walletItemContainer}>
-				<TouchableOpacity onPress={() => this.onWalletPress(this.props.lighticon, this.props.name, this.props.symbol, this.props.value, this.props.amount)} style={this.props.symbol === "BTC" ? styles.walletItem : styles.walletNonItem}>
+				<TouchableOpacity onPress={() => this.onWalletPress(this.props.lighticon, this.props.name, this.props.symbol, this.props.value, this.props.amount)} style={styles.walletItem}>
 					<View style={styles.contentContainer}>
 						<View style={styles.upperContentFlex}>
 							<View style={styles.coinImageContainer}>
@@ -24,7 +24,7 @@ export default class WalletCoinItem extends React.Component {
 								<Text style={styles.coinNameText}>{this.props.name}</Text>
 							</View>
 							<View style={styles.coinAmountContainer}>
-								<Text style={styles.coinAmountText}>{this.props.amount}</Text>
+								<Text style={styles.coinAmountText}>{this.props.symbol == "BTC" ? this.props.amount:"Coming Soon"}</Text>
 								<Text style={styles.coinValueText}>${((this.props.value * (this.props.amount*100000000))/100000000).toFixed(3)}</Text>
 							</View>
 						</View>

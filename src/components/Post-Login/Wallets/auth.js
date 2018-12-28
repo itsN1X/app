@@ -72,19 +72,19 @@ export default class Auth extends React.Component {
 
 							if(recovery === "true") {
 								Actions.postlogin();
-								Actions.enterpin({recovery : "true"});
+								Actions.enterpin({recovery : "true",loggedIn : "true"});
 
 							}
 
 							else if(guardian == "true"){
 								Actions.postlogin();
-								Actions.enterpin({guardian:"true"});
+								Actions.enterpin({guardian:"true",loggedIn : "true"});
 							}
 
 						else if(value == 'LoggedIn'){
 
 									Actions.postlogin();
-									Actions.enterpin();
+									Actions.enterpin({loggedIn : "true"});
 
 							}
 
