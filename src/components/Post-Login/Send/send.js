@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, ActivityIndicator, TextInput, TouchableOpacity, Dimensions, KeyboardAvoidingView, Keyboard, ScrollView, BackHandler } from 'react-native';
+import { StyleSheet, Text, View, AsyncStorage,Image, ActivityIndicator, TextInput, TouchableOpacity, Dimensions, KeyboardAvoidingView, Keyboard, ScrollView, BackHandler } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import Toast from 'react-native-simple-toast';
 import axios from 'axios';
@@ -23,7 +23,7 @@ export default class Send extends React.Component {
 			utxo: "",
 			privateKey: "",
 			balance: "",
-			loaded: true,
+			loaded: false,
 			amount: null,
 			estValue: "129870",
 			fees: "",
@@ -48,9 +48,9 @@ export default class Send extends React.Component {
 		});
 	}
 	componentWillMount() {
-		// this.setState({activity: "Calculating Network Fee"}, () => {
-    //         requestAnimationFrame(()=>this.calculateFees(), 0);
-    //     });
+		this.setState({activity: "Fetching Details"}, () => {
+            requestAnimationFrame(()=>this.getCoinData(), 0);
+        });
 	}
 
 
@@ -64,15 +64,53 @@ export default class Send extends React.Component {
 		 Actions.pop();
 		 return true;
 		}
-	calculateUtxo() {
-		let utxo = this.props.utxo;
-		let amount = this.state.amount * 100000000;
+
+		getCoinData = async () => {
+			try {
+						const value = await AsyncStorage.getItem('@CoinsData');
+						var coinData = JSON.parse(value);
+						this.getBalance(coinData);
+				}
+			catch(error) {
+						alert(error)
+				}
+		}
+
+		getBalance (coinData) {
+				coinAddress = {};
+				coinAddress.addresses = [coinData[0].address];
+				coinAddress.asset_id = coinData[0].asset_id;
+				try {
+						var self = this;
+						axios({
+								method: 'post',
+								url: 'http://206.189.137.43:4013/receive_coins',
+								data: coinAddress
+						})
+						.then(function (response) {
+							 self.setState({  utxo: response.data.balanceHistory.utxo ,loaded:true});
+
+						})
+						.catch(function (error) {
+							Toast.showWithGravity("Internet connection required!", Toast.LONG, Toast.CENTER);
+						});
+				}
+				catch(error) {
+						alert(error);
+				}
+		}
+
+		calculateUtxo() {
+		var Unit = bitcoin.Unit;
+
+		let utxo = this.state.utxo;
+		let amount = 	Unit.fromBTC(this.state.amount).satoshis;
 		let final_utxo = [];
 		let lessers = [];
 		let greaters = [];
 
 		for (var i=0 ; i< utxo.length ; i++){
-        if ( utxo[i].amount*100000000 < amount) {
+        if ( Unit.fromBTC(utxo[i].amount).satoshis < amount) {
         	lessers.push(utxo[i])
         }
         else {
@@ -84,11 +122,11 @@ export default class Send extends React.Component {
 		if (greaters.length !== 0) {
 
 				greaters.sort(function(a, b) {
-				    return a.amount*100000000 - b.amount*100000000;
+				    return  Unit.fromBTC(a.amount).satoshis -  Unit.fromBTC(b.amount).satoshis;
 				});
 
 				var min_greater = greaters[0];
-				change = min_greater.amount*100000000 - amount;
+				change = Unit.fromBTC(min_greater.amount).satoshis - amount;
 
 				final_utxo.push(min_greater);
 		}
@@ -98,11 +136,11 @@ export default class Send extends React.Component {
 					var accum = 0
 
 				lessers.sort(function(a, b) {
-				    return a.amount*100000000 - b.amount*100000000;
+				    return Unit.fromBTC(a.amount).satoshis - Unit.fromBTC(b.amount).satoshis;
 				});
 					for (var a= lessers.length-1 ; a >= 0; a--){
 						final_utxo.push(lessers[a])
-						accum = accum+ lessers[a].amount*100000000 ;
+						accum = accum + Unit.fromBTC(lessers[a].amount).satoshis ;
 						if (accum >= amount) {
 							change = accum - amount
 							break ;
@@ -152,43 +190,53 @@ export default class Send extends React.Component {
         }*/
 	}
 	sendCoins() {
+		var Unit = bitcoin.Unit;
 		let utxo = this.calculateUtxo();
 		var privateKey = this.props.privateKey;
 		var from = this.props.fromAddress;
 		var to = this.state.toAddress;
-		var amount = this.state.amount * 100000000;
-		if(!bitcoin.Address.isValid(to)) {
-			Toast.showWithGravity('Enter a valid address', Toast.LONG, Toast.CENTER);
-		}
+		var amount = Unit.fromBTC(this.state.amount).satoshis;
 
-		else if(!amount){
-			Toast.showWithGravity('Enter a valid amount', Toast.LONG, Toast.CENTER);
-		}
 
-		else if(amount == 1000 || (amount > 1000 && amount < 3000)){
-				Toast.showWithGravity('Enter a valid amount', Toast.LONG, Toast.CENTER);
-		}
-
-			else {
-				this.setState({loaded: false, activity: "Signing Transaction"}, () => {
-					requestAnimationFrame(() => this.signTransaction(utxo, amount, from, privateKey,to), 0)
-				});
+		if(utxo.length ){
+			if(!bitcoin.Address.isValid(to)) {
+				Toast.showWithGravity('Enter a valid address', Toast.LONG, Toast.CENTER);
 			}
+
+			else if(!amount){
+				Toast.showWithGravity('Enter a valid amount', Toast.LONG, Toast.CENTER);
+			}
+
+			else if(amount < 3000){
+					Toast.showWithGravity('Amount is less than minimum fee', Toast.LONG, Toast.CENTER);
+			}
+
+				else {
+					this.setState({loaded: false, activity: "Signing Transaction"}, () => {
+						requestAnimationFrame(() => this.signTransaction(utxo, amount, from, privateKey,to), 0)
+					});
+				}
+		}
+
+		else {
+			Toast.showWithGravity('Wait for the transaction to confirm first', Toast.LONG, Toast.CENTER);
+		}
+
 
 	}
 	signTransaction(utxo, amount, from, privateKey, to) {
+		var Unit = bitcoin.Unit;
 
 		var transaction = new bitcoin.Transaction();
 
 		transaction.from(utxo).to(to, amount).change(from);
 
-
 		let size = transaction._estimateSize();
 
 		let fees = (size * 1000)/1000;
 
-		let estimatedFees =  transaction._estimateFee(size,amount, 1000);
-		let balance = this.props.balance*100000000;
+		let estimatedFees =  transaction._estimateFee(size,amount, 10000);
+		let balance = Unit.fromBTC(this.props.balance).satoshis;
 
 		if((amount + estimatedFees) > balance){
 			Toast.showWithGravity('Amount should not be greater than balance', Toast.LONG, Toast.CENTER);
@@ -213,7 +261,7 @@ export default class Send extends React.Component {
 			hash = {};
 			hash.transaction_hash = transaction;
 			hash.address = from;
-			hash.amount = amount/100000000;
+			hash.amount = Unit.fromBTC(amount).BTC;
 			this.setState({activity: "Broadcasting Transaction"}, () => {
 				requestAnimationFrame(() => this.sendTransactionHash(hash), 0)
 			});
