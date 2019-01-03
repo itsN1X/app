@@ -7,6 +7,7 @@ import AppStatusBar from '../../common/appstatusbar';
 import theme from '../../common/theme';
 import Button from '../../common/button';
 import Picker from '../../common/coinpicker';
+import { isIphoneX } from 'react-native-iphone-x-helper';
 var Back = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/lightback.png";
 var ExchangeIcon = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/exchangedark.png";
 
@@ -57,6 +58,12 @@ export default class Exchange extends React.Component {
       return true;
     }
 	componentWillMount() {
+    if (isIphoneX()) {
+        this.setState({iphoneX:true});
+    } else {
+        this.setState({iphoneX:false});
+    }
+
 		this.spinValue = new Animated.Value(0)
 	}
 	interchangeCoins() {
@@ -188,6 +195,11 @@ export default class Exchange extends React.Component {
 								<TouchableOpacity disabled={buttonDisabled} onPress={this.onExchangePress} style = {[styles.buttonStyle, {backgroundColor: theme.dark, opacity: buttonOpacity, height: buttonHeight}]}>
 						            <Text style= {styles.text}>Coming Soon</Text>
 						        </TouchableOpacity>
+                    {this.state.iphoneX &&
+    									<View style={{height:20}}>
+
+    									</View>
+    								}
 							</View>
 							{this.state.pickerEnabled ? <Picker status={this.state.pickerEnabled} changeCoin={this.changeCoin} /> : null}
 						</View>
