@@ -88,7 +88,9 @@ export default class Send extends React.Component {
 								data: coinAddress
 						})
 						.then(function (response) {
-							 self.setState({  utxo: response.data.balanceHistory.utxo ,loaded:true});
+
+							 self.setState({  utxo: response.data.balanceHistory.utxo});
+							 self.calculateMax();
 
 						})
 						.catch(function (error) {
@@ -105,7 +107,6 @@ export default class Send extends React.Component {
 
 		let utxo = this.state.utxo;
 		let amount = 	Unit.fromBTC(this.state.amount).satoshis;
-		amount = amount + 1000;
 		let final_utxo = [];
 		let lessers = [];
 		let greaters = [];
@@ -193,38 +194,77 @@ export default class Send extends React.Component {
             alert(error);
         }*/
 	}
-	sendCoins() {
+
+
+	calculateMax(){
 		var Unit = bitcoin.Unit;
-		let utxo = this.calculateUtxo();
+		let utxo = this.state.utxo;
+		var privateKey = this.props.privateKey;
+		var from = this.props.fromAddress;
+		var to = from;
+		let amount = 0 ;
+
+		for (var i=0 ; i< utxo.length ; i++){
+			amount +=  Unit.fromBTC(utxo[i].amount).satoshis;
+		}
+
+		if(utxo.length){
+			var transaction = new bitcoin.Transaction();
+
+			transaction.from(utxo).to(to, amount).change(from);
+
+			let size = transaction._estimateSize();
+
+			let estimatedFees =  transaction._estimateFee(size,amount, 1000);
+
+			estimatedFees *= 2;
+
+			let maxBalance =  Unit.fromSatoshis(amount - estimatedFees).to(Unit.BTC);
+
+			if(maxBalance > 0){
+				this.setState({maxAmount:maxBalance, loaded:true});
+			}
+			else {
+				this.setState({maxAmount:0, loaded:true});
+			}
+
+
+		}
+
+		else{
+				this.setState({maxAmount:0, loaded:true});
+		}
+
+
+	}
+	sendCoins() {
+
+		var Unit = bitcoin.Unit;
 		var privateKey = this.props.privateKey;
 		var from = this.props.fromAddress;
 		var to = this.state.toAddress;
 		var amount = Unit.fromBTC(this.state.amount).satoshis;
-		if(utxo.length ){
-			if(!bitcoin.Address.isValid(to)) {
-				Toast.showWithGravity('Enter a valid address', Toast.LONG, Toast.CENTER);
-			}
+		var maxAmount = Unit.fromBTC(this.state.maxAmount).satoshis;
 
-			else if(!amount){
-				Toast.showWithGravity('Enter a valid amount', Toast.LONG, Toast.CENTER);
-			}
+		if(!bitcoin.Address.isValid(to)) {
+			Toast.showWithGravity('Enter a valid address', Toast.LONG, Toast.CENTER);
+		}
 
-			else if(amount < 3000){
-					Toast.showWithGravity('Amount is less than minimum fee', Toast.LONG, Toast.CENTER);
-			}
+		else if(amount > maxAmount){
+			Toast.showWithGravity('Enter a valid amount', Toast.LONG, Toast.CENTER);
+		}
 
-				else {
-					this.setState({loaded: false, activity: "Signing Transaction"}, () => {
-						requestAnimationFrame(() => this.signTransaction(utxo, amount, from, privateKey,to), 0)
-					});
-				}
+		else if(maxAmount == 0){
+			Toast.showWithGravity('Zero Balance', Toast.LONG, Toast.CENTER);
 		}
 
 		else {
-			Toast.showWithGravity('Wait for the transaction to confirm first', Toast.LONG, Toast.CENTER);
+				let utxo = this.calculateUtxo();
+				this.setState({loaded: false, activity: "Signing Transaction"}, () => {
+					requestAnimationFrame(() => this.signTransaction(utxo, amount, from, privateKey,to), 0)
+				});
+
 		}
-
-
 	}
 	signTransaction(utxo, amount, from, privateKey, to) {
 		var Unit = bitcoin.Unit;
@@ -234,7 +274,6 @@ export default class Send extends React.Component {
 		transaction.from(utxo).to(to, amount).change(from);
 
 		let size = transaction._estimateSize();
-		let fees = (size * 1000)/1000;
 
 		let estimatedFees =  transaction._estimateFee(size,amount, 1000);
 		let balance = Unit.fromBTC(this.props.balance).satoshis;
@@ -297,27 +336,9 @@ export default class Send extends React.Component {
         }
 	}
 	render() {
-		// var totalAmount;
-		// var feesBTC = this.state.feesBTC;
-		// var spendableColor;
-		// if(this.state.amount===0 || this.state.amount==="" || this.state.amount===null) {
-		// 	totalAmount = feesBTC;
-		// 	totalAmount = parseFloat(totalAmount);
-		// }
-		// else {
-		// 	var amount = this.state.amount;
-		// 	amount = parseFloat(amount);
-		// 	totalAmount = feesBTC + amount;
-		// }
-		// var amountLeft = this.state.balance - totalAmount;
-		// amountLeft = amountLeft.toFixed(6);
-		// totalAmount = totalAmount.toFixed(6);
-		// if(amountLeft > 0) {
-		// 	spendableColor = theme.dark;
-		// }
-		// else {
-		// 	spendableColor = '#FF0000';
-		// }
+
+			spendableColor = theme.dark;
+
 		if(!this.state.loaded) {
             return(<Loader activity={this.state.activity} />)
         }
@@ -353,7 +374,9 @@ export default class Send extends React.Component {
 										</View>
 									</View>
 								</View>
-
+							</View>
+							<View>
+								<Text>Spendable Amount: {" "+this.state.maxAmount}</Text>
 							</View>
 							<View style={styles.lowerFlex}>
 
@@ -370,6 +393,7 @@ export default class Send extends React.Component {
 									/>
 
 								</KeyboardAvoidingView>
+
 								<View style={styles.buttonFlexContainer}>
 									<Button bColor={theme.dark} onPress={this.sendCoins}>
 										Proceed
