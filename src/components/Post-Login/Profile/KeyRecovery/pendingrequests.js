@@ -10,7 +10,6 @@ import RequestItem from './requestitem';
 import StatusBar from '../../../common/statusbar';
 import AppStatusBar from '../../../common/appstatusbar';
 import theme from '../../../common/theme';
-import { isIphoneX } from 'react-native-iphone-x-helper';
 const crypto = require('react-native-crypto');
 const VirgilCrypto =require('virgil-crypto');
 const virgilCrypto = new VirgilCrypto.VirgilCrypto();
@@ -149,11 +148,6 @@ export default class PendingRequests extends React.Component {
 	}
 	getAccountInfo = async () => {
 		try{
-			if (isIphoneX()) {
-					this.setState({iphoneX:true});
-			} else {
-					this.setState({iphoneX:false});
-			}
 			pendindRequestsCount = 0;
 			const value = await AsyncStorage.getItem('@UserData');
 			var guardian = await AsyncStorage.getItem('@Guardian');
@@ -209,16 +203,7 @@ export default class PendingRequests extends React.Component {
 								<Button bColor={theme.dark} onPress={() => this.copyToClipboard(this.state.pendingRequestsTitle.replace('@',''))}>
 									<Text>Copy Username</Text>
 								</Button>
-								{this.state.iphoneX &&
-									<View style={{height:30}}>
-
-									</View>
-								}
 								</View>
-
-
-
-
 							</View>
 						): null}
 
