@@ -167,23 +167,6 @@ export default class Main extends Component {
         }
         else {
             return (
-                <Drawer
-                  ref={(ref) => { this._drawer = ref; }}
-                  type="overlay"
-                  content={<SideBar navigator={this._navigator} closeDrawer={this.closeDrawer} mainDrawer={true} />}
-                  openDrawerOffset={0.2}
-                  panCloseMask={0.35}
-                  panOpenMask={0.2}
-                  tapToClose={true}
-                  tweenDuration={150}
-                  closedDrawerOffset={-3}
-                  panThreshold={0.05}
-                  elevation={2}
-                  styles={drawerStyles}
-                  tweenHandler={(ratio) => ({
-                    mainOverlay: { opacity: ratio / 1.5 },
-                  })}
-                  onClose={() => this.closeDrawer()}>
                         <Animated.View style={{flex:1}}>
                             <ImageBackground style={styles.upperFlex} source={{uri: Background}}>
                                 {Platform.OS === 'ios' ? <View style={styles.statusbar} /> : null}
@@ -247,7 +230,7 @@ export default class Main extends Component {
                                 )}
                             </View>
                 </Animated.View>
-            </Drawer>
+        
             );
         }
     }
