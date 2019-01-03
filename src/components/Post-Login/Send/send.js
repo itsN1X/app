@@ -105,6 +105,7 @@ export default class Send extends React.Component {
 
 		let utxo = this.state.utxo;
 		let amount = 	Unit.fromBTC(this.state.amount).satoshis;
+		amount = amount + 1000;
 		let final_utxo = [];
 		let lessers = [];
 		let greaters = [];
@@ -117,7 +118,6 @@ export default class Send extends React.Component {
         	greaters.push(utxo[i])
         }
 		}
-
 
 		if (greaters.length !== 0) {
 
@@ -146,6 +146,10 @@ export default class Send extends React.Component {
 							break ;
 						}
 					}
+
+			if(accum <= amount){
+				final_utxo = [];
+			}
 
 	}
 
@@ -196,8 +200,6 @@ export default class Send extends React.Component {
 		var from = this.props.fromAddress;
 		var to = this.state.toAddress;
 		var amount = Unit.fromBTC(this.state.amount).satoshis;
-
-
 		if(utxo.length ){
 			if(!bitcoin.Address.isValid(to)) {
 				Toast.showWithGravity('Enter a valid address', Toast.LONG, Toast.CENTER);
@@ -232,10 +234,9 @@ export default class Send extends React.Component {
 		transaction.from(utxo).to(to, amount).change(from);
 
 		let size = transaction._estimateSize();
-
 		let fees = (size * 1000)/1000;
 
-		let estimatedFees =  transaction._estimateFee(size,amount, 10000);
+		let estimatedFees =  transaction._estimateFee(size,amount, 1000);
 		let balance = Unit.fromBTC(this.props.balance).satoshis;
 
 		if((amount + estimatedFees) > balance){
@@ -261,7 +262,9 @@ export default class Send extends React.Component {
 			hash = {};
 			hash.transaction_hash = transaction;
 			hash.address = from;
-			hash.amount = Unit.fromBTC(amount).BTC;
+			hash.amount = Unit.fromSatoshis(amount).to(Unit.BTC);
+
+
 			this.setState({activity: "Broadcasting Transaction"}, () => {
 				requestAnimationFrame(() => this.sendTransactionHash(hash), 0)
 			});
