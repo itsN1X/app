@@ -1768,6 +1768,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.react.Coinsafe;
 				PRODUCT_NAME = Coinsafe;
+				TARGETED_DEVICE_FAMILY = 2;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1799,6 +1800,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.react.Coinsafe;
 				PRODUCT_NAME = Coinsafe;
+				TARGETED_DEVICE_FAMILY = 2;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

@@ -19,6 +19,7 @@ var Notification = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/new/not
 var Background = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/menubg.png";
 var Refresh = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/refresh.png";
 
+
 export default class Main extends Component {
     constructor(props){
         super(props);
@@ -230,7 +231,7 @@ export default class Main extends Component {
                                 )}
                             </View>
                 </Animated.View>
-        
+
             );
         }
     }
@@ -245,14 +246,14 @@ const styles = StyleSheet.create({
         backgroundColor: theme.dark
     },
     upperFlex: {
-        height:250,
+        flex: 5,
         position: 'relative',
         width: '100%',
         backgroundColor: theme.dark,
         alignItems: 'center',
     },
     lowerflex : {
-        flex:1,
+        flex: 5,
     },
     statusbar: {
         height: statusBarHeight,
