@@ -250,8 +250,12 @@ export default class Send extends React.Component {
 			Toast.showWithGravity('Enter a valid address', Toast.LONG, Toast.CENTER);
 		}
 
-		else if(amount > maxAmount){
+		else if(!amount){
 			Toast.showWithGravity('Enter a valid amount', Toast.LONG, Toast.CENTER);
+		}
+
+		else if(amount > maxAmount){
+			Toast.showWithGravity('Amount should be lower than spendable amount', Toast.LONG, Toast.CENTER);
 		}
 
 		else if(maxAmount == 0){
