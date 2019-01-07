@@ -4,6 +4,7 @@ import { Actions } from 'react-native-router-flux';
 import { BarIndicator } from 'react-native-indicators';
 import Toast from 'react-native-simple-toast';
 import bip39 from 'react-native-bip39';
+import axios from 'axios';
 import SeedItem from '../../../Pre-Login/seeditem';
 import StatusBar from '../../../common/statusbar';
 import AppStatusBar from '../../../common/appstatusbar';
@@ -11,8 +12,8 @@ import theme from '../../../common/theme';
 import Button from '../../../common/button';
 const Cryptr = require('cryptr');
 const secrets = require('secret-sharing.js');
-const VirgilCrypto =require('virgil-crypto');
-const virgilCrypto = new VirgilCrypto.VirgilCrypto();
+const crypto = require('react-native-crypto');
+import { VirgilCrypto } from 'virgil-crypto';
 
 var Back = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/lightback.png";
 var Copy = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/copy.png";
@@ -43,32 +44,77 @@ export default class ShowMnemonic extends React.Component {
 	  	Toast.showWithGravity('Copied to Clipboard!', Toast.LONG, Toast.CENTER);
 	};
 
-	// updateRequestStatus = async () => {
-	// 	var request_id = this.props.data.result[0].request_id;
-	// 	var data = {};
-	// 	data.publicKey = this.props.publicKey;
-	// 	data.requestid = request_id;
-	//
-	// 	try {
-  //   		var self = this;
-  //           axios({
-  //               method: 'post',
-  //               url: 'http://159.65.153.3:7001/recovery_key/update_recovery_request_status',
-  //               data: data
-  //           })
-  //           .then(function (response) {
-  //           this.changeRecoveryStatus();
-  //           })
-  //           .catch(function (error) {
-  //               console.log(error);
-  //           });
-  //       }
-  //       catch(error) {
-  //           alert(error);
-  //       }
-	// }
+
 	goBack() {
 		this.logout();
+	}
+
+	generateKeyPair() {
+		const virgilCrypto = new VirgilCrypto();
+		let account = {};
+		account.mnemonic = this.state.mnemonicstr;
+		const seed = bip39.mnemonicToSeedHex(this.state.mnemonicstr);
+		account.seed = seed;
+		const keyPair = virgilCrypto.generateKeysFromKeyMaterial(seed);
+		const privateKeyData = virgilCrypto.exportPrivateKey(keyPair.privateKey);
+		const publicKeyData = virgilCrypto.exportPublicKey(keyPair.publicKey);
+		const privateKey = privateKeyData.toString('base64');
+		const publicKey = publicKeyData.toString('base64');
+		const privateKeyHash = this.createHash(privateKey)
+		account.publicKey = publicKey;
+		account.privateKey = privateKey;
+		account.privateKeyHash = privateKeyHash;
+		let details = {};
+		details.private_key_hash = privateKeyHash;
+		details.public_key = publicKey;
+		this.authenticateUser(details, account);
+	}
+
+	createHash(data) {
+		const hash = crypto.createHash('sha256');
+		hash.update(data);
+		const privateKeyHash = hash.digest('hex');
+		return privateKeyHash;
+	}
+	authenticateUser(details, account) {
+		console.log(details)
+		try {
+			var self = this;
+			axios({
+			    method: 'post',
+			    url: 'http://206.189.137.43:4013/login',
+			    data: details
+		    })
+		    .then(function (response) {
+		    	if(response.data.flag === 143 && response.data.result.wallet_id !== null) {
+						account.username = response.data.result.user_name;
+						account = JSON.stringify(account);
+						self.storeWalletID(response.data.result.wallet_id, account);
+		    		Actions.postlogintabs();
+		    		Actions.wallets();
+		    		Actions.refresh({ user_data: account, loggedIn: true, wallet_id: response.data.result.wallet_id, new: false });
+		    	}
+		    	else {
+		    		Toast.showWithGravity("Invalid Mnemonic Seed", Toast.LONG, Toast.CENTER);
+		    		self.setState({loaded: true});
+		    	}
+		    })
+		    .catch(function (error) {
+		        console.log(error);
+		    });
+		}
+		catch(error) {
+			alert(error);
+		}
+	}
+	storeWalletID = async (wallet_id, account) => {
+		try {
+		    await AsyncStorage.setItem('@WalletID', wallet_id);
+		    await AsyncStorage.setItem('@UserData', account);
+		    await AsyncStorage.setItem('@AccountStatus', "LoggedIn");
+		  } catch (error) {
+		    console.log(error)
+		  }
 	}
 	recoverMnemonic() {
 		const shares = this.getShares();
@@ -84,7 +130,6 @@ export default class ShowMnemonic extends React.Component {
 				this.setState({mnemonic: mnemonic,loaded: true,validateMnemonic:true});
 				Toast.showWithGravity('Sorry, Not a valid Mnemonic!', Toast.LONG, Toast.CENTER);
 			}
-			// this.updateRequestStatus();
 	}
 	getShares() {
 		var shares = [];
@@ -101,15 +146,18 @@ export default class ShowMnemonic extends React.Component {
 	}
 	logout = async () => {
 		try {
-		    await AsyncStorage.clear();
-				Actions.prelogin();
-				Actions.auth();
+
+				await AsyncStorage.setItem('@RecoveryInitiated', "false");
+				this.setState({loaded: false, activity: "Authenticating User"}, () => {
+					requestAnimationFrame(() => this.generateKeyPair(), 0);
+				})
 		  }
 		  catch (error) {
 		    console.log(error)
 		  }
 	}
 	decryptData(encryptedData, privateKeyStr) {
+		const virgilCrypto = new VirgilCrypto();
 		const privateKey = virgilCrypto.importPrivateKey(privateKeyStr);
 		const decryptedDataStr = virgilCrypto.decrypt(encryptedData, privateKey);
 		var decryptedData =  decryptedDataStr.toString('utf8');
@@ -150,7 +198,7 @@ export default class ShowMnemonic extends React.Component {
 						</View>
 						<View style={styles.buttonFlex}>
 							<Button bColor = {theme.dark} onPress={this.goBack}>
-								<Text>Done</Text>
+								<Text>Login with Mnemonic</Text>
 							</Button>
 						</View>
 					</View>
