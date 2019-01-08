@@ -11,7 +11,7 @@ These instructions will get you a copy of the project up and running on your loc
 Basic system configration required to run the application
 
 ```
-Ubuntu 18.04 
+
 ```
 ### Prerequisites
 
