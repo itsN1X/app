@@ -1,6 +1,9 @@
 # coinsafe-app
 
-Never Lose your Bitcoins ! A multicurrency wallet with key recovery support. 
+CoinSAfe is a ~crossplatform~ (iOS, Android), GPL-licensed, multicurrency wallet app built in React Native .
+
+The app supports key recovery using Shamir's secret algorithm.
+
 
 ## Getting Started
 
@@ -99,5 +102,7 @@ Feel free to submit issues and enhancement requests.
 
 ## License
 
-This project is licensed under the GPL License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the GPL License - see the [LICENSE.md](LICENSE.md) file, which guarantees end users the freedom to study, share, and modify the software.
+
+Note that this license does not give free reign to redistribute the name and branding of quirk. So if you'd like to publish your own version, please rename it to avoid end-user confusion.
 
