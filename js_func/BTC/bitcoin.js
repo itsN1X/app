@@ -19,9 +19,7 @@ function createKeys(){
   BTCData.privateKey = privateKeyStr;
   BTCData.publicKey = publicKeyStr;
   BTCData.address = addressStr;
-  // BTCData.encryptedData = this.encryptData(JSON.stringify(BTCData));
-  // console.log(BTCData)
-
+  
   return BTCData;
 
 }
