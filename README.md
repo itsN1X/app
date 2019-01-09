@@ -104,7 +104,7 @@ Feel free to submit issues and enhancement requests.
 
 ## License
 
-This project is licensed under the GPL License - see the [LICENSE.md](LICENSE.md) file, which guarantees end users the freedom to study, share, and modify the software.
+This project is licensed under the GPL License - see the [LICENSE.md](LICENSE) file, which guarantees end users the freedom to study, share, and modify the software.
 
 Note that this license does not give free reign to redistribute the name and branding of quirk. So if you'd like to publish your own version, please rename it to avoid end-user confusion.
 
