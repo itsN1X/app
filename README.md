@@ -1,3 +1,5 @@
+![Logo of the Prject](https://s3.ap-south-1.amazonaws.com/maxwallet-images/logoDark.png)
+
 # coinsafe-app
 
 CoinSAfe is a crossplatform (iOS, Android), GPL-licensed, multicurrency wallet app built in React Native .
