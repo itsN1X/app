@@ -10,7 +10,7 @@ import Button from '../../common/button';
 import StatusBar from '../../common/statusbar';
 import AppStatusBar from '../../common/appstatusbar';
 
-var Back = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/darkback.png";
+var Back = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/lightback.png";
 var Scan = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/scan.png";
 var Copy = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/copy.png";
 var Change = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/reload.png";
@@ -53,8 +53,8 @@ export default class Recieve extends React.Component {
 	render() {
 		return (
 			<View style={styles.container}>
-
-
+				<StatusBar bColor={theme.dark} />
+				<AppStatusBar left={true} Back={Back} leftFunction={this.goBack} bColor={theme.dark} center={true} text="Send" textColor={theme.white} />
 				{this.state.loaded ?
 					 <View style={styles.lowerFlex}>
 					<View style={styles.QRCodeFlex}>
@@ -65,7 +65,7 @@ export default class Recieve extends React.Component {
 					</View>
 				</View> :<View style={{zIndex: 999, position: 'absolute',width: '100%', height: '100%', backgroundColor: theme.white}}><Loader activity="Generating Address" /></View>}
 
-				<StatusBar bColor={theme.grey} />
+
 
 				<View style={styles.upperFlex}>
 					<View style={styles.addressHeadingFlex}>
