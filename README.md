@@ -88,6 +88,10 @@ function createKeys(){
 - [ ] Multi-sig support 
 - [ ] Exchange Feature
 
+### Issues
+
+Feel free to submit issues and enhancement requests.
+
 ### Contributing
 
 1. Fork the repo on GitHub
