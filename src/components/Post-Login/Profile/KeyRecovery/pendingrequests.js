@@ -36,15 +36,16 @@ export default class PendingRequests extends React.Component {
 		Actions.pop();
 	}
 
-
-	componentDidMount() {
+ componentDidMount() {
 				BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
-		}
-		componentWillUnmount() {
+ }
+
+ componentWillUnmount() {
 			pendindRequestsCount = null;
 				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
-		}
-		handleBackButton = () =>  {
+ }
+
+ handleBackButton = () =>  {
 			pendindRequestsCount = pendindRequestsCount + 1;
 			if(this.state.guardianStatus == "true"){
 				if(pendindRequestsCount === 1) {
@@ -55,29 +56,27 @@ export default class PendingRequests extends React.Component {
 					BackHandler.exitApp();
 				}
 			}
-
 				else {
 					Actions.pop();
 				}
 					return true;
+ }
 
-		}
-
-
-
-	componentWillMount() {
+ componentWillMount() {
 		this.getAccountInfo();
-	}
-	componentWillReceiveProps() {
+ }
+
+ componentWillReceiveProps() {
 		this.setState({loaded: false})
 		this.getAccountInfo();
-	}
+ }
 
-	copyToClipboard = async (str) => {
+ copyToClipboard = async (str) => {
 	  await Clipboard.setString(str);
 	  Toast.showWithGravity('Copied to Clipboard!', Toast.LONG, Toast.CENTER)
 	};
-	fetchRequests = async (account) => {
+
+ fetchRequests = async (account) => {
 		var data = {};
 		data.publicKey = account.publicKey;
 		console.log(data);
@@ -105,23 +104,26 @@ export default class PendingRequests extends React.Component {
         catch(error) {
             console.log(error);
         }
-	}
-	decryptTrustData(data, account) {
+ }
+
+ decryptTrustData(data, account) {
 		var decryptedTrustData = [];
 		data.trustData;
 		for( i = 0; i < data.trustData.length; i++) {
 			decryptedTrustData[i] = this.decryptData(data.trustData[i].trust_data, account.privateKey);
 		};
 		this.checkRequests(decryptedTrustData, data.recoveryData, account.publicKey)
-	}
-	decryptData(encryptedData, privateKeyStr) {
+ }
+
+ decryptData(encryptedData, privateKeyStr) {
 		const privateKey = virgilCrypto.importPrivateKey(privateKeyStr);
 		const decryptedDataStr = virgilCrypto.decrypt(encryptedData, privateKey);
 		var decryptedData =  decryptedDataStr.toString('utf8');
 		decryptedData = JSON.parse(decryptedData);
 		return decryptedData;
-	}
-	checkRequests(trustData, recoveryData, publicKey) {
+ }
+
+ checkRequests(trustData, recoveryData, publicKey) {
 		var requestList = [];
 		for(i = 0; i < recoveryData.length; i++) {
 			for(j = 0; j < trustData.length; j++) {
@@ -139,43 +141,41 @@ export default class PendingRequests extends React.Component {
 			}
 		}
 		this.setState({loaded: true, requestList: requestList});
-	}
-	encryptData(messageToEncrypt, publicKeyStr) {
+ }
+
+ encryptData(messageToEncrypt, publicKeyStr) {
 		const publicKey = virgilCrypto.importPublicKey(publicKeyStr);
 		const encryptedDataStr = virgilCrypto.encrypt(messageToEncrypt, publicKey);
 		const encryptedData =  encryptedDataStr.toString('base64');
 		return encryptedData;
 	}
-	getAccountInfo = async () => {
+
+ getAccountInfo = async () => {
 		try{
 			pendindRequestsCount = 0;
 			const value = await AsyncStorage.getItem('@UserData');
 			var guardian = await AsyncStorage.getItem('@Guardian');
-
 			if(guardian == "true"){
 			  this.setState({guardianStatus : "true"});
 			}
-
 			var account = JSON.parse(value);
-				this.setState({pendingRequestsTitle : "@"+account.username });
-
-
-
+			this.setState({pendingRequestsTitle : "@"+account.username });
 			this.setState({activity: "Fetching Requests"}, () => {
 				requestAnimationFrame(()=>this.fetchRequests(account), 0);
 			})
-
 		}
 		catch(error) {
 			this.setState({loaded: true})
 			global.NotificationUtils.showError(error);
 		}
-	}
-	writeToClipboard = async (address) => {
+ }
+
+ writeToClipboard = async (address) => {
       await Clipboard.setString(address);
       Toast.showWithGravity('Copied to Clipboard!', Toast.LONG, Toast.CENTER)
-    };
-	render() {
+ };
+
+ render() {
 		if(!this.state.loaded) {
             return(<Loader activity="Fetching Recovery Requests"/>)
         }
@@ -190,8 +190,6 @@ export default class PendingRequests extends React.Component {
 				               return(<View style={{height: 141, width: '100%', alignItems: 'center'}} key={i}><RequestItem onCopy={this.writeToClipboard} from_public_key={value.from_public_key} user_name={value.username} user_public_key={value.user_public_key} secret={value.secret}  new_public_key={value.new_public_key} request_id={value.request_id} /><View style={styles.line} /></View>);
 				             })}
 						</View>}
-
-
 						{this.state.requestList.length == 0 ?  (
 							<View style={{height: Dimensions.get('window').height-160, flex:1, padding:'10%',alignItems:'center', justifyContent:'center'}}>
 								<Image
@@ -368,6 +366,7 @@ export default class PendingRequests extends React.Component {
 		}
 	}
 }
+
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,

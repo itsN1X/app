@@ -30,20 +30,25 @@ export default class TransactionInfo extends Component {
         };
         this.getDetails = this.getDetails.bind(this);
     }
-    componentDidMount() {
+
+ componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
-    }
-    componentWillUnmount() {
+ }
+
+ componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
-    }
-    handleBackButton = () =>  {
+ }
+
+ handleBackButton = () =>  {
       Actions.popTo("mainscreen");
      return true;
-    }
-    componentWillMount() {
+ }
+
+ componentWillMount() {
     	this.getDetails();
-    }
-    getDetails() {
+ }
+
+ getDetails() {
     	data = {};
     	data.transaction_id = this.props.id;
     	try {
@@ -80,15 +85,18 @@ export default class TransactionInfo extends Component {
         catch(error) {
             alert(error);
         }
-    }
-    writeToClipboard = async () => {
+ }
+
+ writeToClipboard = async () => {
       await Clipboard.setString(this.state.id);
       Toast.showWithGravity('Copied to Clipboard!', Toast.LONG, Toast.CENTER)
     };
-    goBack() {
+
+ goBack() {
     	Actions.pop();
-    }
-    render() {
+ }
+
+ render() {
     	if(!this.state.loaded) {
     		return(<Loader activity="Fetching Transaction Details"/>);
     	}
@@ -136,8 +144,9 @@ export default class TransactionInfo extends Component {
 	    	);
 	    }
     }
-}
-const styles = StyleSheet.create({
+ }
+
+ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: theme.white,
@@ -198,4 +207,4 @@ const styles = StyleSheet.create({
     	height: 110,
     	width: 110
     }
-});
+ });

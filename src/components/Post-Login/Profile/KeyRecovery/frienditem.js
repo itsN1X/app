@@ -8,7 +8,8 @@ export default class FriendItem extends React.Component {
 	copyToClipboard(address) {
 		this.props.onCopy(address);
 	}
-	render() {
+
+ render() {
 		return (
 			<View style={styles.itemContainer}>
 				<View style={styles.friendHeadingContainer}>
@@ -25,8 +26,9 @@ export default class FriendItem extends React.Component {
 			</View>
 		);
 	}
-}
-const styles = StyleSheet.create({
+ }
+
+ const styles = StyleSheet.create({
 	itemContainer: {
 		height: 90,
 		width: '85%',
@@ -35,7 +37,7 @@ const styles = StyleSheet.create({
 	friendHeadingContainer: {
 		flex: 0.4,
 		alignItems: 'flex-end',
-		flexDirection: 'row' 
+		flexDirection: 'row'
 	},
 	copyIconContainer: {
 		flex: 1,
@@ -61,4 +63,4 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		color: theme.black
 	},
-})
+ })

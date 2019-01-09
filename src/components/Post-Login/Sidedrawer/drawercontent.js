@@ -16,7 +16,7 @@ var Shield = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/shield.png";
 
 export default class DrawerContent extends Component {
 	constructor(props){
-        super(props);
+      super(props);
     	this.onProfilePress = this.onProfilePress.bind(this);
     	this.onExchangePress = this.onExchangePress.bind(this);
     	this.onWalletsPress = this.onWalletsPress.bind(this);
@@ -24,33 +24,40 @@ export default class DrawerContent extends Component {
     	this.onKeyRecoveryPress = this.onKeyRecoveryPress.bind(this);
     	this.onBackupPhrasePress = this.onBackupPhrasePress.bind(this);
     }
+
 	onProfilePress() {
 		this.props.closeDrawer();
 		Actions.profile();
 	}
+
 	onExchangePress() {
 		this.props.closeDrawer();
 		Actions.exchange();
 	}
+
 	onBackupPhrasePress() {
 		this.props.closeDrawer();
 		Actions.backupphrase();
 	}
+
 	onWalletsPress() {
 		this.props.closeDrawer();
 		Actions.pop()
 			requestAnimationFrame(() => {
 			      Actions.refresh()}, 0)
 	}
+
 	onSettingsPress() {
 		this.props.closeDrawer();
 		Actions.settings();
 	}
+
 	onKeyRecoveryPress() {
 		this.props.closeDrawer();
 		var type= "register";
 		Actions.enteremail({mode:type});
 	}
+
 	render() {
 		return (
 			<View style={styles.container}>
@@ -77,6 +84,7 @@ export default class DrawerContent extends Component {
 		);
 	}
 }
+
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
@@ -150,4 +158,4 @@ const styles = StyleSheet.create({
 		color: theme.dark,
 		opacity: 0.8
 	}
-});
+ });

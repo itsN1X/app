@@ -21,11 +21,10 @@ export default class GetStarted extends React.Component {
 	componentWillMount() {
 		this.getWalletId();
 	}
-
 	componentDidMount() {
 				BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
 		}
-		componentWillUnmount() {
+	componentWillUnmount() {
 				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
 		}
 		handleBackButton = () =>  {
@@ -34,8 +33,6 @@ export default class GetStarted extends React.Component {
 		return true;
 
 		}
-
-
 
 	getWalletId = async () => {
 		try {

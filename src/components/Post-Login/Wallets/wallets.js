@@ -34,6 +34,7 @@ export default class Wallets extends React.Component {
 		this.decryptData = this.decryptData.bind(this);
 		this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this);
 	}
+
 	componentWillMount() {
 		this.setState({activity: "Authenticating User"}, () => {
 			requestAnimationFrame(()=>this.authenticateUser(), 0);
@@ -43,10 +44,12 @@ export default class Wallets extends React.Component {
 	componentDidMount() {
 				BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
 		}
-		componentWillUnmount() {
+
+	componentWillUnmount() {
 				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
-		}
-		handleBackButton = () =>  {
+	}
+
+	handleBackButton = () =>  {
 			walletCount = walletCount + 1;
 			if(walletCount === 1) {
 				Toast.showWithGravity('Press again to EXIT', Toast.LONG, Toast.BOTTOM)
@@ -56,7 +59,8 @@ export default class Wallets extends React.Component {
 				BackHandler.exitApp();
 			}
 				return true;
-		}
+	}
+
 	authenticateUser = async () => {
       try {
 				 		walletCount = 0;
@@ -116,7 +120,8 @@ export default class Wallets extends React.Component {
             Actions.push('firstscreen');
         }
     }
-    getCoinData(wallet_id, user_data) {
+
+	  getCoinData(wallet_id, user_data) {
     	var data = {};
     	data.wallet_id = wallet_id;
     	try {
@@ -127,7 +132,6 @@ export default class Wallets extends React.Component {
                 data: data
             })
             .then(function (response) {
-
 							if(response.data.result.length == 0){
 									Actions.postlogin();
                 	Actions.initiatewallets({wallet_id: wallet_id});
@@ -146,6 +150,7 @@ export default class Wallets extends React.Component {
             alert("Network Error")
         }
     }
+
     decryptData(asset_data, user_data,wallet_id) {
 			var coinsData = [];
     	var user_data = JSON.parse(user_data);
@@ -160,7 +165,6 @@ export default class Wallets extends React.Component {
 				this.setState({decryptedCoinsData:JSON.stringify(coinsData)});
         this.saveData(JSON.stringify(coinsData));
     }
-
 
 	fetchBalances(coinsData,wallet_id){
 		var user = {};
@@ -184,10 +188,6 @@ export default class Wallets extends React.Component {
 			alert(error);
 		}
 	}
-
-
-
-
 
 	fetchPrices(){
 			try {
@@ -216,7 +216,8 @@ export default class Wallets extends React.Component {
            console.log(error)
        }
     }
-    componentWillReceiveProps(nextProps) {
+
+  componentWillReceiveProps(nextProps) {
 		if (nextProps.loggedIn === true) {
 			if(nextProps.new === true) {
 				this.decryptData(nextProps.coin_data, nextProps.user_data);
@@ -229,26 +230,33 @@ export default class Wallets extends React.Component {
 			Actions.push('firstscreen');
 		}
 	}
+
 	componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
     }
+
     componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
     }
+
     handleBackButton() {
         return true;
     }
+
 	gotoProfile() {
  		Actions.profile();
 	}
+
 	closeDrawer = () => {
 		const self = this;
     	self._drawer.close()
   	};
+
   	openDrawer = () => {
   		const self = this;
     	self._drawer.open()
   	};
+
   	onWalletOpen(walleticon, walletname, walletsymbol, walletvalue, walletamount){
   		BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
   		Actions.mainscreen({ walleticon: walleticon, walletname: walletname, walletsymbol: walletsymbol, walletvalue: walletvalue, walletamount: walletamount })
@@ -264,7 +272,7 @@ export default class Wallets extends React.Component {
 			Actions.send({ utxo: utxo, fromAddress: address, privateKey: privateKey,balance });
 		}
 
-	render () {
+ 	render () {
 		if(!this.state.loaded) {
             return(<Loader activity={this.state.activity} />);
         }
@@ -307,15 +315,14 @@ export default class Wallets extends React.Component {
 		}
 	}
 }
-//
-// {this.state.coinData.map((value, i) => {
-// 							 return(<WalletCoinItem key={value.asset_id} symbol={value.asset_symbol} value={value.asset_value} amount={1.23} lighticon={value.asset_icon_light} icon={value.asset_icon_dark} name={value.asset_name} currency={this.state.currency} onWalletOpen={this.onWalletOpen} />);
-// 					})}
+
+
 const drawerStyles = {
   drawer: { shadowColor: '#000000', shadowOpacity: 0.8, shadowRadius: 3},
   main: {paddingLeft: 3},
   mainOverlay: { backgroundColor: 'black', opacity: 0},
 }
+
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,

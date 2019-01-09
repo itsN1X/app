@@ -25,15 +25,15 @@ export default class Username extends React.Component {
 	componentDidMount() {
 				BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
 		}
-		componentWillUnmount() {
+
+	componentWillUnmount() {
 				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
 		}
-		handleBackButton = () =>  {
+
+	handleBackButton = () =>  {
 			Actions.popTo('firstscreen');
 				return true;
-		}
-
-
+	}
 
 	checkUserName(){
 		let details = {};
@@ -43,7 +43,6 @@ export default class Username extends React.Component {
 		if(username.includes("@") || username.includes(" ")){
 		Toast.showWithGravity("Enter a valid username", Toast.LONG, Toast.CENTER);
 		}
-
 		else {
 			username = username.replace(/ +/g, "");
 			username = username.replace('@','');
@@ -52,7 +51,6 @@ export default class Username extends React.Component {
 			details.status = "0";
 			this.fetchUsernameDetails(details);
 		}
-
 	}
 
 	fetchUsernameDetails = async (details) => {
@@ -72,7 +70,6 @@ export default class Username extends React.Component {
 						else {
 							Actions.createpin({mode : "guardian", username : self.state.username.replace('@','')});
 						}
-
 					}
 					else {
 					 	Toast.showWithGravity("Username not available", Toast.LONG, Toast.CENTER);
@@ -90,11 +87,10 @@ export default class Username extends React.Component {
 	generateKeyPair() {
 	    const promise = bip39.generateMnemonic();
 	    let Mode = this.props.mode;
-		promise.then((result)=>{
+		  promise.then((result)=>{
 		  Actions.walletseed({mnemonic: result, mode: Mode});
 		})
 	}
-
 
 	render () {
 		return (
@@ -118,12 +114,9 @@ export default class Username extends React.Component {
 									this.setState({username:text})
 								}
 								}
-
 		    			/>
 
 		    		</View>
-
-
 		    		<KeyboardAvoidingView keyboardVerticalOffset={Platform.select({ios: 0, android: 500})} behavior= {(Platform.OS === 'ios')? "padding" : null} style={{position: 'absolute', bottom: 0, right: 0}}>
 			    		<TouchableOpacity style={styles.goIconContainer} onPress={this.checkUserName}>
 			    			<Image style={styles.goIcon} source={{uri: "https://s3.ap-south-1.amazonaws.com/maxwallet-images/go.png"}} />
@@ -134,6 +127,7 @@ export default class Username extends React.Component {
 		);
 	}
 }
+
 const styles = StyleSheet.create({
 	container: {
 		position: 'relative',

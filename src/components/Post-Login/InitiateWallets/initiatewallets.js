@@ -48,6 +48,7 @@ export default class InitiateWallets extends React.Component {
 		this.activateWallets = this.activateWallets.bind(this);
 		this.getUserData = this.getUserData.bind(this);
 	}
+
 	componentWillMount = async () => {
 		this.setState({activity: "Initiating Wallets"});
 		this.getUserData();
@@ -67,13 +68,16 @@ export default class InitiateWallets extends React.Component {
 			alert(error);
 		}
 	}
+
 	componentDidMount() {
 				BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
 		}
-		componentWillUnmount() {
+
+	componentWillUnmount() {
 				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
 		}
-		handleBackButton = () =>  {
+
+	handleBackButton = () =>  {
 			if(this.props.updateGuardian == 'yes'){
 				Actions.pop();
 				Actions.guardiantabs();
@@ -81,28 +85,26 @@ export default class InitiateWallets extends React.Component {
 			}
 		 return true;
 		}
+
 	activateWallets() {
 		this.setState({loaded: false, activity: "Generating Crypto Wallets"}, () => {
 			requestAnimationFrame(() => this.createKeys(), 0);
 		});
 	}
+
 	gotoWallets() {
 		Actions.wallets();
 	}
-
 
 	createKeys = async () =>{
 		var coinsArr = [];
 		var encryptedReqArr = [];
 		var privateKey = new bitcoin.PrivateKey();
 		const privateKeyStr = privateKey.toString();
-
 		var publicKey  = privateKey.toPublicKey();
 		const publicKeyStr = publicKey.toString();
-
 		var address = publicKey.toAddress(bitcoin.Networks.testnet);
 		const addressStr = address.toString();
-
 
 		let BTCData = {}
 		BTCData.asset_id = 1;
@@ -112,7 +114,6 @@ export default class InitiateWallets extends React.Component {
 		BTCData.encryptedData = this.encryptData(JSON.stringify(BTCData));
 		this.storeCoinData(BTCData , "1");
 		coinsArr.push(BTCData);
-
 
 		const wallet = await ethereum.generate();
 		const ethPrivateKeyStr = wallet.getPrivateKeyString();
@@ -132,23 +133,19 @@ export default class InitiateWallets extends React.Component {
 		var requestArr = [];
 		for(i =0 ; i < coinsArr.length ; i++){
 			var data = {};
-
 			data.asset_id = coinsArr[i].asset_id;
 			data.asset_address = coinsArr[i].address;
 			data.asset_data = coinsArr[i].encryptedData;
 			requestArr.push(data);
-
 		}
 
 		this.storeEncryptedCoinData(JSON.stringify(requestArr));
-
 
 		var reqData = {};
 		reqData.wallet_id = this.props.wallet_id;
 		if(reqData.wallet_id == undefined || reqData.wallet_id == null) {
 			reqData.wallet_id = this.state.wallet_id;
 		}
-
 
 		var user = {
 			"wallet_id": reqData.wallet_id,
@@ -163,15 +160,14 @@ export default class InitiateWallets extends React.Component {
 		Actions.wallets({new: true,coinData:this.state.coinData, user_data: this.state.userDetails, loggedIn: true, wallet_id:reqData.wallet_id});
 }
 
-storeEncryptedCoinData = async (data) => {
+ storeEncryptedCoinData = async (data) => {
 	try {
 			 await AsyncStorage.setItem('@CoinsData', data);
-
 		} catch (error) {
 		}
-}
+ }
 
-	updateGuardianStatus = async () => {
+ updateGuardianStatus = async () => {
 			try {
 					await AsyncStorage.setItem('@Guardian', "false");
 				}
@@ -179,7 +175,8 @@ storeEncryptedCoinData = async (data) => {
 
 				}
   }
-	encryptData(data) {
+
+ encryptData(data) {
 		var userDetails = this.state.userDetails;
 		userDetails = JSON.parse(userDetails);
 		const publicKeyStr = userDetails.publicKey;
@@ -188,7 +185,8 @@ storeEncryptedCoinData = async (data) => {
 		const encryptedData =  encryptedDataStr.toString('base64');
 		return encryptedData;
 	}
-	sendCoinsData(data) {
+
+ sendCoinsData(data) {
 		try {
 			var self = this;
 			axios({
@@ -205,7 +203,8 @@ storeEncryptedCoinData = async (data) => {
 			alert(error);
 		}
 	}
-	storeCoinData = async (data , status) => {
+
+ storeCoinData = async (data , status) => {
 		data = JSON.stringify(data);
 		try {
 			 if(status == "1") {
@@ -219,7 +218,8 @@ storeEncryptedCoinData = async (data) => {
 		  } catch (error) {
 		  }
 	}
-	getUserData = async () => {
+
+ getUserData = async () => {
 	  try {
 		    const value = await AsyncStorage.getItem('@UserData');
 		    const wallet_id = await AsyncStorage.getItem('@WalletID');
@@ -229,17 +229,21 @@ storeEncryptedCoinData = async (data) => {
 			alert(error)
 		}
 	}
-	enablePicker() {
+
+ enablePicker() {
 		this.setState({ pickerEnabled: true });
 	}
-	disablePicker() {
+
+ disablePicker() {
 		this.setState({ pickerEnabled: false });
 		Keyboard.dismiss();
 	}
-	changeCurrency(value) {
+
+ changeCurrency(value) {
 		this.setState({ currency: value, pickerEnabled: false })
 	}
-	render () {
+
+ render () {
 		let buttonHeight;
 		if(Dimensions.get('window').height > 700 && Dimensions.get('window').height < 830) {
 		    buttonHeight = 80;
@@ -282,6 +286,7 @@ storeEncryptedCoinData = async (data) => {
 		}
 	}
 }
+
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,

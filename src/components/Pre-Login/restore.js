@@ -27,9 +27,11 @@ export default class Restore extends React.Component {
 		this.authenticateUser = this.authenticateUser.bind(this);
 		this.onConfirm = this.onConfirm.bind(this);
 	}
+
 	onUnfocus() {
 		Keyboard.dismiss();
 	}
+
 	componentWillMount() {
 		this.setState({loaded: true});
 	}
@@ -37,13 +39,16 @@ export default class Restore extends React.Component {
 	componentDidMount() {
 				BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
 		}
-		componentWillUnmount() {
+
+	componentWillUnmount() {
 				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
 		}
-		handleBackButton = () =>  {
+
+	handleBackButton = () =>  {
 		 Actions.pop();
 		 return true;
 		}
+
 	generateKeyPair() {
 		const virgilCrypto = new VirgilCrypto();
 		let account = {};
@@ -64,15 +69,18 @@ export default class Restore extends React.Component {
 		details.public_key = publicKey;
 		this.authenticateUser(details, account);
 	}
+
 	componentWillReceiveProps() {
 		this.setState({loaded: true});
 	}
+
 	createHash(data) {
 		const hash = crypto.createHash('sha256');
 		hash.update(data);
 		const privateKeyHash = hash.digest('hex');
 		return privateKeyHash;
 	}
+
 	authenticateUser(details, account) {
 		console.log(details)
 		try {
@@ -104,6 +112,7 @@ export default class Restore extends React.Component {
 			alert(error);
 		}
 	}
+
 	storeWalletID = async (wallet_id, account) => {
 		console.log(account);
 		try {
@@ -114,18 +123,22 @@ export default class Restore extends React.Component {
 		    console.log(error)
 		  }
 	}
+
 	onConfirm() {
 		this.setState({loaded: false, activity: "Authenticating User"}, () => {
 			requestAnimationFrame(() => this.generateKeyPair(), 0);
 		})
 	}
+
 	goBack() {
 		Actions.pop();
 	}
+
 	verifyEmail() {
 		var type= "verify";
 		Actions.enteremail({mode:type});
 	}
+
 	render () {
 		if(!this.state.loaded) {
             return(<Loader activity={this.state.activity} />);
@@ -151,8 +164,6 @@ export default class Restore extends React.Component {
 								<View style={styles.inputFlex}>
 									<TextInput
 										editable={true}
-										//selectTextOnFocus={true}
-										//contextMenuHidden={true}
 										multiline={true}
 										autoCapitalize='none'
 										style={styles.wordInput}
@@ -178,6 +189,7 @@ export default class Restore extends React.Component {
 		}
 	}
 }
+
 const styles = StyleSheet.create({
 	container: {
 		height: '100%',

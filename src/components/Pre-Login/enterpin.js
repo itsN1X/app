@@ -37,10 +37,12 @@ export default class EnterPin extends React.Component {
 	componentDidMount() {
 				BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
 		}
-		componentWillUnmount() {
+
+	componentWillUnmount() {
 				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
-		}
-		handleBackButton = () =>  {
+	}
+
+	handleBackButton = () =>  {
 			if(this.props.loggedIn == "true"){
 				enterPinCount = enterPinCount + 1;
 				if(enterPinCount === 1) {
@@ -55,10 +57,8 @@ export default class EnterPin extends React.Component {
 			else {
 				Actions.profile();
 			}
-
-
 		 return true;
-		}
+	}
 
 	getPinLength(){
 		let len = this.state.pinCode;
@@ -78,7 +78,6 @@ export default class EnterPin extends React.Component {
 
 	decryptPinData = async (pin) => {
 			try {
-
 						const pinData = await AsyncStorage.getItem('@pinData');
 						const cryptr = new Cryptr(pin);
 						let data = cryptr.decrypt(pinData);
@@ -98,30 +97,24 @@ export default class EnterPin extends React.Component {
 								Actions.profile();
 								Actions.viewkeys();
 							}
-
 							else if (this.props.guardian == "true") {
 									Actions.guardiantabs();
-										Actions.pendingrequests();
+									Actions.pendingrequests();
 							}
-
 							else if(this.props.recovery == "true") {
 								Actions.postlogin();
 	            	Actions.recoveryrequests();
 							}
 							else if(this.props.mode == "changePin"){
 								this.storeData();
-
 									Actions.prelogin();
-										Actions.createpin();
-
-
+									Actions.createpin();
 							}
 							else{
 								Actions.postlogintabs();
 								Actions.wallets();
 							}
 						}
-
 						else {
 							wrongPinCount++;
 							if(wrongPinCount == 10){
@@ -130,30 +123,24 @@ export default class EnterPin extends React.Component {
 							}
 							else{
 								Toast.showWithGravity('Attempts Left: '+ (10 - wrongPinCount), Toast.LONG, Toast.CENTER);
-
 							}
 						}
-
 				}
 			catch(error) {
-
 				}
-}
+ }
 
-logout = async () => {
-	try {
+  logout = async () => {
+	 try {
 			await AsyncStorage.clear();
 			Actions.prelogin();
 			Actions.auth();
 		} catch (error) {
 			console.log(error)
 		}
-}
+  }
 
-
-
-
-	render () {
+ render () {
 		const pin = this.state.pinCode;
 		var enableButton;
 		if(pin.length === 4) {
@@ -193,6 +180,7 @@ logout = async () => {
 		);
 	}
 }
+
 const styles = StyleSheet.create({
 	container: {
 		position: 'relative',

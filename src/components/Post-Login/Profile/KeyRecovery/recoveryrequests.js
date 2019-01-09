@@ -28,12 +28,15 @@ export default class RecoveryRequests extends React.Component {
 		this.recoverMnemonic = this.recoverMnemonic.bind(this);
 		this.getUserInfo = this.getUserInfo.bind(this);
 	}
+
 	componentWillMount() {
 		this.getUserInfo();
 	}
+
 	onRefresh() {
 		this.getRecoveryDetails(this.state.oldPublicKey)
 	}
+
 	getUserInfo = async () => {
 		try{
 			const oldPublicKey = await AsyncStorage.getItem('@OldPublicKey');
@@ -47,13 +50,16 @@ export default class RecoveryRequests extends React.Component {
 			console.log(error)
 		}
 	}
+
 	componentDidMount() {
 				BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
-		}
-		componentWillUnmount() {
+	}
+
+	componentWillUnmount() {
 				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
-		}
-		handleBackButton = () =>  {
+	}
+
+	handleBackButton = () =>  {
 			backCount = backCount + 1;
 			if(backCount === 1) {
 				Toast.showWithGravity('Press again to EXIT', Toast.LONG, Toast.BOTTOM)
@@ -62,13 +68,13 @@ export default class RecoveryRequests extends React.Component {
 				BackHandler.exitApp();
 			}
 				return true;
-		}
+	}
 
-
-    writeToClipboard = async (address) => {
+  writeToClipboard = async (address) => {
       await Clipboard.setString(address);
       Toast.showWithGravity('Copied to Clipboard!', Toast.LONG, Toast.CENTER)
     };
+
 	getRecoveryDetails = async (publicKey) => {
 		var data = {};
 		data.publicKey = publicKey;
@@ -120,11 +126,13 @@ export default class RecoveryRequests extends React.Component {
             alert(error);
         }
 	}
+
 	recoverMnemonic() {
 		this.setState({loaded: false}, () => {
 			requestAnimationFrame(() => {Actions.showmnemonic({publicKey:this.state.oldPublicKey, privateKey: this.state.newPrivateKey, data: this.state.requestList })}, 0)
 		});
 	}
+
 	render() {
 		if(!this.state.loaded) {
             return(<View style={{flex:1, backgroundColor: theme.white}}><BarIndicator color={theme.dark} size={50} count={5} /></View>)
@@ -156,6 +164,7 @@ export default class RecoveryRequests extends React.Component {
 		}
 	}
 }
+
 const styles = StyleSheet.create({
 	container: {
 		backgroundColor: theme.white,
@@ -187,5 +196,4 @@ const styles = StyleSheet.create({
 		bottom: 0,
 		marginBottom: 15
 	}
-
 });

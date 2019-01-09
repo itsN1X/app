@@ -22,16 +22,18 @@ export default class ScanQR extends React.Component {
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
 	}
 
-		componentDidMount() {
+	componentDidMount() {
 					BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
-			}
-			componentWillUnmount() {
+	}
+
+	componentWillUnmount() {
 					BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
-			}
-			handleBackButton = () =>  {
+	}
+
+	handleBackButton = () =>  {
 			 Actions.pop();
 			 return true;
-			}
+	}
 
 	onSuccess(e) {
 		 Actions.pop()
@@ -40,8 +42,9 @@ export default class ScanQR extends React.Component {
 			        address: e.data
 			      })
 			});
-  	}
-  	goBack() {
+  }
+
+	goBack() {
 		Actions.pop();
 	}
 
@@ -74,17 +77,13 @@ export default class ScanQR extends React.Component {
 	}
 }
 const overlayColor = "rgba(0,0,0,0.5)";  // this gives us a black color with a 50% transparency
-
 const rectDimensions = SCREEN_WIDTH * 0.65; // this is equivalent to 255 from a 393 device width
 const rectBorderWidth = SCREEN_WIDTH * 0.005; // this is equivalent to 2 from a 393 device width
 const rectBorderColor = "white";
-
 const scanBarWidth = SCREEN_WIDTH * 0.46; // this is equivalent to 180 from a 393 device width
 const scanBarHeight = SCREEN_WIDTH * 0.0025; //this is equivalent to 1 from a 393 device width
 const scanBarColor = "#FFFFFF";
-
 const iconScanColor = "blue";
-
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,

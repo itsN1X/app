@@ -24,24 +24,18 @@ export default class EnterOTP extends React.Component {
 			otpActive:true
 		};
 		this.authenticateOTP = this.authenticateOTP.bind(this);
-	}
-	componentWillMount() {
+ }
+
+ componentWillMount() {
 		if(this.props.mode==="register") {
 			this.getUserPublicKey();
 		}
 		else {
 			this.setState({ email: this.props.email, session_id: this.props.session_id, loaded: true })
 		}
-	}
+ }
 
-
-
-
-
-
-
-
-	getUserPublicKey = async () => {
+ getUserPublicKey = async () => {
 		try {
 		    var data = await AsyncStorage.getItem('@UserData');
 		   	data = JSON.parse(data);
@@ -50,22 +44,26 @@ export default class EnterOTP extends React.Component {
 		catch (error) {
 		    console.log(error)
 		}
-	}
+ }
 
-	componentDidMount() {
+ componentDidMount() {
 				BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
-		}
-		componentWillUnmount() {
+ }
+
+ componentWillUnmount() {
 				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
-		}
-		handleBackButton = () =>  {
+ }
+
+ handleBackButton = () =>  {
 			Actions.popTo('enteremail');
 		 return true;
-		}
-	goBack() {
+ }
+
+ goBack() {
 		Actions.pop();
-	}
-	authenticateOTP() {
+ }
+
+ authenticateOTP() {
 		this.setState({otpActive:false});
 		if(this.props.mode==="verify") {
 			this.authenticateVerifyOTP();
@@ -76,8 +74,9 @@ export default class EnterOTP extends React.Component {
 		else {
 			return true;
 		}
-	}
-	authenticateRegisterOTP() {
+ }
+
+ authenticateRegisterOTP() {
 		var self = this;
 		var data={};
 		data.otp = Number(this.state.otp);
@@ -109,15 +108,17 @@ export default class EnterOTP extends React.Component {
             console.log(error);
         }
 	}
-	changeRecoveryStatus = async () => {
+
+ changeRecoveryStatus = async () => {
 		try {
 			await AsyncStorage.setItem('@RecoveryStatus', "1");
 		}
 		catch(error) {
 			Toast.showWithGravity(error, Toast.LONG, Toast.CENTER);
 		}
-	}
-	authenticateVerifyOTP() {
+ }
+
+ authenticateVerifyOTP() {
 		var self = this;
 		var data={};
 		data.otp = Number(self.state.otp);
@@ -146,8 +147,9 @@ export default class EnterOTP extends React.Component {
         catch(error) {
             console.log(error);
         }
-	}
-	render() {
+ }
+
+ render() {
 		if(!this.state.loaded) {
             return(<View style={{flex:1, backgroundColor: theme.white}}><BarIndicator color={theme.dark} size={50} count={5} /></View>)
         }
@@ -162,18 +164,15 @@ export default class EnterOTP extends React.Component {
 							digitTxtColor={theme.dark}
 							 onFinish={() => this.state.otpActive ? Actions.enteremail({mode : this.props.mode}) :null}
 							 timeToShow={['M', 'S']}
-
 								digitBgColor={'#fff'}
 								 labelS={''}
 								 labelM={''}
-							 //on Press call
 							 size={20}
 				 />
 						<View style={styles.emailContainer}>
 							<View style={styles.enterEmailHeading}>
 								<Text style={styles.enterEmailText}>Enter Verification Code</Text>
 							</View>
-
 
 							<View style={styles.emailInput}>
 								<TextInput
@@ -199,13 +198,14 @@ export default class EnterOTP extends React.Component {
 			);
 		}
 	}
-}
-const styles = StyleSheet.create({
+ }
+
+ const styles = StyleSheet.create({
 	container: {
 		height: '100%',
 	    backgroundColor: theme.white,
 	    alignItems: 'center'
-	},
+ },
 	upperFlex: {
 		flex: 0.6,
 		alignItems: 'center',
@@ -259,4 +259,4 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'flex-end'
 	}
-});
+ });

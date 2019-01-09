@@ -24,37 +24,42 @@ export default class Recieve extends React.Component {
 			addressType: "Business Address"
 		};
 	}
+
 	goBack() {
 		Actions.pop();
 	}
+
 	changeAddress() {
 		Actions.addresses();
 	}
+
 	componentWillMount() {
 		var self = this;
 		this.setState({address: self.props.address});
 	}
+
 	componentDidMount() {
 		setTimeout(() => {this.setState({loaded: true})}, 1500);
 				BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
 		}
-		componentWillUnmount() {
+
+	componentWillUnmount() {
 				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
-		}
-		handleBackButton = () =>  {
+	}
+
+	handleBackButton = () =>  {
 		 Actions.popTo("mainscreen");
 		 return true;
-		}
+	}
 
 	writeToClipboard = async () => {
 		await Clipboard.setString(this.state.address);
       	Toast.showWithGravity('Copied to Clipboard!', Toast.LONG, Toast.CENTER)
 	}
+
 	render() {
 		return (
 			<View style={styles.container}>
-
-
 				{this.state.loaded ?
 					 <View style={styles.lowerFlex}>
 					<View style={styles.QRCodeFlex}>
@@ -81,9 +86,9 @@ export default class Recieve extends React.Component {
 			</View>
 		);
 	}
-}
+ }
 
-const styles = StyleSheet.create({
+ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 	    backgroundColor: theme.white,

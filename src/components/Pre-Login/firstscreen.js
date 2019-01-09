@@ -23,10 +23,12 @@ export default class FirstScreen extends React.Component {
 	componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
     }
-    componentWillUnmount() {
+
+  componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
     }
-    handleBackButton() {
+
+  handleBackButton() {
     	backCount = backCount + 1;
     	if(backCount === 1) {
     		Toast.showWithGravity('Press again to EXIT', Toast.LONG, Toast.BOTTOM)
@@ -35,16 +37,20 @@ export default class FirstScreen extends React.Component {
     		BackHandler.exitApp();
     	}
         return true;
-    }
+  }
+
 	gotoCreatePin() {
 		Actions.username({mode: "wallet"});
 	}
+
 	gotoRestore() {
 		Actions.createpin({mode : "restore"});
 	}
+
 	gotoGuardianView() {
 		Actions.username({mode: "guardian"});
 	}
+
 	render() {
 		if(!this.state.loaded) {
             return(<View style={{flex:1, backgroundColor: theme.white}}><BarIndicator color={theme.dark} size={50} count={5} /></View>)

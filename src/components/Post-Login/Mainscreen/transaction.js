@@ -17,16 +17,20 @@ export default class Transaction extends Component {
         };
         this.openTransactionInfo = this.openTransactionInfo.bind(this);
     }
-    componentWillMount() {
+
+ componentWillMount() {
         this.setState({ id: this.props.id, fee: this.props.fee, amount: this.props.amount, finalAmount: this.props.finalAmount })
     }
-    openTransactionInfo() {
+
+ openTransactionInfo() {
         Actions.transactioninfo({id: this.state.id, fee: this.state.fee, amount: this.state.amount, finalAmount: this.state.finalAmount});
     }
-    componentWillReceiveProps(nextProps) {
+
+ componentWillReceiveProps(nextProps) {
         this.setState({ id: nextProps.id, fee: nextProps.fee, amount: nextProps.amount, finalAmount: nextProps.finalAmount })
-    }
-	render() {
+ }
+
+ render() {
 		let statusImage;
 		if(this.props.status === "Received")
 		{
@@ -46,7 +50,8 @@ export default class Transaction extends Component {
 		);
     }
 }
-const styles = StyleSheet.create({
+
+ const styles = StyleSheet.create({
 	transaction : {
         flexDirection: 'row',
         paddingVertical: 10

@@ -11,7 +11,6 @@ const ethereum = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/new/coins
 const litecoin = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/new/coins/light/litecoin.png";
 
 export default class ScanQR extends React.Component {
-
 	render() {
 		return (
 			<View style={{flex:1}}>
@@ -36,11 +35,12 @@ export default class ScanQR extends React.Component {
 					</ScrollView>
 				</View>
 			</View>
-			
+
 		);
 	}
 }
-const styles = StyleSheet.create({
+
+ const styles = StyleSheet.create({
 	container: {
 		flex: 1
 	}

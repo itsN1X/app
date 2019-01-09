@@ -36,6 +36,7 @@ export default class Verification extends React.Component {
 		this.generateKeyPair = this.generateKeyPair.bind(this);
 		this.sendUserDetails = this.sendUserDetails.bind(this);
 	}
+
 	componentWillMount() {
 		mnemonicArray = this.props.mnemonic.split(' ');
 		this.setState({ mnemonic: this.props.mnemonic,  mnemonicArray: mnemonicArray});
@@ -45,24 +46,25 @@ export default class Verification extends React.Component {
 		else {
 				this.getRandomNumbers();
 		}
-
 	}
 
 	componentDidMount() {
 				BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
-		}
-		componentWillUnmount() {
+	}
+
+  componentWillUnmount() {
 				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
-		}
-		handleBackButton = () =>  {
+  }
+
+	handleBackButton = () =>  {
 		 Actions.pop();
 		 return true;
-		}
-
+	}
 
 	onUnfocus() {
 		Keyboard.dismiss();
 	}
+
 	generateKeyPair() {
 		const virgilCrypto = new VirgilCrypto();
 		let account = {};
@@ -87,6 +89,7 @@ export default class Verification extends React.Component {
 		this.storeData(account);
 		this.sendUserDetails(details);
 	}
+
 	sendUserDetails = async (details) => {
 		try {
 			var self = this;
@@ -105,7 +108,6 @@ export default class Verification extends React.Component {
 		        	Actions.postlogin();
 		        	Actions.initiatewallets({wallet_id: response.data.wallet_id});
 		        }
-
 		    })
 		    .catch(function (error) {
 					Toast.showWithGravity("Internet connection required!", Toast.LONG, Toast.CENTER);
@@ -114,14 +116,16 @@ export default class Verification extends React.Component {
 		catch(error) {
 			Toast.showWithGravity("Network Error", Toast.LONG, Toast.CENTER);
 		}
-	}
-	createHash(data) {
+	 }
+
+	 createHash(data) {
 		const hash = crypto.createHash('sha256');
 		hash.update(data);
 		const privateKeyHash = hash.digest('hex');
 		return privateKeyHash;
-	}
-	storeData = async (data) => {
+	 }
+
+	 storeData = async (data) => {
 		try {
 		    await AsyncStorage.setItem('@UserData', data);
 		    await AsyncStorage.setItem('@AccountStatus', "LoggedIn");
@@ -130,13 +134,15 @@ export default class Verification extends React.Component {
 		   	}
 		  } catch (error) {
 		  }
-	}
-	storeWalletID = async (data) => {
+	 }
+
+	 storeWalletID = async (data) => {
 		try {
 		    await AsyncStorage.setItem('@WalletID', data);
 		  } catch (error) {
 		  }
-	}
+	 }
+
 	getData = async () => {
 	  try {
 	    const value = await AsyncStorage.getItem('@UserData');
@@ -144,6 +150,7 @@ export default class Verification extends React.Component {
 		catch(error) {
 		}
 	}
+
 	onConfirm() {
 		const word1 = this.state.word1.toLowerCase();
 		const word2 = this.state.word2.toLowerCase();
@@ -156,9 +163,11 @@ export default class Verification extends React.Component {
 			Toast.showWithGravity("Words do not match", Toast.LONG, Toast.CENTER);
 		}
 	}
+
 	goBack() {
 		Actions.pop();
 	}
+
 	getRandomNumbers() {
 		let rand1;
 		let rand2;
@@ -168,6 +177,7 @@ export default class Verification extends React.Component {
 		placeholder1 = "Enter word #" + rand1;
 		placeholder2 = "Enter word #" + rand2;
 	}
+
 	setWord(index, text) {
 		if(index===1) {
 			var word1 = text;
@@ -180,6 +190,7 @@ export default class Verification extends React.Component {
 			this.setState({ word2 });
 		}
 	}
+
 	render () {
 		if(!this.state.loaded) {
             return(<Loader activity={this.state.activity} />)
@@ -241,6 +252,7 @@ export default class Verification extends React.Component {
 		}
 	}
 }
+
 const styles = StyleSheet.create({
 	container: {
 		height: '100%',

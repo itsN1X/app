@@ -7,14 +7,16 @@ var Unconfirmed = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/unconfir
 var Confirmed = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/confirmed.png";
 
 export default class RecoveryRequestItem extends React.Component {
-	constructor(props) {
+ constructor(props) {
 		super(props);
 		this.copyToClipboard = this.copyToClipboard.bind(this);
 	}
-	copyToClipboard(public_key) {
+
+ copyToClipboard(public_key) {
 		this.props.onCopy(public_key);
 	}
-	render() {
+
+ render() {
 		var StatusIcon;
 		var StatusText;
 		if(this.props.status === 0) {
@@ -49,6 +51,7 @@ export default class RecoveryRequestItem extends React.Component {
 		);
 	}
 }
+
 const styles = StyleSheet.create({
 	requestItem: {
 		marginTop: 5,

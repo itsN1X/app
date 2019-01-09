@@ -112,7 +112,6 @@ export default class KeychainExample extends Component {
           {!!this.state.status && (
             <Text style={styles.status}>{this.state.status}</Text>
           )}
-
           <View style={styles.buttons}>
             <TouchableHighlight
               onPress={() => this.save()}

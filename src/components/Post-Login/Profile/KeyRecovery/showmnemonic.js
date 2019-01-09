@@ -32,6 +32,7 @@ export default class ShowMnemonic extends React.Component {
 		this.writeToClipboard = this.writeToClipboard.bind(this);
 		this.goBack = this.goBack.bind(this);
 	}
+
 	componentWillMount() {
 		requestAnimationFrame(() => {
 			this.recoverMnemonic();
@@ -44,12 +45,11 @@ export default class ShowMnemonic extends React.Component {
 	  	Toast.showWithGravity('Copied to Clipboard!', Toast.LONG, Toast.CENTER);
 	};
 
-
-	goBack() {
+ goBack() {
 		this.logout();
-	}
+ }
 
-	generateKeyPair() {
+ generateKeyPair() {
 		const virgilCrypto = new VirgilCrypto();
 		let account = {};
 		account.mnemonic = this.state.mnemonicstr;
@@ -70,13 +70,14 @@ export default class ShowMnemonic extends React.Component {
 		this.authenticateUser(details, account);
 	}
 
-	createHash(data) {
+ createHash(data) {
 		const hash = crypto.createHash('sha256');
 		hash.update(data);
 		const privateKeyHash = hash.digest('hex');
 		return privateKeyHash;
-	}
-	authenticateUser(details, account) {
+ }
+
+ authenticateUser(details, account) {
 		console.log(details)
 		try {
 			var self = this;
@@ -107,7 +108,8 @@ export default class ShowMnemonic extends React.Component {
 			alert(error);
 		}
 	}
-	storeWalletID = async (wallet_id, account) => {
+
+ storeWalletID = async (wallet_id, account) => {
 		try {
 		    await AsyncStorage.setItem('@WalletID', wallet_id);
 		    await AsyncStorage.setItem('@UserData', account);
@@ -116,37 +118,36 @@ export default class ShowMnemonic extends React.Component {
 		    console.log(error)
 		  }
 	}
-	recoverMnemonic() {
+
+ recoverMnemonic() {
 		const shares = this.getShares();
 		const cryptr = new Cryptr('Hello');
-  		var comb = secrets.combine(shares);
-  		var mnemonicstr = cryptr.decrypt(comb);
-			mnemonic = mnemonicstr.split(" ",12);
-			if(bip39.validateMnemonic(mnemonicstr)){
+  	var comb = secrets.combine(shares);
+  	var mnemonicstr = cryptr.decrypt(comb);
+		mnemonic = mnemonicstr.split(" ",12);
+		if(bip39.validateMnemonic(mnemonicstr)){
 				this.setState({mnemonicstr: mnemonicstr, mnemonic: mnemonic, loaded: true,validateMnemonic:true});
 			}
 
-			else{
+		else{
 				this.setState({mnemonic: mnemonic,loaded: true,validateMnemonic:true});
 				Toast.showWithGravity('Sorry, Not a valid Mnemonic!', Toast.LONG, Toast.CENTER);
 			}
 	}
+
 	getShares() {
 		var shares = [];
-
-
-			for(i =0 ; i < this.props.data.length; i++){
+		for(i =0 ; i < this.props.data.length; i++){
 				if(this.props.data[i].trust_status == 1){
 					var decryptedData = this.decryptData(this.props.data[i].trust_data, this.props.privateKey);
 					shares.push(decryptedData);
 				}
 			}
-
 		return shares;
 	}
+
 	logout = async () => {
 		try {
-
 				await AsyncStorage.setItem('@RecoveryInitiated', "false");
 				this.setState({loaded: false, activity: "Authenticating User"}, () => {
 					requestAnimationFrame(() => this.generateKeyPair(), 0);
@@ -156,14 +157,15 @@ export default class ShowMnemonic extends React.Component {
 		    console.log(error)
 		  }
 	}
-	decryptData(encryptedData, privateKeyStr) {
+
+ decryptData(encryptedData, privateKeyStr) {
 		const virgilCrypto = new VirgilCrypto();
 		const privateKey = virgilCrypto.importPrivateKey(privateKeyStr);
 		const decryptedDataStr = virgilCrypto.decrypt(encryptedData, privateKey);
 		var decryptedData =  decryptedDataStr.toString('utf8');
-
 		return decryptedData;
 	}
+
 	render() {
 		if(!this.state.loaded) {
             return(<View style={{flex:1, backgroundColor: theme.white}}><BarIndicator color={theme.dark} size={50} count={5} /></View>)
@@ -207,6 +209,7 @@ export default class ShowMnemonic extends React.Component {
 		}
 	}
 }
+
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,

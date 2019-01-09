@@ -26,15 +26,14 @@ export default class Auth extends React.Component {
 			mode: ""
 		};
 	}
-	componentWillMount() {
 
+	componentWillMount() {
 		NetInfo.isConnected.fetch().then(isConnected => {
      if(isConnected){
 				 this.setState({activity: "Authenticating User"}, () => {
 		 			requestAnimationFrame(()=>this.authenticateUser(), 0);
 		 		})
 		 }
-
 		 else{
 			 this.setState({loaded:true});
 			 Alert.alert(
@@ -57,6 +56,7 @@ export default class Auth extends React.Component {
 		});
 
 	}
+
 	authenticateUser = async () => {
       try {
             const value = await AsyncStorage.getItem('@AccountStatus');
@@ -67,27 +67,19 @@ export default class Auth extends React.Component {
 						if(changePin == "true") {
 							Actions.createpin({mode : "changePin"});
 						}
-
 						else {
-
 							if(recovery === "true") {
 								Actions.postlogin();
 								Actions.enterpin({recovery : "true",loggedIn : "true"});
-
 							}
-
 							else if(guardian == "true"){
 								Actions.postlogin();
 								Actions.enterpin({guardian:"true",loggedIn : "true"});
 							}
-
 						else if(value == 'LoggedIn'){
-
 									Actions.postlogin();
 									Actions.enterpin({loggedIn : "true"});
-
 							}
-
 							else {
 								Actions.firstscreen();
 							}
@@ -98,8 +90,6 @@ export default class Auth extends React.Component {
 
         }
 }
-
-
 
 	render () {
 		if(!this.state.loaded) {
@@ -114,11 +104,13 @@ export default class Auth extends React.Component {
 		}
 	}
 }
+
 const drawerStyles = {
   drawer: { shadowColor: '#000000', shadowOpacity: 0.8, shadowRadius: 3},
   main: {paddingLeft: 3},
   mainOverlay: { backgroundColor: 'black', opacity: 0},
 }
+
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,

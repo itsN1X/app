@@ -7,7 +7,6 @@ export class Sample extends Component {
 
     _renderItem ({item, index}) {
         return (
-            
         );
     }
 

@@ -26,10 +26,10 @@ export default class BackupPhrase extends React.Component {
 	componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
     }
-    componentWillUnmount() {
+  componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
     }
-		handleBackButton = () =>  {
+	handleBackButton = () =>  {
 				Actions.pop();
 				return true;
 		}

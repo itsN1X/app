@@ -15,9 +15,11 @@ export default class AddressItem extends React.Component {
 		}
 		this.setSelected = this.setSelected.bind(this);
 	}
+
 	componentWillMount() {
 		this.setState({ addressType: this.props.addressType, selected: this.props.selected, index: this.props.index })
 	}
+
 	setSelected() {
 		this.setState({ selected: !this.state.selected }), () => {
 			if(this.state.selected) {
@@ -28,6 +30,7 @@ export default class AddressItem extends React.Component {
 			}
 		}
 	}
+
 	render() {
 		return (
 			<TouchableOpacity onPress={() => this.setSelected()} style={[styles.addressItemContainer, {opacity: this.state.itemOpacity}]}>
@@ -37,8 +40,8 @@ export default class AddressItem extends React.Component {
 							<Text style={styles.addressHeadingText}>{this.state.addressType}</Text>
 						</View>
 						<View style={styles.tickContainer}>
-							{this.state.selected ? (<Image style={styles.tickIcon} source={Tick} />) : null} 
-						</View> 
+							{this.state.selected ? (<Image style={styles.tickIcon} source={Tick} />) : null}
+						</View>
 					</View>
 					<View style={styles.addressContainer}>
 						<Text style={styles.addressText}>{this.state.address}</Text>
@@ -48,6 +51,7 @@ export default class AddressItem extends React.Component {
 		)
 	}
 }
+
 const styles = StyleSheet.create({
 	addressItemContainer: {
 		height: 120,

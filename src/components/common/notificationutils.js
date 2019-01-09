@@ -7,7 +7,6 @@ const NOTIFICATION_TYPE = {
   SUCCESS: "SUCCESS"
 }
 export default class NotificiationUtils {
-
   constructor(notificationPlayerStream, manager) {
     this.notificationPlayerStream = notificationPlayerStream;
     this.defaultQueueConfig = {
@@ -15,7 +14,6 @@ export default class NotificiationUtils {
     };
     this.manager = manager;
   }
-
   showError = (error, timeout, position, queueConfig) => {
     if (!position) {
       position = DEFAULT_NOTIFICATION_POSTION;
@@ -67,8 +65,6 @@ export default class NotificiationUtils {
     if (!queueConfig) {
       queueConfig = this.defaultQueueConfig;
     }
-
-
     if (this.notificationPlayerStream) {
       this.notificationPlayerStream.next(NOTIFICATION_TYPE.SUCCESS)
     }

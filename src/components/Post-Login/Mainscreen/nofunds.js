@@ -18,7 +18,7 @@ var Background = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/menubg.pn
 var Refresh = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/refresh.png";
 export default class NoFunds extends Component {
 
-    render() {
+ render() {
             return (
                 <Animated.View style={{flex:1, paddingBottom:5, backgroundColor:'white'}}>
                     <ImageBackground style={styles.upperFlex} source={{uri: Background}}>
@@ -73,7 +73,6 @@ export default class NoFunds extends Component {
             );
         }
   }
-
 
 const styles = StyleSheet.create({
     nofundWrapper: {

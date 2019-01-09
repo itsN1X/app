@@ -15,11 +15,11 @@ export default class Popup extends React.Component {
         }
     }
 
-	render() {
+render() {
 		return (
 			<View style={{flex:1, backgroundColor:theme.dark}}>
                 <Modal
-                transparent={true} 
+                transparent={true}
                 visible={this.state.showMe}
                 onRequestClose={() => console.warn("req is closed")}>
                     <View style={{flex:1, justifyContent:'flex-end'}}>
@@ -71,10 +71,10 @@ export default class Popup extends React.Component {
                                         <Text style={{fontFamily:theme.font, fontSize:12}}>Public Addreee</Text>
                                         <Text style={{fontFamily:theme.font, fontSize:14, marginBottom:10}}>98s7fg9fd7g98df79df8vyhefsgydf9byhdfbuf</Text>
                                     </View>
-                                </View>                             
-                            </View> 
+                                </View>
+                            </View>
                             <View style={styles.openWrap}>
-                                <TouchableOpacity 
+                                <TouchableOpacity
                                     style={styles.open}
                                     onPress={() => {
                                     this.setState({
@@ -88,7 +88,7 @@ export default class Popup extends React.Component {
                     </View>
                 </Modal>
                 <View style={styles.openWrap}>
-                    <TouchableOpacity 
+                    <TouchableOpacity
                         style={styles.open}
                         onPress={() => {
                             this.setState({
@@ -99,10 +99,11 @@ export default class Popup extends React.Component {
                     </TouchableOpacity>
                 </View>
 			</View>
-			
+
 		);
 	}
 }
+
 const styles = StyleSheet.create({
 
     wrap : {
@@ -136,10 +137,10 @@ const styles = StyleSheet.create({
         fontFamily:theme.font
     },
     lineBorder : {
-        width:'100%', 
-        backgroundColor:theme.dark, 
-        height:1, 
-        opacity:0.2, 
+        width:'100%',
+        backgroundColor:theme.dark,
+        height:1,
+        opacity:0.2,
         marginVertical:20
     },
 });

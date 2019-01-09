@@ -33,8 +33,7 @@ export default class WalletAddress extends React.Component {
 		})
 		}
 
-
-		generateGuardianMnemonic(){
+	generateGuardianMnemonic(){
 			const promise = bip39.generateMnemonic();
 			promise.then((result)=>{
 				this.setState({mnemonic : result});
@@ -42,7 +41,7 @@ export default class WalletAddress extends React.Component {
 			});
 		}
 
-		generateKeyPair() {
+	generateKeyPair() {
 			const virgilCrypto = new VirgilCrypto();
 			let account = {};
 			account.mnemonic = this.state.mnemonic;
@@ -90,7 +89,7 @@ export default class WalletAddress extends React.Component {
 				Toast.showWithGravity("Network Error", Toast.LONG, Toast.CENTER);
 			}
 		}
-		createHash(data) {
+	createHash(data) {
 			const hash = crypto.createHash('sha256');
 			hash.update(data);
 			const privateKeyHash = hash.digest('hex');

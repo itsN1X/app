@@ -16,12 +16,15 @@ export default class Addresses extends React.Component {
 			addressType: "Business Address"
 		}
 	}
+
 	goBack() {
 		Actions.pop();
 	}
+
 	newAddress() {
 		Actions.newaddress();
 	}
+
 	render() {
 		return (
 			<View style={styles.container}>
@@ -49,6 +52,7 @@ export default class Addresses extends React.Component {
 		);
 	}
 }
+
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
@@ -67,7 +71,7 @@ const styles = StyleSheet.create({
 	addressHeadingContainer: {
 		flex: 0.5,
 		alignItems: 'flex-start',
-		justifyContent: 'center', 
+		justifyContent: 'center',
 		width: '90%',
 	},
 	addressHeadingText: {
@@ -76,7 +80,7 @@ const styles = StyleSheet.create({
 		color: theme.darkgrey,
 	},
 	addressesContentFlex: {
-		flex: 0.64, 
+		flex: 0.64,
 		width: '100%'
 	},
 	buttonFlex: {

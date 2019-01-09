@@ -26,7 +26,8 @@ export default class ConfirmPin extends React.Component {
 	componentDidMount() {
 				BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
 		}
-		componentWillUnmount() {
+
+	componentWillUnmount() {
 				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
 		}
 		handleBackButton = () =>  {
@@ -60,7 +61,6 @@ export default class ConfirmPin extends React.Component {
 			let data = cryptr.encrypt(result);
 			this.storeData(data);;
 		})
-
 	}
 
 	storeData = async (data) => {
@@ -88,24 +88,18 @@ export default class ConfirmPin extends React.Component {
       promise.then((result)=>{
 				if(this.props.mode === "changePin") {
 					this.updateChangePinStatus();
-
 						Actions.postlogintabs();
 						Actions.profile();
-					
-
-
-				}
-
-
+        }
 				else if(this.props.mode === "guardian") {
 					Actions.walletaddress({username : this.props.username});
 				}
 				else {
 					  Actions.walletseed({mnemonic: result, mode: Mode , pin : pin,username:this.props.username});
 				}
-
       })
   }
+
 	render () {
 		return (
 			<View style={styles.container}>
@@ -139,6 +133,7 @@ export default class ConfirmPin extends React.Component {
 		);
 	}
 }
+
 const styles = StyleSheet.create({
 	container: {
 		position: 'relative',

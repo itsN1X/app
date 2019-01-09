@@ -20,12 +20,15 @@ export default class Profile extends React.Component {
             publicKey: ""
         }
     }
+
 	componentWillMount() {
 		this.getCoinData();
 	}
+
 	goBack() {
 		Actions.pop();
 	}
+
 	getCoinData = async () => {
       try {
             const value = await AsyncStorage.getItem('@CoinsData');
@@ -36,10 +39,12 @@ export default class Profile extends React.Component {
             alert(error)
         }
     }
+
 	writeToClipboard = async (address) => {
       await Clipboard.setString(address);
       Toast.showWithGravity('Copied to Clipboard!', Toast.LONG, Toast.CENTER)
     };
+
 	render() {
 		if(!this.state.loaded) {
             return(<View style={{flex:1, backgroundColor: theme.white}}><BarIndicator color={theme.dark} size={50} count={5} /></View>)
@@ -85,13 +90,14 @@ export default class Profile extends React.Component {
 			);
 		}
 	}
-}
-const styles = StyleSheet.create({
+ }
+
+ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 	    backgroundColor: theme.white,
 	    alignItems: 'center'
-	},
+ },
 	itemContainer: {
 		width: '90%',
 		height: 260,
@@ -141,4 +147,4 @@ const styles = StyleSheet.create({
 		width: 18,
 		height: 18
 	},
-});
+ });

@@ -54,8 +54,6 @@ const home = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/home_tab.png"
 const getstarted = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/getstarted_tab.png";
 const requests = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/requests_tab.png";
 
-
-
 const SettingsGuradianIcon = ({ focused }) => {
 	let Opacity;
 	let Icon;
@@ -76,6 +74,7 @@ const SettingsGuradianIcon = ({ focused }) => {
 		</View>
 	);
 };
+
 const WalletsIcon = ({ focused }) => {
 	let Opacity;
 	let Icon;

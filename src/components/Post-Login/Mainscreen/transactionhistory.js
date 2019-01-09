@@ -11,13 +11,16 @@ export default class TransactionHistory extends Component {
             address: ""
         }
     }
-    componentWillMount() {
+
+ componentWillMount() {
         this.setState({ transactions: this.props.transactions, address: this.props.address })
     }
-    componentWillReceiveProps(nextProps) {
+
+ componentWillReceiveProps(nextProps) {
         this.setState({ transactions: nextProps.transactions })
     }
-    render() {
+
+ render() {
         return (
             <View style={styles.TransactionHistoryWrapper}>
                 <View style={{alignItems:"center",justifyContent:"center"}}>
@@ -55,7 +58,7 @@ export default class TransactionHistory extends Component {
     }
 }
 
-const styles = StyleSheet.create({
+ const styles = StyleSheet.create({
     TransactionHistoryWrapper : {
         height: 420,
         flex: 1,
@@ -93,4 +96,4 @@ const styles = StyleSheet.create({
         fontFamily: theme.font,
         fontWeight: '300',
     }
-});
+ });

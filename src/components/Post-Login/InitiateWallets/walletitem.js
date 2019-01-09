@@ -14,14 +14,15 @@ export default class WalletItem extends React.Component {
 		}
 		this.selectWallet = this.selectWallet.bind(this);
 	}
-	componentWillMount() {
-		this.setState({ Icon: this.props.dark });
 
+ componentWillMount() {
+		this.setState({ Icon: this.props.dark });
 		if(this.props.name == "Bitcoin") {
 			this.setState({ selected: true, Icon: this.props.light })
 		}
 	}
-	selectWallet() {
+
+ selectWallet() {
 		if(this.props.name == "Bitcoin"){
 			if(this.state.selected) {
 	       		this.setState({ selected: false, Icon: this.props.dark });
@@ -30,13 +31,12 @@ export default class WalletItem extends React.Component {
 	       		this.setState({ selected: true, Icon: this.props.light })
 	     }
 		}
-
 		else {
 			Toast.showWithGravity('Coming soon', Toast.LONG, Toast.CENTER);
 		}
-
 	}
-	render () {
+
+ render () {
 		let bgColor;
 		let textColor;
 		if (this.state.selected) {
@@ -70,6 +70,7 @@ export default class WalletItem extends React.Component {
 		);
 	}
 }
+
 const styles = StyleSheet.create({
 	walletItemContainer: {
 		height: 110,

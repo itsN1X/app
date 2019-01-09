@@ -34,6 +34,7 @@ export default class WalletCoinItem extends React.Component {
 		)
 	}
 }
+
 const styles = StyleSheet.create({
 	walletItemContainer: {
 		flex: 1,

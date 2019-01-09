@@ -14,19 +14,24 @@ export default class FullTransactionHistory extends Component {
         this.state = {
         };
     }
-    componentDidMount() {
+
+ componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
-    }
-    componentWillUnmount() {
+ }
+
+ componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
-    }
-    handleBackButton() {
+ }
+
+ handleBackButton() {
         this.goBack;
-    }
-    goBack() {
+ }
+
+ goBack() {
     	Actions.pop();
-    }
-    render() {
+ }
+
+ render() {
     	return (
     		<View style={styles.container}>
     			<StatusBar bColor={theme.dark} />
@@ -37,8 +42,9 @@ export default class FullTransactionHistory extends Component {
     		</View>
     	);
     }
-}
-const styles = StyleSheet.create({
+ }
+
+ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: theme.grey,

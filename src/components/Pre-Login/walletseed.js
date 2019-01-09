@@ -19,18 +19,22 @@ export default class WalletSeed extends React.Component {
 		};
 		this.seedVerification = this.seedVerification.bind(this);
 	}
+
 	componentWillMount() {
 		this.setState({ mnemonic: this.props.mnemonic });
 		mnemonic = this.props.mnemonic;
 		mnemonic = mnemonic.split(" ",12);
 	}
+
 	seedVerification() {
 		Actions.verification({ mnemonic: this.state.mnemonic, mode: this.props.mode , username: this.props.username });
 	}
+
 	writeToClipboard = async () => {
 	  await Clipboard.setString(this.state.mnemonic);
 	  Toast.showWithGravity('Copied to Clipboard!', Toast.LONG, Toast.CENTER)
 	};
+
 	render() {
 		return (
 			<View style={styles.container}>
@@ -66,8 +70,9 @@ export default class WalletSeed extends React.Component {
 			</View>
 		);
 	}
-}
-const styles = StyleSheet.create({
+ }
+
+ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 	    backgroundColor: theme.white,

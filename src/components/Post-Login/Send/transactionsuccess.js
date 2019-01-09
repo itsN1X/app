@@ -30,37 +30,41 @@ export default class TransactionSuccess extends Component {
         };
         this.getDetails = this.getDetails.bind(this);
     }
-    gotoMainScreen() {
+
+ gotoMainScreen() {
         Actions.popTo('mainscreen')
             requestAnimationFrame(() => {
                   Actions.refresh()
             }, 0)
-    }
+ }
 
-		componentDidMount() {
+ componentDidMount() {
 					BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
-			}
-			componentWillUnmount() {
+ }
+
+ componentWillUnmount() {
 					BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
-			}
-			handleBackButton = () =>  {
+ }
+
+ handleBackButton = () =>  {
 				Actions.popTo('mainscreen')
 						requestAnimationFrame(() => {
 									Actions.refresh()
 						}, 0)
 			 return true;
-			}
+ }
 
-
-	componentWillMount() {
+ componentWillMount() {
         this.getDetails();
         this.setState({id: this.props.id})
-    }
-    writeToClipboard = async () => {
+ }
+
+ writeToClipboard = async () => {
 	  await Clipboard.setString(this.state.id);
 	  Toast.showWithGravity('Copied to Clipboard!', Toast.LONG, Toast.CENTER)
-	};
-    getDetails() {
+ };
+
+ getDetails() {
     	data = {};
     	data.transaction_id = this.props.id;
     	try {
@@ -81,8 +85,9 @@ export default class TransactionSuccess extends Component {
         catch(error) {
             alert(error);
         }
-    }
-	render() {
+ }
+
+ render() {
         if(!this.state.loaded) {
             return(<View style={{flex:1, backgroundColor: theme.white}}><BarIndicator color={theme.dark} size={50} count={5} /></View>)
         }
@@ -134,6 +139,7 @@ export default class TransactionSuccess extends Component {
         }
 	}
 }
+
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,

@@ -11,7 +11,7 @@ import Button from '../../../common/button';
 var Back = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/lightback.png";
 
 export default class EnterEmail extends React.Component {
-	constructor(props) {
+ constructor(props) {
 		super(props);
 		this.state = {
 			email: "",
@@ -23,10 +23,12 @@ export default class EnterEmail extends React.Component {
 		this.registerEmail = this.registerEmail.bind(this);
 		this.verifyEmail = this.verifyEmail.bind(this);
 	}
-	componentWillMount() {
+
+ componentWillMount() {
 		this.getUserPublicKey();
-	}
-	goBack() {
+ }
+
+ goBack() {
 		if(this.props.mode==="verify") {
 			Actions.firstscreen();
 		}
@@ -35,15 +37,17 @@ export default class EnterEmail extends React.Component {
 			Actions.initiaterecovery();
 		}
 		else {}
-	}
+ }
 
-	componentDidMount() {
+ componentDidMount() {
 				BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
-		}
-		componentWillUnmount() {
+ }
+
+ componentWillUnmount() {
 				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
-		}
-		handleBackButton = () =>  {
+ }
+
+ handleBackButton = () =>  {
 			if(this.props.mode==="verify") {
   			Actions.firstscreen();
   		}
@@ -53,20 +57,18 @@ export default class EnterEmail extends React.Component {
   		}
   		else {}
 		 return true;
-		}
+ }
 
-
-
-
-	onUnfocus() {
+ onUnfocus() {
 		Keyboard.dismiss();
-	}
+ }
 
-	validateEmail = (email) => {
+ validateEmail = (email) => {
   var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
-  };
-	getOTP() {
+ };
+
+ getOTP() {
 		if (!this.validateEmail(this.state.email)) {
 		  Toast.showWithGravity('Enter valid email address', Toast.LONG, Toast.CENTER)
 		} else {
@@ -78,9 +80,9 @@ export default class EnterEmail extends React.Component {
 			}
 			else {}
 		}
+ }
 
-	}
-	getUserPublicKey = async () => {
+ getUserPublicKey = async () => {
 		try {
 		    var wallet_id = await AsyncStorage.getItem('@WalletID');
 		    this.setState({ wallet_id: wallet_id, mode: this.props.mode });
@@ -88,8 +90,9 @@ export default class EnterEmail extends React.Component {
 		catch (error) {
 		    console.log(error)
 		}
-	}
-	verifyEmail() {
+ }
+
+ verifyEmail() {
 		var self = this;
 		var data = {};
 		data.email = self.state.email;
@@ -117,14 +120,13 @@ export default class EnterEmail extends React.Component {
         catch(error) {
             console.log(error);
         }
-	}
+ }
 
-	goToRestore(){
+ goToRestore(){
 		Actions.restore();
-	}
+ }
 
-
-	registerEmail() {
+ registerEmail() {
 		var self = this;
 		var data = {};
 		data.email = self.state.email;
@@ -153,8 +155,9 @@ export default class EnterEmail extends React.Component {
         catch(error) {
             console.log(error);
         }
-	}
-	render() {
+ }
+
+ render() {
 		return (
 			<TouchableWithoutFeedback onPress={ this.onUnfocus }>
 				<View style={styles.container}>
@@ -176,8 +179,6 @@ export default class EnterEmail extends React.Component {
 									underlineColorAndroid='transparent'
 								/>
 							</View>
-
-
 						</View>
 					</View>
 					<View style={styles.lowerFlex}>
@@ -185,16 +186,12 @@ export default class EnterEmail extends React.Component {
 							<Button bColor = {theme.dark} onPress={this.getOTP}>
 								<Text style={styles.nextText}>Send Verification Code</Text>
 							</Button>
-
-
 						{this.props.mode == "verify" && <View style={{paddingTop:10, width:'100%',  justifyContent: 'center',
 							alignItems: 'center',  backgroundColor:'#fff'}}>
 						<Button bColor = {theme.dark} onPress={this.goToRestore}>
 							<Text style={{color:'grey'}}>Restore Using Mnemonic Instead</Text>
 						</Button>
 						</View> }
-
-
 						</KeyboardAvoidingView>
 					</View>
 				</View>
@@ -202,7 +199,8 @@ export default class EnterEmail extends React.Component {
 		);
 	}
 }
-const styles = StyleSheet.create({
+
+ const styles = StyleSheet.create({
 	container: {
 		height: '100%',
 	    backgroundColor: theme.white,
@@ -270,4 +268,4 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'flex-end'
 	}
-});
+ });

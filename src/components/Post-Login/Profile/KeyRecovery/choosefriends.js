@@ -58,40 +58,39 @@ export default class ChooseFriends extends React.Component {
 		this.sendRecoveryTrustData = this.sendRecoveryTrustData.bind(this);
 		this.writeToClipboard = this.writeToClipboard.bind(this);
 	}
-	componentWillMount() {
+
+ componentWillMount() {
 		if(this.props.mode==="register") {
 			this.getMnemonic();
 		}
 		else {
 			this.getNewKeys();
 		}
+ }
+
+  componentDidMount() {
+				BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
 	}
 
-
-	componentDidMount() {
-				BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
-		}
-		componentWillUnmount() {
+ componentWillUnmount() {
 				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
-		}
-		handleBackButton = () =>  {
+ }
+
+ handleBackButton = () =>  {
 		if(this.props.mode == "register"){
 			Actions.initiaterecovery();
-		}
+   }
 		else{
 			Actions.popTo('enteremail');
 		}
 		 return true;
-		}
+ }
 
-
-	enablePicker() {
+ enablePicker() {
 			this.setState({ pickerEnabled: true});
-		}
+ }
 
-
-
-	getNewKeys() {
+ getNewKeys() {
 		const keyPair = virgilCrypto.generateKeys();
 		const privateKeyData = virgilCrypto.exportPrivateKey(keyPair.privateKey);
 		const publicKeyData = virgilCrypto.exportPublicKey(keyPair.publicKey);
@@ -100,7 +99,8 @@ export default class ChooseFriends extends React.Component {
 		this.setState({email: this.props.email, old_public_key: this.props.old_public_key, wallet_id: this.props.wallet_id, loaded: true, new_public_key: publicKey, new_private_key: privateKey});
 		this.savePublicKey(this.props.old_public_key, privateKey);
 	}
-	savePublicKey = async (oldPublicKey, newPrivateKey) => {
+
+ savePublicKey = async (oldPublicKey, newPrivateKey) => {
 		try {
 			await AsyncStorage.setItem('@OldPublicKey', oldPublicKey);
 			await AsyncStorage.setItem('@NewPrivateKey', newPrivateKey);
@@ -109,7 +109,8 @@ export default class ChooseFriends extends React.Component {
 			console.log(error);
 		}
 	}
-	getMnemonic = async () => {
+
+ getMnemonic = async () => {
 		try{
 			const value = await AsyncStorage.getItem('@UserData');
 			const mnemonicstr = JSON.parse(value);
@@ -119,11 +120,13 @@ export default class ChooseFriends extends React.Component {
 		catch(error) {
 			console.log(error)
 		}
-	}
-	goBack() {
+ }
+
+ goBack() {
 		Actions.popTo('enteremail');
-	}
-	pushFriendData() {
+ }
+
+ pushFriendData() {
 		var friends = this.state.friends;
 		var length = friends.length;
 		var data = {};
@@ -137,18 +140,18 @@ export default class ChooseFriends extends React.Component {
 		else {
 			this.setState({friends: friends, length: data.id, address: ""});
 		}
-	}
-	getSecretParts(mnemonic){
+ }
+
+ getSecretParts(mnemonic){
 		const cryptr = new Cryptr('Hello');
 		const encryptedString = cryptr.encrypt(mnemonic);
 		var shares = secrets.share(encryptedString, this.state.maxDevices, this.state.minDevices);
 		return shares;
 	}
-	onAddPress() {
+
+ onAddPress() {
 		const self = this;
 		const friends = this.state.friends;
-
-
 		for(i = 0; i < friends.length; i++) {
 			if(this.state.address.replace('@','') === friends[i].friendsHandle) {
 				Toast.showWithGravity('Device Already Added!', Toast.LONG, Toast.CENTER);
@@ -185,17 +188,19 @@ export default class ChooseFriends extends React.Component {
         catch(error) {
             console.log(error);
         }
-	}
-	writeToClipboard = async (address) => {
+ }
+
+ writeToClipboard = async (address) => {
       await Clipboard.setString(address);
       Toast.showWithGravity('Copied to Clipboard!', Toast.LONG, Toast.CENTER)
     };
-    onSavePress() {
+
+ onSavePress() {
     	if(this.props.mode==="verify") {
     		this.setState({loaded: false, activity: "Setting Up Request"}, () => {
 				requestAnimationFrame(() => this.createRecoveryTrustData(), 0);
 			});
-		}
+     }
 		else if(this.props.mode==="register") {
 			this.setState({loaded: false, activity: "Setting Up Recovery"}, () => {
 				requestAnimationFrame(() => this.createTrustData(), 0);
@@ -204,8 +209,9 @@ export default class ChooseFriends extends React.Component {
 		else {
 			return true;
 		}
-    }
-    createTrustData() {
+ }
+
+ createTrustData() {
     	const friends = this.state.friends;
 			const shares = this.getSecretParts(this.state.mnemonic);
     	var trust_data = [];
@@ -221,14 +227,16 @@ export default class ChooseFriends extends React.Component {
     		trust_data.push(data);
     	}
     	this.sendTrustData(trust_data);
-    }
-    encryptData(data, publicKeyStr) {
+ }
+
+ encryptData(data, publicKeyStr) {
 		const publicKey = virgilCrypto.importPublicKey(publicKeyStr);
 		const encryptedDataStr = virgilCrypto.encrypt(data, publicKey);
 		const encryptedData =  encryptedDataStr.toString('base64');
 		return encryptedData;
 	}
-	sendTrustData(trust_data) {
+
+ sendTrustData(trust_data) {
 		var trustData = {};
 		trustData.trust_data = trust_data;
 		const self = this;
@@ -256,16 +264,18 @@ export default class ChooseFriends extends React.Component {
         catch(error) {
             console.log(error);
         }
-	}
-	changeRecoveryStatus = async () => {
+ }
+
+ changeRecoveryStatus = async () => {
 		try {
 			await AsyncStorage.setItem('@RecoveryStatus', "2");
 		}
 		catch(error) {
 			Toast.showWithGravity(error, Toast.LONG, Toast.CENTER);
 		}
-	}
-	createRecoveryTrustData() {
+ }
+
+ createRecoveryTrustData() {
 		const friends = this.state.friends;
 		var trustData = [];
 	    for(i=0 ; i<friends.length ; i++) {
@@ -274,8 +284,9 @@ export default class ChooseFriends extends React.Component {
 			trustData.push(dataObject);
 	    }
 	    this.sendRecoveryTrustData(trustData);
-	}
-	sendRecoveryTrustData(trustData) {
+ }
+
+ sendRecoveryTrustData(trustData) {
 		const self = this;
 		var userData = {};
 		userData.publicKey = self.state.old_public_key;
@@ -309,7 +320,8 @@ export default class ChooseFriends extends React.Component {
             console.log(error);
         }
 	}
-	changeRequestRecoveryStatus = async () => {
+
+ changeRequestRecoveryStatus = async () => {
 		try {
 			await AsyncStorage.setItem('@RecoveryInitiated', "true");
 			await AsyncStorage.setItem('@Friends', JSON.stringify(this.state.friends));
@@ -321,7 +333,7 @@ export default class ChooseFriends extends React.Component {
 		}
 	}
 
-	changeShamir(value){
+ changeShamir(value){
 		if(this.state.friends.length ){
 			Alert.alert(
 			'Cannot change after adding friends.',
@@ -346,22 +358,22 @@ export default class ChooseFriends extends React.Component {
 				]
 			)
 		}
-
 		else{
 			if(value == "2/3"){
 				this.setState({shamirValue:value , maxDevices:3,minDevices:2});
 			}
-
 			else {
 				this.setState({shamirValue:value , maxDevices:5,minDevices:3});
 			}
 		}
 
-	}
-	onUnfocus() {
+ }
+
+ onUnfocus() {
 		Keyboard.dismiss();
 	}
-	render() {
+
+ render() {
 		var sectionHeight;
 		var buttonopacity;
 		if(this.state.friendsAdded) {
@@ -461,14 +473,12 @@ export default class ChooseFriends extends React.Component {
 							</Button> : null}
 						</View>
 					</View>
-
-
-
 			);
 		}
 	}
 }
-const styles = StyleSheet.create({
+
+ const styles = StyleSheet.create({
 	container: {
 		height: '100%',
 	    backgroundColor: theme.white,

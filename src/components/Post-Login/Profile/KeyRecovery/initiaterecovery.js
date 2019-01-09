@@ -21,21 +21,25 @@ export default class InitiateRecovery extends React.Component {
 		this.gotoSetupRecovery = this.gotoSetupRecovery.bind(this);
 	}
 
-	componentDidMount() {
+ componentDidMount() {
 				BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
-		}
-		componentWillUnmount() {
+ }
+
+ componentWillUnmount() {
 				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
-		}
-		handleBackButton = () =>  {
+ }
+
+ handleBackButton = () =>  {
 			Actions.postlogintabs();
 			Actions.wallets();
 			return true;
-		}
-	componentWillMount() {
+ }
+
+ componentWillMount() {
 		this.checkRecoveryStatus();
-	}
-	componentWillReceiveProps(nextProps) {
+ }
+
+ componentWillReceiveProps(nextProps) {
 		console.log(nextProps);
 		if(nextProps.recovery === true) {
 			this.setState({loaded: true, Status: "2"});
@@ -43,8 +47,9 @@ export default class InitiateRecovery extends React.Component {
 		else {
 			this.checkRecoveryStatus();
 		}
-	}
-	checkRecoveryStatus = async () => {
+ }
+
+ checkRecoveryStatus = async () => {
 		try {
 			var Status = await AsyncStorage.getItem("@RecoveryStatus");
 			console.log(Status)
@@ -56,11 +61,13 @@ export default class InitiateRecovery extends React.Component {
 		catch(error) {
 			Toast.showWithGravity(error, Toast.LONG, Toast.TOP, Toast.CENTER);
 		}
-	}
-	onEnter() {
+ }
+
+ onEnter() {
 		this.checkRecoveryStatus();
-	}
-	gotoSetupRecovery() {
+ }
+
+ gotoSetupRecovery() {
 		var self = this;
 		var mode = "register";
 		if(self.state.Status === "0") {
@@ -74,11 +81,11 @@ export default class InitiateRecovery extends React.Component {
 		}
 	}
 
-	goToPendingRequests(){
+ goToPendingRequests(){
 		Actions.pendingrequests();
-	}
+ }
 
-	render() {
+ render() {
 		var buttonText;
 		var infoText;
 		if(!this.state.loaded) {
@@ -97,10 +104,10 @@ export default class InitiateRecovery extends React.Component {
 				infoText = "Your coins are safe";
 				buttonText = "Done";
 			}
-		}
+	 }
 
 
-		return (
+ return (
 			<View style={styles.container}>
 				<StatusBar bColor={theme.dark} />
 				<AppStatusBar bColor={theme.dark} right={true} Forward={pending} rightFunction={this.goToPendingRequests}  center={true} text="Recovery" textColor={theme.white} /><View style={styles.contentContainer}>
@@ -118,7 +125,8 @@ export default class InitiateRecovery extends React.Component {
 		);
 	}
 }
-const styles = StyleSheet.create({
+
+ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 	    backgroundColor: theme.white,
@@ -147,4 +155,4 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		bottom: 15
 	}
-});
+ });

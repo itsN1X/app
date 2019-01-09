@@ -18,9 +18,11 @@ export default class NewAddress extends React.Component {
 			name: ""
 		}
 	}
+
 	goBack() {
 		Actions.pop();
 	}
+
 	render() {
 		return (
 			<View style={styles.container}>
@@ -71,6 +73,7 @@ export default class NewAddress extends React.Component {
 		);
 	}
 }
+
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,

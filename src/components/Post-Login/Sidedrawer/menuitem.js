@@ -16,6 +16,7 @@ export default class DrawerContent extends Component {
 		);
 	}
 }
+
 const styles = StyleSheet.create({
 	menuItem: {
 		marginLeft: 20,

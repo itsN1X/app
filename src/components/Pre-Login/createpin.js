@@ -23,17 +23,17 @@ export default class CreatePin extends React.Component {
 	componentDidMount() {
 				BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
 		}
-		componentWillUnmount() {
+
+	componentWillUnmount() {
 				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
 		}
-		handleBackButton = () =>  {
 
+	handleBackButton = () =>  {
 			if(this.props.mode == "wallet" || this.props.mode == "guardian") {
 				Actions.popTo('username');
 			}
 			else Actions.popTo('firstscreen');
-
-				return true;
+			return true;
 		}
 
 	getPinLength(){
@@ -44,14 +44,14 @@ export default class CreatePin extends React.Component {
 		}
 	}
 
-
 	generateKeyPair() {
 	    const promise = bip39.generateMnemonic();
 	    let Mode = this.props.mode;
-		promise.then((result)=>{
+	  	promise.then((result)=>{
 		  Actions.walletseed({mnemonic: result, mode: Mode});
 		})
 	}
+
 	render () {
 		const pin = this.state.pinCode;
 		var enableButton;
@@ -93,6 +93,7 @@ export default class CreatePin extends React.Component {
 		);
 	}
 }
+
 const styles = StyleSheet.create({
 	container: {
 		position: 'relative',

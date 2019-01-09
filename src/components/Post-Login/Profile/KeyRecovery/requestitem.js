@@ -14,7 +14,8 @@ export default class RequestItem extends React.Component {
 	copyToClipboard(from_public_key) {
 		this.props.onCopy(from_public_key);
 	}
-	onApprove = async () => {
+
+ onApprove = async () => {
 		var data = {};
 		data.publicKey = this.props.user_public_key;
 		data.request_id = this.props.request_id;
@@ -38,6 +39,7 @@ export default class RequestItem extends React.Component {
             console.log(error);
         }
 	}
+
 	render() {
 		return (
 				<View style={styles.requestItem}>
@@ -63,6 +65,7 @@ export default class RequestItem extends React.Component {
 		);
 	}
 }
+
 const styles = StyleSheet.create({
 	requestItem: {
 		height: 140,

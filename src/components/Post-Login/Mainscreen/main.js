@@ -48,18 +48,21 @@ export default class Main extends Component {
         this.openDrawer = this.openDrawer.bind(this);
     }
 
-    componentDidMount() {
+ componentDidMount() {
           BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
-      }
-      componentWillUnmount() {
+  }
+
+ componentWillUnmount() {
           BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
-      }
-      handleBackButton = () =>  {
+  }
+
+  handleBackButton = () =>  {
         Actions.postlogintabs();
         Actions.wallets();
        return true;
-      }
-    onRefresh() {
+  }
+
+ onRefresh() {
         this.spinValue = new Animated.Value(0);
         Animated.timing(this.spinValue,{
             toValue: 1,
@@ -70,50 +73,59 @@ export default class Main extends Component {
         this.setState({rotated: !this.state.rotated});
     }
 
-    componentWillMount() {
+ componentWillMount() {
         this.spinValue = new Animated.Value(0);
         this.setState({activity: "Fetching Asset Details"}, () => {
             requestAnimationFrame(()=>this.getCoinData(), 0);
         });
-    }
-    componentWillReceiveProps(nextProps) {
+ }
+
+ componentWillReceiveProps(nextProps) {
         this.onRefresh();
-    }
-    closeDrawer() {
+ }
+
+ closeDrawer() {
         const self = this;
         self._drawer.close()
-    };
-    openDrawer() {
+  };
+
+ openDrawer() {
         const self = this;
         self._drawer.open()
-    };
-    sendCoins() {
+  };
+
+ sendCoins() {
         const self = this;
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
         Actions.send({ utxo: self.state.utxo, fromAddress: self.state.address, privateKey: self.state.privateKey, balance: self.state.balance });
-    }
-    receiveCoins() {
+  }
+
+ receiveCoins() {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
         Actions.recieve({ address: this.state.address });
-    }
-    openProfile() {
+  }
+
+ openProfile() {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
         Actions.profile();
     }
-    gotoExchange() {
+
+ gotoExchange() {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
         Actions.exchange();
     }
-    openTransactions() {
+
+ openTransactions() {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
         Actions.fulltransactionhistory({ transactions: this.state.transactions, symbol: this.state.currencySymbol })
     }
-    goBack() {
+
+ goBack() {
         Actions.pop();
     }
-    getBalance (coinData) {
 
-      // console.error(coinData[0].address);
+ getBalance (coinData) {
+
         coinAddress = {};
         coinAddress.addresses = [coinData[0].address];
         coinAddress.asset_id = coinData[0].asset_id;
@@ -136,8 +148,9 @@ export default class Main extends Component {
         catch(error) {
             alert(error);
         }
-    }
-    getCoinData = async () => {
+ }
+
+ getCoinData = async () => {
       try {
             const value = await AsyncStorage.getItem('@CoinsData');
             var coinData = JSON.parse(value);
@@ -147,7 +160,8 @@ export default class Main extends Component {
             alert(error)
         }
     }
-    render() {
+
+ render() {
         const spin = this.spinValue.interpolate({
               inputRange: [0, 1],
               outputRange: ['0deg', '360deg']
@@ -252,6 +266,7 @@ export default class Main extends Component {
         }
     }
 }
+
 const drawerStyles = {
   drawer: { shadowColor: '#000000', shadowOpacity: 0.8, shadowRadius: 3},
   main: {paddingLeft: 3},

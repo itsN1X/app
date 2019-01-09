@@ -35,37 +35,42 @@ export default class Send extends React.Component {
 		this.sendCoins = this.sendCoins.bind(this);
 		this.sendTransactionHash = this.sendTransactionHash.bind(this);
 	}
+
 	goBack() {
 		Actions.pop();
 	}
+
 	openScanner() {
 		Actions.scanqr();
 	}
+
 	componentWillReceiveProps(nextProps) {
 		requestAnimationFrame(() => {
 			this.setState({ toAddress: nextProps.address });
 			Keyboard.dismiss();
 		});
 	}
+
 	componentWillMount() {
 		this.setState({activity: "Fetching Details"}, () => {
             requestAnimationFrame(()=>this.getCoinData(), 0);
         });
 	}
 
-
 	componentDidMount() {
 				BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
 		}
-		componentWillUnmount() {
+
+	componentWillUnmount() {
 				BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
 		}
-		handleBackButton = () =>  {
+
+	handleBackButton = () =>  {
 		 Actions.pop();
 		 return true;
 		}
 
-		getCoinData = async () => {
+	getCoinData = async () => {
 			try {
 						const value = await AsyncStorage.getItem('@CoinsData');
 						var coinData = JSON.parse(value);
@@ -76,7 +81,7 @@ export default class Send extends React.Component {
 				}
 		}
 
-		getBalance (coinData) {
+	getBalance (coinData) {
 				coinAddress = {};
 				coinAddress.addresses = [coinData[0].address];
 				coinAddress.asset_id = coinData[0].asset_id;
@@ -104,13 +109,11 @@ export default class Send extends React.Component {
 
 		calculateUtxo() {
 		var Unit = bitcoin.Unit;
-
 		let utxo = this.state.utxo;
 		let amount = 	Unit.fromBTC(this.state.amount).satoshis;
 		let final_utxo = [];
 		let lessers = [];
 		let greaters = [];
-
 		for (var i=0 ; i< utxo.length ; i++){
         if ( Unit.fromBTC(utxo[i].amount).satoshis < amount) {
         	lessers.push(utxo[i])
@@ -121,7 +124,6 @@ export default class Send extends React.Component {
 		}
 
 		if (greaters.length !== 0) {
-
 				greaters.sort(function(a, b) {
 				    return  Unit.fromBTC(a.amount).satoshis -  Unit.fromBTC(b.amount).satoshis;
 				});
@@ -131,14 +133,12 @@ export default class Send extends React.Component {
 
 				final_utxo.push(min_greater);
 		}
-
 		else {
-
 					var accum = 0
 
-				lessers.sort(function(a, b) {
+				  lessers.sort(function(a, b) {
 				    return Unit.fromBTC(a.amount).satoshis - Unit.fromBTC(b.amount).satoshis;
-				});
+				  });
 					for (var a= lessers.length-1 ; a >= 0; a--){
 						final_utxo.push(lessers[a])
 						accum = accum + Unit.fromBTC(lessers[a].amount).satoshis ;
@@ -156,45 +156,7 @@ export default class Send extends React.Component {
 
 	return final_utxo;
 
-
-
-
-
-
-
-
-
-
-		// var utxo = this.props.utxo;
-		// var from = this.props.fromAddress;
-		// var txn = new bitcoin.Transaction();
-		// txn.from(utxo).to("mu76UABwqefXrV93cFbsEvH9eg11QYooau", 1000)       // Feed information about what unspent outputs one can use
-		// .change(from).sign(this.props.privateKey);		 					// Add an output with the given amount of satoshis
-		// var fees = txn.getFee();
-		// var feesBTC = fees / 100000000;
-		// console.log(fees);
-		// this.setState({balance: this.props.balance, feesBTC: feesBTC, fees: fees, loaded: true, utxo: this.props.utxo, fromAddress: this.props.fromAddress, privateKey: this.props.privateKey});
-		/*try {
-            var self = this;
-            axios({
-                method: 'post',
-                url: 'http://206.189.137.43:4013/estimate_fees',
-            })
-            .then(function (response) {
-            	console.log(self.props.utxo);
-            	console.log(self.props.address);
-            	console.log(self.props.privateKey);
-                self.setState({fees: response.data.fees.feerate, loaded: true, utxo: self.props.utxo, fromAddress: self.props.address, privateKey: self.props.privateKey});
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-        }
-        catch(error) {
-            alert(error);
-        }*/
 	}
-
 
 	calculateMax(){
 		var Unit = bitcoin.Unit;
@@ -214,31 +176,23 @@ export default class Send extends React.Component {
 			transaction.from(utxo).to(to, amount).change(from);
 
 			let size = transaction._estimateSize();
-
 			let estimatedFees =  transaction._estimateFee(size,amount, 1000);
-
 			estimatedFees *= 2;
-
 			let maxBalance =  Unit.fromSatoshis(amount - estimatedFees).to(Unit.BTC);
-
 			if(maxBalance > 0){
 				this.setState({maxAmount:maxBalance, loaded:true});
 			}
 			else {
 				this.setState({maxAmount:0, loaded:true});
 			}
-
-
 		}
-
 		else{
 				this.setState({maxAmount:0, loaded:true});
 		}
 
-
 	}
-	sendCoins() {
 
+	sendCoins() {
 		var Unit = bitcoin.Unit;
 		var privateKey = this.props.privateKey;
 		var from = this.props.fromAddress;
@@ -267,18 +221,14 @@ export default class Send extends React.Component {
 				this.setState({loaded: false, activity: "Signing Transaction"}, () => {
 					requestAnimationFrame(() => this.signTransaction(utxo, amount, from, privateKey,to), 0)
 				});
-
 		}
 	}
+
 	signTransaction(utxo, amount, from, privateKey, to) {
 		var Unit = bitcoin.Unit;
-
 		var transaction = new bitcoin.Transaction();
-
 		transaction.from(utxo).to(to, amount).change(from);
-
 		let size = transaction._estimateSize();
-
 		let estimatedFees =  transaction._estimateFee(size,amount, 1000);
 		let balance = Unit.fromBTC(this.props.balance).satoshis;
 
@@ -291,7 +241,6 @@ export default class Send extends React.Component {
 			Toast.showWithGravity('Amount should be greater than fee', Toast.LONG, Toast.CENTER);
 			this.setState({loaded:true});
 		}
-
 
 		else if((amount - estimatedFees) <= 0){
 		Toast.showWithGravity('Amount should be greater than fee', Toast.LONG, Toast.CENTER);
@@ -307,13 +256,12 @@ export default class Send extends React.Component {
 			hash.address = from;
 			hash.amount = Unit.fromSatoshis(amount).to(Unit.BTC);
 
-
 			this.setState({activity: "Broadcasting Transaction"}, () => {
 				requestAnimationFrame(() => this.sendTransactionHash(hash), 0)
 			});
 		}
-
 	}
+
 	sendTransactionHash(hash) {
 		try {
             axios({
@@ -339,9 +287,10 @@ export default class Send extends React.Component {
             console.log(error);
         }
 	}
+
 	render() {
 
-			spendableColor = theme.dark;
+		spendableColor = theme.dark;
 
 		if(!this.state.loaded) {
             return(<Loader activity={this.state.activity} />)
@@ -411,7 +360,8 @@ export default class Send extends React.Component {
 		}
 	}
 }
-const styles = StyleSheet.create({
+
+ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 	    backgroundColor: theme.white,

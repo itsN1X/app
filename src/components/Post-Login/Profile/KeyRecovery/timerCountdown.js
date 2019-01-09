@@ -10,9 +10,6 @@ import AppStatusBar from '../../../common/appstatusbar';
 import Button from '../../../common/button';
 import TimerCountdown from 'react-native-timer-countdown';
 
-
-
 export default class Timer extends React.Component {
-
 
 }
