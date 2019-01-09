@@ -11,6 +11,7 @@ These instructions will get you a copy of the project up and running on your loc
 Basic system configration required to run the application
 
 ```
+- MacOs or Ubuntu 
 
 ```
 ### Prerequisites
@@ -18,7 +19,9 @@ Basic system configration required to run the application
 What things you need to install the software and how to install them
 
 ```
-Android Studio
+- Android Studio 
+- Node,npm and React Native
+
 ```
 
 ### Installing
@@ -31,13 +34,10 @@ Say what the step will be
 git clone https://github.com/CoinsafeApp/coinsafe-app.git
 cd coinsafe-app
 npm install
+react-native start
+react-native run android
 ```
 
-And repeat
-
-```
-until finished
-```
 
 End with an example of getting some data out of the system or using it for a little demo
 
@@ -56,15 +56,11 @@ Give an example
 ```
 
 
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
 ## Built With
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
+* [React Native](https://facebook.github.io/react-native/) - The web framework used
 * [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+
 
 
 ## Authors
