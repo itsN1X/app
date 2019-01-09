@@ -38,9 +38,6 @@ react-native start
 react-native run android
 ```
 
-
-End with an example of getting some data out of the system or using it for a little demo
-
 ## Running the tests
 
 ```
@@ -82,7 +79,7 @@ function createKeys(){
 
 ## Future Work
 
-**Settings**
+**Features to be added - **
 - [ ] Support for ethereum and monero 
 - [ ] HD wallet support
 - [ ] Multi-sig support 
