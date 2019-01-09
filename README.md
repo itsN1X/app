@@ -49,27 +49,46 @@ npm test
 
 ### Break down into end to end tests
 
-These tests check the javascript functions in the application
+These tests check the front end javascript functions in the application, for example , keys generation
 
 ```
-Give an example
+
+function createKeys(){
+
+  var privateKey = new bitcoin.PrivateKey();
+  const privateKeyStr = privateKey.toString();
+
+  var publicKey  = privateKey.toPublicKey();
+  const publicKeyStr = publicKey.toString();
+
+  var address = publicKey.toAddress(bitcoin.Networks.testnet);
+  const addressStr = address.toString();
+
+  let BTCData = {}
+  BTCData.asset_id = 1;
+  BTCData.privateKey = privateKeyStr;
+  BTCData.publicKey = publicKeyStr;
+  BTCData.address = addressStr;
+
+  return BTCData;
+
+}
 ```
 
 
 ## Built With
 
 * [React Native](https://facebook.github.io/react-native/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
+
 
 
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+* **Tarun Gupta** - *Initial work* - [tarun gupta](https://github.com/tarun1475)
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the GPL License - see the [LICENSE.md](LICENSE.md) file for details
 
