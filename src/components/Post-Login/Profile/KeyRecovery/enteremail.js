@@ -7,7 +7,6 @@ import theme from '../../../common/theme';
 import StatusBar from '../../../common/statusbar';
 import AppStatusBar from '../../../common/appstatusbar';
 import Button from '../../../common/button';
-import { isIphoneX } from 'react-native-iphone-x-helper';
 
 var Back = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/lightback.png";
 
@@ -25,16 +24,7 @@ export default class EnterEmail extends React.Component {
 		this.verifyEmail = this.verifyEmail.bind(this);
 	}
 	componentWillMount() {
-
-		if (isIphoneX()) {
-        this.setState({iphoneX:true});
-    } else {
-        this.setState({iphoneX:false});
-    }
-
 		this.getUserPublicKey();
-
-
 	}
 	goBack() {
 		if(this.props.mode==="verify") {
@@ -199,16 +189,9 @@ export default class EnterEmail extends React.Component {
 
 						{this.props.mode == "verify" && <View style={{paddingTop:10, width:'100%',  justifyContent: 'center',
 							alignItems: 'center',  backgroundColor:'#fff'}}>
-						<Button bColor = {theme.white} onPress={this.goToRestore} style={{borderWidth:1, borderColor:theme.dark}}>
-							<Text style={{color:'grey', alignItems: 'center'}}>Restore Using Mnemonic Instead</Text>
+						<Button bColor = {theme.dark} onPress={this.goToRestore}>
+							<Text style={{color:'grey'}}>Restore Using Mnemonic Instead</Text>
 						</Button>
-
-						{this.state.iphoneX &&
-							<View style={{height:20}}>
-
-							</View>
-						}
-
 						</View> }
 
 
