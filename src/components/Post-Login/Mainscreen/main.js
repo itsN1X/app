@@ -19,6 +19,7 @@ var Notification = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/new/not
 var Background = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/menubg.png";
 var Refresh = "https://s3.ap-south-1.amazonaws.com/maxwallet-images/refresh.png";
 
+
 export default class Main extends Component {
     constructor(props){
         super(props);
@@ -167,23 +168,6 @@ export default class Main extends Component {
         }
         else {
             return (
-                <Drawer
-                  ref={(ref) => { this._drawer = ref; }}
-                  type="overlay"
-                  content={<SideBar navigator={this._navigator} closeDrawer={this.closeDrawer} mainDrawer={true} />}
-                  openDrawerOffset={0.2}
-                  panCloseMask={0.35}
-                  panOpenMask={0.2}
-                  tapToClose={true}
-                  tweenDuration={150}
-                  closedDrawerOffset={-3}
-                  panThreshold={0.05}
-                  elevation={2}
-                  styles={drawerStyles}
-                  tweenHandler={(ratio) => ({
-                    mainOverlay: { opacity: ratio / 1.5 },
-                  })}
-                  onClose={() => this.closeDrawer()}>
                         <Animated.View style={{flex:1}}>
                             <ImageBackground style={styles.upperFlex} source={{uri: Background}}>
                                 {Platform.OS === 'ios' ? <View style={styles.statusbar} /> : null}
@@ -247,7 +231,7 @@ export default class Main extends Component {
                                 )}
                             </View>
                 </Animated.View>
-            </Drawer>
+
             );
         }
     }
@@ -262,14 +246,14 @@ const styles = StyleSheet.create({
         backgroundColor: theme.dark
     },
     upperFlex: {
-        height:250,
+        flex: 5,
         position: 'relative',
         width: '100%',
         backgroundColor: theme.dark,
         alignItems: 'center',
     },
     lowerflex : {
-        flex:1,
+        flex: 5,
     },
     statusbar: {
         height: statusBarHeight,

@@ -13,6 +13,8 @@ import AppStatusBar from '../common/appstatusbar';
 import { VirgilCrypto } from 'virgil-crypto';
 import bip39 from 'react-native-bip39';
 const crypto = require('react-native-crypto');
+import { isIphoneX } from 'react-native-iphone-x-helper';
+
 
 export default class Restore extends React.Component {
 	constructor(props) {
@@ -31,6 +33,12 @@ export default class Restore extends React.Component {
 		Keyboard.dismiss();
 	}
 	componentWillMount() {
+		if (isIphoneX()) {
+        this.setState({iphoneX:true});
+    } else {
+        this.setState({iphoneX:false});
+    }
+
 		this.setState({loaded: true});
 	}
 
@@ -168,6 +176,11 @@ export default class Restore extends React.Component {
 								<Button bColor = {theme.dark} onPress={this.onConfirm}>
 									<Text style={styles.nextText}>Restore Wallet</Text>
 								</Button>
+								{this.state.iphoneX &&
+									<View style={{height:30}}>
+
+									</View>
+								}
 							</View>
 						</View>
 					  </KeyboardAvoidingView>

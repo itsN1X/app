@@ -224,7 +224,7 @@ const RouterComponent = () => {
 					<Scene key="restore" component={Restore} hideNavBar panHandlers={null} />
 					<Scene key="enteremail" component={EnterEmail} panHandlers={null} hideNavBar />
 					<Scene key="enterotp" component={EnterOTP} panHandlers={null} hideNavBar />
-					<Scene key="choosefriends" component={ChooseFriends} panHandlers={null} hideNavBar />
+					<Scene key="choosefriends" component={ChooseFriends} panHandlers={null} hideNavBar/>
 					<Scene key="dummy" component={Dummy} hideNavBar panHandlers={null}/>
 					<Scene key="modal" component={Modal} hideNavBar panHandlers={null} />
 					<Scene key="keychain" component={KeychainExample} hideNavBar panHandlers={null} />

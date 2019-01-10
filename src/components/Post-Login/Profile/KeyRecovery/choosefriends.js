@@ -387,21 +387,21 @@ export default class ChooseFriends extends React.Component {
 					<View style={styles.container}>
 						<StatusBar />
 						<AppStatusBar  bColor={theme.dark} elevation={true} center={true} text="Add Trusted Devices" textColor={theme.white} />
-						<ScrollView keyboardShouldPersistTaps="always" style={{flex: 1, width: '100%'}}>
-							<View style={{flex: 1, width: '100%', alignItems: 'center'}}>
 
+						{this.state.friendsAdded ? null : <Picker
+							selectedValue={this.state.shamirValue}
+							style={{position:'absolute' , top : 30,left:0 , right:0}}
+							onValueChange={(itemValue, itemIndex) => this.changeShamir(itemValue)}>
+							<Picker.Item label="Shamir 2/3" value="2/3" />
+							<Picker.Item label="Shamir 3/5" value="3/5" />
+						</Picker> }
+
+
+
+						<ScrollView keyboardShouldPersistTaps="always" style={ this.state.friendsAdded ? {flex: 1, width: '100%'} : {flex: 1, width: '100%',marginTop:120}}>
+							<View style={{flex: 1, width: '100%', alignItems: 'center'}}>
 						{this.state.friendsAdded ? null : (
 							<View>
-								<View style={{alignItems:'center', justifyContent:'center', paddingVertical:10}}>
-
-									<Picker
-									  selectedValue={this.state.shamirValue}
-									  style={{ height: 50, width: 150}}
-									  onValueChange={(itemValue, itemIndex) => this.changeShamir(itemValue)}>
-									  <Picker.Item label="Shamir 2/3" value="2/3" />
-									  <Picker.Item label="Shamir 3/5" value="3/5" />
-									</Picker>
-								</View>
 								<View style={styles.friendHeadingFlex}>
 									<View style={styles.friendHeadingContainer}>
 										<Text style={styles.friendHeadingText}>Added Devices</Text>
