@@ -1,19 +1,40 @@
-import React, {Component} from 'react';
-import { StyleSheet, Text, View, Platform, TouchableHighlight, Image, ActivityIndicator, TextInput, TouchableOpacity, Dimensions, KeyboardAvoidingView, Keyboard, ScrollView, BackHandler, SegmentedControlIOS } from 'react-native';
-import { Actions } from 'react-native-router-flux';
-import * as Keychain from 'react-native-keychain';
-import theme from '../common/theme';
+import React, { Component } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Platform,
+  TouchableHighlight,
+  Image,
+  ActivityIndicator,
+  TextInput,
+  TouchableOpacity,
+  Dimensions,
+  KeyboardAvoidingView,
+  Keyboard,
+  ScrollView,
+  BackHandler,
+  SegmentedControlIOS
+} from "react-native";
+import { Actions } from "react-native-router-flux";
+import * as Keychain from "react-native-keychain";
+import theme from "../common/theme";
 
-const ACCESS_CONTROL_OPTIONS = ['None', 'Passcode', 'Password'];
-const ACCESS_CONTROL_MAP = [null, Keychain.ACCESS_CONTROL.DEVICE_PASSCODE, Keychain.ACCESS_CONTROL.APPLICATION_PASSWORD, Keychain.ACCESS_CONTROL.BIOMETRY_CURRENT_SET]
+const ACCESS_CONTROL_OPTIONS = ["None", "Passcode", "Password"];
+const ACCESS_CONTROL_MAP = [
+  null,
+  Keychain.ACCESS_CONTROL.DEVICE_PASSCODE,
+  Keychain.ACCESS_CONTROL.APPLICATION_PASSWORD,
+  Keychain.ACCESS_CONTROL.BIOMETRY_CURRENT_SET
+];
 
 export default class KeychainExample extends Component {
   state = {
-    username: '',
-    password: '',
-    status: '',
+    username: "",
+    password: "",
+    status: "",
     biometryType: null,
-    accessControl: null,
+    accessControl: null
   };
 
   componentDidMount() {
@@ -29,10 +50,14 @@ export default class KeychainExample extends Component {
         this.state.password,
         { accessControl: this.state.accessControl }
       );
-      this.setState({ username: '', password: '', status: 'Credentials saved!' });
+      this.setState({
+        username: "",
+        password: "",
+        status: "Credentials saved!"
+      });
       alert("Saved");
     } catch (err) {
-      this.setState({ status: 'Could not save credentials, ' + err });
+      this.setState({ status: "Could not save credentials, " + err });
     }
   }
 
@@ -40,13 +65,13 @@ export default class KeychainExample extends Component {
     try {
       const credentials = await Keychain.getGenericPassword();
       if (credentials) {
-      	alert(JSON.stringify(credentials));
-        this.setState({ ...credentials, status: 'Credentials loaded!' });
+        alert(JSON.stringify(credentials));
+        this.setState({ ...credentials, status: "Credentials loaded!" });
       } else {
-        this.setState({ status: 'No credentials stored.' });
+        this.setState({ status: "No credentials stored." });
       }
     } catch (err) {
-      this.setState({ status: 'Could not load credentials. ' + err });
+      this.setState({ status: "Could not load credentials. " + err });
     }
   }
 
@@ -54,19 +79,19 @@ export default class KeychainExample extends Component {
     try {
       await Keychain.resetGenericPassword();
       this.setState({
-        status: 'Credentials Reset!',
-        username: '',
-        password: '',
+        status: "Credentials Reset!",
+        username: "",
+        password: ""
       });
     } catch (err) {
-      this.setState({ status: 'Could not reset credentials, ' + err });
+      this.setState({ status: "Could not reset credentials, " + err });
     }
   }
 
   render() {
     return (
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
         style={styles.container}
       >
         <View style={styles.content}>
@@ -79,7 +104,8 @@ export default class KeychainExample extends Component {
               autoCapitalize="none"
               value={this.state.username}
               onChange={event =>
-                this.setState({ username: event.nativeEvent.text })}
+                this.setState({ username: event.nativeEvent.text })
+              }
               underlineColorAndroid="transparent"
             />
           </View>
@@ -91,19 +117,25 @@ export default class KeychainExample extends Component {
               autoCapitalize="none"
               value={this.state.password}
               onChange={event =>
-                this.setState({ password: event.nativeEvent.text })}
+                this.setState({ password: event.nativeEvent.text })
+              }
               underlineColorAndroid="transparent"
             />
           </View>
-          {Platform.OS === 'ios' && (
+          {Platform.OS === "ios" && (
             <View style={styles.field}>
               <Text style={styles.label}>Access Control</Text>
               <SegmentedControlIOS
                 selectedIndex={0}
-                values={this.state.biometryType ? [...ACCESS_CONTROL_OPTIONS, this.state.biometryType] : ACCESS_CONTROL_OPTIONS}
+                values={
+                  this.state.biometryType
+                    ? [...ACCESS_CONTROL_OPTIONS, this.state.biometryType]
+                    : ACCESS_CONTROL_OPTIONS
+                }
                 onChange={({ nativeEvent }) => {
                   this.setState({
-                    accessControl: ACCESS_CONTROL_MAP[nativeEvent.selectedSegmentIndex],
+                    accessControl:
+                      ACCESS_CONTROL_MAP[nativeEvent.selectedSegmentIndex]
                   });
                 }}
               />
@@ -148,66 +180,66 @@ export default class KeychainExample extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    backgroundColor: '#F5FCFF',
+    justifyContent: "center",
+    backgroundColor: "#F5FCFF"
   },
   content: {
-    marginHorizontal: 20,
+    marginHorizontal: 20
   },
   title: {
     fontSize: 28,
-    fontWeight: '200',
-    textAlign: 'center',
-    marginBottom: 20,
+    fontWeight: "200",
+    textAlign: "center",
+    marginBottom: 20
   },
   field: {
-    marginVertical: 5,
+    marginVertical: 5
   },
   label: {
-    fontWeight: '500',
+    fontWeight: "500",
     fontSize: 15,
-    marginBottom: 5,
+    marginBottom: 5
   },
   input: {
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: '#ccc',
-    backgroundColor: 'white',
+    borderColor: "#ccc",
+    backgroundColor: "white",
     height: 32,
     fontSize: 14,
-    padding: 8,
+    padding: 8
   },
   status: {
-    color: '#333',
+    color: "#333",
     fontSize: 12,
-    marginTop: 15,
+    marginTop: 15
   },
   biometryType: {
-    color: '#333',
+    color: "#333",
     fontSize: 12,
-    marginTop: 15,
+    marginTop: 15
   },
   buttons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 20,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 20
   },
   button: {
     borderRadius: 3,
-    overflow: 'hidden',
+    overflow: "hidden"
   },
   save: {
-    backgroundColor: '#0c0',
+    backgroundColor: "#0c0"
   },
   load: {
-    backgroundColor: '#333',
+    backgroundColor: "#333"
   },
   reset: {
-    backgroundColor: '#c00',
+    backgroundColor: "#c00"
   },
   buttonText: {
-    color: 'white',
+    color: "white",
     fontSize: 14,
     paddingHorizontal: 16,
-    paddingVertical: 8,
-  },
+    paddingVertical: 8
+  }
 });

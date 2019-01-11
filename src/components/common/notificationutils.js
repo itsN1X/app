@@ -1,13 +1,12 @@
-const ERROR_ANIMATION = 'shake';
-const DEFAULT_NOTIFICATION_POSTION = 'topCenter';
+const ERROR_ANIMATION = "shake";
+const DEFAULT_NOTIFICATION_POSTION = "topCenter";
 const DEFAULT_NOTIFICATION_TIMEOUT = 1000;
 const NOTIFICATION_TYPE = {
   ERROR: "error",
   ALERT: "alert",
   SUCCESS: "SUCCESS"
-}
+};
 export default class NotificiationUtils {
-
   constructor(notificationPlayerStream, manager) {
     this.notificationPlayerStream = notificationPlayerStream;
     this.defaultQueueConfig = {
@@ -25,18 +24,18 @@ export default class NotificiationUtils {
     }
 
     if (this.notificationPlayerStream) {
-      this.notificationPlayerStream.next(NOTIFICATION_TYPE.ERROR)
+      this.notificationPlayerStream.next(NOTIFICATION_TYPE.ERROR);
     }
 
     return this._showNotification({
       text: error,
-      type: 'error',
+      type: "error",
       timeout: timeout || DEFAULT_NOTIFICATION_TIMEOUT,
       layout: position,
       id: queueConfig.id,
       queue: queueConfig.queue
     });
-  }
+  };
 
   showConfirm = (message, timeout, position, queueConfig) => {
     if (!position) {
@@ -47,18 +46,18 @@ export default class NotificiationUtils {
     }
 
     if (this.notificationPlayerStream) {
-      this.notificationPlayerStream.next(NOTIFICATION_TYPE.ALERT)
+      this.notificationPlayerStream.next(NOTIFICATION_TYPE.ALERT);
     }
 
     return this._showNotification({
       text: message,
-      type: 'confirm',
+      type: "confirm",
       timeout: timeout || DEFAULT_NOTIFICATION_TIMEOUT,
       layout: position,
       id: queueConfig.id,
       queue: queueConfig.queue
     });
-  }
+  };
 
   showSuccess = (message, timeout, position, queueConfig) => {
     if (!position) {
@@ -68,27 +67,26 @@ export default class NotificiationUtils {
       queueConfig = this.defaultQueueConfig;
     }
 
-
     if (this.notificationPlayerStream) {
-      this.notificationPlayerStream.next(NOTIFICATION_TYPE.SUCCESS)
+      this.notificationPlayerStream.next(NOTIFICATION_TYPE.SUCCESS);
     }
 
     return this._showNotification({
       text: message,
-      type: 'success',
+      type: "success",
       timeout: timeout || DEFAULT_NOTIFICATION_TIMEOUT,
       layout: position,
       id: queueConfig.id,
       queue: queueConfig.queue
-    })
-  }
+    });
+  };
 
   _showNotification(notificationConfig) {
     this.manager.showAlert({
       title: notificationConfig.title,
       message: notificationConfig.text,
       alertType: notificationConfig.type,
-      position: 'bottom'
+      position: "bottom"
     });
   }
 
