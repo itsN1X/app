@@ -16,7 +16,8 @@ import {
   Dimensions,
   TextInput,
   AsyncStorage,
-  Clipboard
+  Clipboard,
+  Platform
 } from "react-native";
 import { Actions } from "react-native-router-flux";
 import Toast from "react-native-simple-toast";
@@ -437,7 +438,11 @@ export default class ChooseFriends extends React.Component {
           {this.state.friendsAdded ? null : (
             <Picker
               selectedValue={this.state.shamirValue}
-              style={{ position: "absolute", top: 30, left: 0, right: 0 }}
+              style={
+                Platform.OS === "ios"
+                  ? { position: "absolute", top: 30, left: 0, right: 0 }
+                  : { height: 50, width: 150 }
+              }
               onValueChange={(itemValue, itemIndex) =>
                 this.changeShamir(itemValue)
               }
@@ -452,7 +457,9 @@ export default class ChooseFriends extends React.Component {
             style={
               this.state.friendsAdded
                 ? { flex: 1, width: "100%" }
-                : { flex: 1, width: "100%", marginTop: 120 }
+                : Platform.OS === "ios"
+                ? { flex: 1, width: "100%", marginTop: 120 }
+                : { flex: 1, width: "100%" }
             }
           >
             <View style={{ flex: 1, width: "100%", alignItems: "center" }}>
