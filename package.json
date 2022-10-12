@@ -32,7 +32,7 @@
     "punycode": "^1.2.4",
     "querystring-es3": "~0.2.0",
     "react": "^16.6.1",
-    "react-native": "^0.57.5",
+    "react-native": "^0.70.3",
     "react-native-bip39": "^2.3.0",
     "react-native-camera": "^1.6.4",
     "react-native-countdown-component": "^1.8.3",
